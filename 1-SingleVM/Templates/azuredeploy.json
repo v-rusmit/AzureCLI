@@ -12,7 +12,7 @@
 
           "diskStorageAccountName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'disk'))]",
           "diagStorageAccountName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'diag'))]",
-             "publicIPAddressName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-pip')]",
+             "publicIPAddressName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'pip' ))]",
         "networkSecurityGroupName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-nsg')]",
                       "subnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-subnet')]",
               "virtualNetworkName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-vnet')]",

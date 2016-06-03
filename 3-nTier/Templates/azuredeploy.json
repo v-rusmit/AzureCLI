@@ -19,12 +19,12 @@
         "vnetAddressRange": "10.0.0.0/16",
         "bizPrivateIPAddress": "10.0.1.250",
 
-        "diagStorageAccountName": "[concat(parameters('appName'),  uniqueString(resourceGroup().id,'diag'))]",
-        "diskStorageAccountRoot": "[concat(parameters('appName'),  uniqueString(resourceGroup().id,'disk'))]",
+        "diagStorageAccountName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'diag'))]",
+        "diskStorageAccountRoot": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'disk'))]",
+        "appPublicIPAddressName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'pip' ))]",
+         "jbPublicIPAddressName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'Jpip'))]",
 
             "virtualNetworkName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-vnet')]",
-        "appPublicIPAddressName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-pip')]",
-         "jbPublicIPAddressName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-jb-pip')]",
 
            "webLoadBalancerName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-web-lb')]",
            "bizLoadBalancerName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-biz-lb')]",

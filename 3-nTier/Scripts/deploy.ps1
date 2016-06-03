@@ -4,7 +4,7 @@ Select-AzureRmSubscription -SubscriptionId "36da8c44-d1a8-4e47-9515-7ce3097645fc
 
 #Get-AzureRmResourceProvider -ListAvailable
 
-$filespec="C:\Users\KBergman\OneDrive\Documents\Visual Studio 2015\CLI Conversion\3-nTier\Templates"
+$filespec="C:\Users\KBergman\Source\Repos\AzureCLI\3-nTier\Templates"
 $rg  = "play3"
 $loc = "CentralUS"
 

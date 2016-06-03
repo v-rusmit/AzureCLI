@@ -2,7 +2,7 @@
 Get-AzureRmSubscription
 Select-AzureRmSubscription -SubscriptionId "36da8c44-d1a8-4e47-9515-7ce3097645fc"    #MSDN/Visual Studio Enterprise
 
-$filespec="C:\Users\KBergman\OneDrive\Documents\Visual Studio 2015\CLI Conversion\2-MultiVM\Templates"
+$filespec="C:\Users\KBergman\Source\Repos\AzureCLI\2-MultiVM\Templates"
 
 $rg  = "play2"
 $loc = "CentralUS"
