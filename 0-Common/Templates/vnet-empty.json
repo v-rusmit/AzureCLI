@@ -1,0 +1,23 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+
+    "parameters": {
+        "apiVersion":         { "type": "string", "defaultValue":"2016-02-01",  "metadata": { "description": "Common API"              } },
+        "virtualNetworkName": { "type": "string",                               "metadata": { "description": "Name of Virtual Network" } },
+        "addressPrefix":      { "type": "string", "defaultValue": "10.0.0.0/8", "metadata": { "description": "Address prefix"          } }
+    },
+
+    "variables": { },
+
+    "resources": [
+        {
+            "name": "[parameters('virtualNetworkName')]",
+            "type": "Microsoft.Network/virtualNetworks",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2016-03-30",
+
+            "properties": { "addressSpace": { "addressPrefixes": [ "[parameters('addressPrefix')]" ] } }
+        }
+    ]
+}

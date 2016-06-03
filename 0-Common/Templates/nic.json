@@ -1,0 +1,36 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    
+    "parameters": {
+        "apiVersion"        : { "type": "string", "defaultValue":"2016-02-01",  "metadata": { "description": "Common API"                                                                                            } },
+                   "nicName": { "type": "string",                               "metadata": { "description": "Name of the simulated Network interface card."  } },
+        "virtualNetworkName": { "type": "string",                               "metadata": { "description": "Name of the Virtual Network."                   } },
+                "subnetName": { "type": "string",                               "metadata": { "description": "Name of the subnet."                            } }
+    },
+
+    "variables": {  },
+
+
+    "resources": [
+
+        {
+            "name": "[parameters('nicName')]",
+            "type": "Microsoft.Network/networkInterfaces",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2016-03-30",
+
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "subnet": { "id": "[  concat(resourceId('Microsoft.Network/virtualNetworks',  parameters('virtualNetworkName')),'/subnets/',parameters('subnetName'))]" }
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}    

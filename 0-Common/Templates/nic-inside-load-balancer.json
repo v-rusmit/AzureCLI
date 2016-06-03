@@ -1,0 +1,73 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "apiVersion":         { "type": "string", "defaultValue": "2016-02-01",  "metadata": { "description": "Common API" }                                         },
+                 "thisIndex": { "type": "int",    "metadata": { "description": "Index Number (of a loop)"                          }  },
+                   "nicName": { "type": "string", "metadata": { "description": "Name of the simulated Network interface card."     }  },
+          "loadBalancerName": { "type": "string", "metadata": { "description": "Name of the Load Balancer."                        }  },
+        "virtualNetworkName": { "type": "string", "metadata": { "description": "Name of Virtual Network"                           }  },
+                "subnetName": { "type": "string", "metadata": { "description": "Name of the subnet."                               }  }
+    },
+
+    "variables": {
+
+        "loadBalancerFrontEndName": "[concat(parameters('loadBalancerName'), '-front')]",
+         "loadBalancerBackEndName": "[concat(parameters('loadBalancerName'),  '-back')]",
+           "loadBalancerProbeName": "[concat(parameters('loadBalancerName'), '-front')]",
+
+        "natName": "[concat(parameters('nicName'), '-nat')]",
+
+        "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]",
+        "subnetRef": "[concat(variables('vnetID'),'/subnets/',parameters('subnetName'))]",
+
+        "lbID": "[resourceId('Microsoft.Network/loadBalancers',           parameters(        'loadBalancerName'))]",
+        "feID": "[concat(variables('lbID'),'/frontendIPConfigurations/',   variables('loadBalancerFrontEndName'))]",
+        "beID": "[concat(variables('lbID'),'/backendAddressPools/',        variables( 'loadBalancerBackEndName'))]",
+        "inID": "[concat(variables('lbID'),'/inboundNatRules/',            variables(                 'natName'))]"
+    },
+
+
+    "resources": [
+
+        {
+            "name": "[parameters('nicName')]",
+            "type": "Microsoft.Network/networkInterfaces",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2016-03-30",
+
+            "dependsOn": [ "[concat('Microsoft.Network/loadBalancers/', parameters('loadBalancerName'), '/inboundNatRules/',  variables('natName'))]"  ],
+
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "subnet":                            { "id": "[variables('subnetRef')]" },
+                            "loadBalancerBackendAddressPools": [ { "id": "[variables('beID')     ]" } ],
+                            "loadBalancerInboundNatRules":     [ { "id": "[variables('inID')     ]" } ]
+                        }
+                    }
+                ]
+            }
+        },       
+
+
+        {
+            "name": "[concat(parameters('loadBalancerName'),'/',variables('natName'))]",
+            "type": "Microsoft.Network/loadBalancers/inboundNatRules",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2016-03-30",
+
+            "properties": {
+                "frontendIPConfiguration": { "id": "[variables('feID')]" },
+                "protocol": "tcp",
+                "frontendPort": "[add(5000, parameters('thisIndex'))]",
+                "backendPort": 3389,
+                "enableFloatingIP": false
+            }
+        }
+    ]
+}
+

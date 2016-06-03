@@ -1,0 +1,79 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+
+    "parameters": {
+               "appName": { "type": "string", "defaultValue": "myapp",                                            "metadata": { "description": "Name of Application"            }  },
+        "appEnvironment": { "type": "string", "defaultValue": "dev",   "allowedValues": [ "dev", "qa", "prod" ],  "metadata": { "description": "Environment for Application"    }  },
+         "instanceCount": { "type": "int",    "defaultValue": 2,                                                  "metadata": { "description": "Number of Instances to create"  }  }
+    },
+
+
+    "variables": {
+        "apiVersion": "2016-02-01",
+        "diskStorageAccountName": "[concat(parameters('appName'),  uniqueString(resourceGroup().id,'disk'))]",
+        "diagStorageAccountName": "[concat(parameters('appName'),  uniqueString(resourceGroup().id,'diag'))]",
+           "availabilitySetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-as')]",
+              "loadBalancerName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-lb')]",
+           "publicIPAddressName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-pip')]",
+                    "subnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-subnet')]",
+            "virtualNetworkName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-vnet')]",
+                    "vmNameRoot": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-vm')]",
+                   "nicNameRoot": "[concat( variables('vmNameRoot'),                                 '-nic')]",
+
+    },
+
+
+    "resources": [
+
+        {
+            "name": "shared",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('apiVersion')]",
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/sharedresources/multivm-shared-azuredeploy.json" },
+
+                "parameters": {
+                                  "apiVersion": { "value": "[variables('apiVersion')]" },
+                          "virtualNetworkName": { "value": "[variables(      'virtualNetworkName')]" },
+                                  "subnetName": { "value": "[variables(              'subnetName')]" }
+                }
+            }
+        },
+
+
+
+        {
+            "name": "known",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('apiVersion')]",
+
+            "dependsOn": [ "Microsoft.Resources/deployments/shared" ],
+           
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/sharedresources/multivm-known-azuredeploy.json" },
+
+                "parameters": {
+                                  "apiVersion": { "value": "[ variables('apiVersion')]" },
+                          "virtualNetworkName": { "value": "[ variables(      'virtualNetworkName')]" },
+                                  "subnetName": { "value": "[ variables(              'subnetName')]" },
+                         "availabilitySetName": { "value": "[ variables(     'availabilitySetName')]" },
+                            "loadBalancerName": { "value": "[ variables(        'loadBalancerName')]" },
+                         "publicIPAddressName": { "value": "[ variables(     'publicIPAddressName')]" },
+                      "diskStorageAccountName": { "value": "[ variables(  'diskStorageAccountName')]" },
+                      "diagStorageAccountName": { "value": "[ variables(  'diagStorageAccountName')]" },
+                               "instanceCount": { "value": "[parameters('instanceCount')]" },
+                                  "vmNameRoot": { "value": "[ variables(   'vmNameRoot')]" },
+                                 "nicNameRoot": { "value": "[ variables(  'nicNameRoot')]" }
+                }
+            }
+        }   
+
+
+
+
+  ]
+}

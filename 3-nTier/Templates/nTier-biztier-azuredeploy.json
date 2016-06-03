@@ -1,0 +1,120 @@
+﻿{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    
+    "parameters": {
+                    "apiVersion": { "type": "string", "defaultValue":"2016-02-01",  "metadata": { "description": "Common API"                             } },
+              "privateIPAddress": { "type": "string",                               "metadata": { "description": "Actual Private IP Address"              } },
+            "virtualNetworkName": { "type": "string",                               "metadata": { "description": "Name of Virtual Network"                } },
+              "loadBalancerName": { "type": "string",                               "metadata": { "description": "Name of the Load Balancer"              } },
+                    "subnetName": { "type": "string",                               "metadata": { "description": "Name of the Subnet"                     } },
+                   "subnetRange": { "type": "string",                               "metadata": { "description": "Range of the Subnet"                    } },
+           "availabilitySetName": { "type": "string",                               "metadata": { "description": "Name of the Availability Set"           } },
+                 "InstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of instances to create"          } },
+        "diagStorageAccountName": { "type": "string",                               "metadata": { "description": "Name of Storage Account for diagnostics"} },
+        "diskStorageAccountRoot": { "type": "string",                               "metadata": { "description": "Name of Storage Account for vhds"       } },
+                        "vmName": { "type": "string",                               "metadata": { "description": "RootName of the VM's"                   } },
+                       "nicName": { "type": "string",                               "metadata": { "description": "RootName of the NIC's"                  } }
+    },
+
+    "variables": { },
+
+    "resources": [
+
+        {
+            "name": "biz-lb",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('apiVersion')]",
+     
+            "dependsOn": [ "Microsoft.Resources/deployments/biz-sn" ],
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/load-balancer-with-private-ip.json" },
+
+                "parameters": {
+                    "apiVersion":         { "value": "[parameters('apiVersion')]"          },
+                      "loadBalancerName": { "value": "[parameters(  'loadBalancerName')]"  },
+                      "privateIPAddress": { "value": "[parameters(  'privateIPAddress')]"  },
+                    "virtualNetworkName": { "value": "[parameters('virtualNetworkName')]"  },
+                            "subnetName": { "value": "[parameters(        'subnetName')]"  }
+                }
+            }
+        },     
+
+
+    
+        {
+            "name": "biz-sn",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('apiVersion')]",
+     
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/vnet-add-new-subnet.json" },
+
+                "parameters": {
+                    "apiVersion":             { "value": "[parameters('apiVersion')]"          },
+                          "existingVNETName": { "value": "[parameters( 'virtualNetworkName')]" },
+                             "newSubnetName": { "value": "[parameters(         'SubnetName')]" },
+                    "newSubnetAddressPrefix": { "value": "[parameters(        'SubnetRange')]" }
+                }
+            }
+        },
+
+
+
+        {
+            "name": "biz-as",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('apiVersion')]",
+     
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/availability-set.json" },
+
+                "parameters": {
+                    "apiVersion":          { "value": "[parameters('apiVersion')]"          },
+                    "availabilitySetName": { "value": "[parameters('availabilitySetName')]" }
+                }
+            }
+        },
+
+
+
+        {
+            "name": "[concat('vmLoopBiz', copyIndex())]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('apiVersion')]",
+
+            "dependsOn": [
+                "Microsoft.Resources/deployments/biz-lb",
+                "Microsoft.Resources/deployments/biz-sn",
+                "Microsoft.Resources/deployments/biz-as"        ],
+
+            "copy": {
+                "name": "vmcopy",
+                "count": "[parameters('instanceCount')]"
+            },
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/sharedresources/nTier-known-vmloop-lb-azuredeploy.json" },
+
+                "parameters": {
+                                "apiVersion": { "value": "[parameters('apiVersion')]" },
+                        "virtualNetworkName": { "value": "[parameters(    'virtualNetworkName')]" },
+                                "subnetName": { "value": "[parameters(            'subnetName')]" },
+                       "availabilitySetName": { "value": "[parameters(   'availabilitySetName')]" },
+                          "loadBalancerName": { "value": "[parameters(      'loadBalancerName')]" },
+                    "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]" },
+                                 "thisIndex": { "value": "[copyIndex()]"                                                  },
+                                    "vmName": { "value": "[concat(parameters( 'vmName'),                   copyIndex())]" },
+                                   "nicName": { "value": "[concat(parameters('nicName'),                   copyIndex())]" },
+                    "diskStorageAccountName": { "value": "[concat(parameters('diskStorageAccountRoot'),'b',copyIndex())]" }
+                }
+            }
+        }
+    
+    ]
+}

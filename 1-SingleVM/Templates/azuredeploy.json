@@ -1,0 +1,82 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+
+    "parameters": {
+               "appName": { "type": "string", "defaultValue": "myapp",                                            "metadata": { "description": "Name of Application" }    },
+        "appEnvironment": { "type": "string", "defaultValue": "dev",   "allowedValues": [ "dev", "qa", "prod" ],  "metadata": { "description": "Environment for Application" }    }
+    },
+  
+    "variables": {
+        "apiVersion": "2016-02-01",
+
+          "diskStorageAccountName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'disk'))]",
+          "diagStorageAccountName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'diag'))]",
+             "publicIPAddressName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-pip')]",
+        "networkSecurityGroupName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-nsg')]",
+                      "subnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-subnet')]",
+              "virtualNetworkName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-vnet')]",
+                          "vmName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-vm')]",
+                         "nicName": "[concat( variables('vmName'),                                     '-nic0')]"
+    },
+
+
+    "resources": [
+        {
+            "name": "shared",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('apiVersion')]",
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/sharedresources/singlevm-shared-azuredeploy.json" },
+
+                "parameters": {
+                                  "apiVersion": { "value": "[variables('apiVersion')]" },
+                    "networkSecurityGroupName": { "value": "[variables('networkSecurityGroupName')]" },
+                          "virtualNetworkName": { "value": "[variables(      'virtualNetworkName')]" },
+                                  "subnetName": { "value": "[variables(              'subnetName')]" }
+                }
+            }
+        },
+
+
+
+        {
+            "name": "known",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('apiVersion')]",
+
+            "dependsOn": [ "Microsoft.Resources/deployments/shared" ],
+           
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/sharedresources/singlevm-known-azuredeploy.json" },
+
+                "parameters": {
+                                  "apiVersion": { "value": "[variables('apiVersion')]" },
+                      "diskStorageAccountName": { "value": "[variables('diskStorageAccountName')]" },
+                      "diagStorageAccountName": { "value": "[variables('diagStorageAccountName')]" },
+                         "publicIPAddressName": { "value": "[variables(   'publicIPAddressName')]" },
+                                  "subnetName": { "value": "[variables(            'subnetName')]" },
+                          "virtualNetworkName": { "value": "[variables(    'virtualNetworkName')]" },
+                                      "vmName": { "value": "[variables(                'vmName')]" },
+                                     "nicName": { "value": "[variables(               'nicName')]" }
+                }
+            }
+        } 
+      
+    ],
+
+  "outputs": {
+      "diskStorageAccountName": {"type": "string", "value": "[variables('diskStorageAccountName')]"   },
+      "diagStorageAccountName": {"type": "string", "value": "[variables('diagStorageAccountName')]"   },
+         "publicIPAddressName": {"type": "string", "value": "[variables('publicIPAddressName')]"      },
+    "networkSecurityGroupName": {"type": "string", "value": "[variables('networkSecurityGroupName')]" },
+                  "subnetName": {"type": "string", "value": "[variables('subnetName')]"               },
+          "virtualNetworkName": {"type": "string", "value": "[variables('virtualNetworkName')]"       },
+                      "vmName": {"type": "string", "value": "[variables('vmName')]"                   },
+                     "nicName": {"type": "string", "value": "[variables('nicName')]"                  }
+  }
+
+}

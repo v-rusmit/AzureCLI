@@ -1,0 +1,75 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "apiVersion":         { "type": "string", "defaultValue":"2016-02-01", "metadata": { "description": "Common API"                            } },
+          "loadBalancerName": { "type": "string",                              "metadata": { "description": "This is the name of the load balancer"             }    },
+          "privateIPAddress": { "type": "string",                              "metadata": { "description": "This is the actual private IP Address"             }    },
+        "virtualNetworkName": { "type": "string",                              "metadata": { "description": "Name of the Virtual Network."                      }    },
+                "subnetName": { "type": "string",                              "metadata": { "description": "Name of the subnet."                               }    }
+  },
+
+    "variables": {
+        "loadBalancerFrontEndName": "[concat(parameters('loadBalancerName'), '-front')]",
+         "loadBalancerBackEndName": "[concat(parameters('loadBalancerName'),  '-back')]",
+           "loadBalancerProbeName": "[concat(parameters('loadBalancerName'), '-probe')]",
+
+        "publicIPAddressType": "Dynamic",
+
+        "lbID": "[resourceId('Microsoft.Network/loadBalancers',          parameters(   'loadBalancerName'))]",
+        "feID": "[concat(variables('lbID'),'/frontendIPConfigurations/', variables('loadBalancerFrontEndName'))]",
+        "beID": "[concat(variables('lbID'),'/backendAddressPools/',      variables( 'loadBalancerBackEndName'))]",
+        "prID": "[concat(variables('lbID'),'/probes/',                   variables(   'loadBalancerProbeName'))]"
+    },
+   
+    "resources": [
+        {
+            "name": "[parameters('loadBalancerName')]",
+            "type": "Microsoft.Network/loadBalancers",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2016-03-30",
+
+            "properties": {
+                "frontendIPConfigurations": [
+                    {
+                        "name": "[variables('loadBalancerFrontEndName')]",
+                        "privateIPAllocationMethod": "Static",
+                        "privateIPAddress": "parameters('privateIPAddress')",
+                        "properties": {
+                            "subnet": { "id": "[concat(resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName')),'/subnets/',parameters('subnetName'))]" }
+                        }
+                    }
+                ],
+
+                "backendAddressPools": [ { "name": "[variables('loadBalancerBackEndName')]" } ],
+
+                "probes": [
+                    {
+                        "name": "[variables('loadBalancerProbeName')]",
+                        "properties": {
+                            "protocol": "Http",
+                            "port": 80,
+                            "requestPath": "myprobeapp1/myprobe1.svc",
+                            "intervalInSeconds": 5,
+                            "numberOfProbes": 2
+                        }
+                    }
+                ],
+
+                "loadBalancingRules": [
+                    {
+                        "name": "[concat(parameters('loadBalancerName'), '-rule-http')]",
+                        "properties": {
+                            "frontendIPConfiguration": { "id": "[variables('feID')]" },
+                            "backendAddressPool": { "id": "[variables('beID')]" },
+                            "probe": { "id": "[variables('prID')]" },
+                            "protocol": "Tcp",
+                            "frontendPort": 80,
+                            "backendPort": 80
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}
