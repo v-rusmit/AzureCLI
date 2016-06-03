@@ -9,7 +9,8 @@
          "webInstanceCount": { "type": "int",    "defaultValue": 3,                                                  "metadata": { "description": "Number of Web Tier Instances to create"         }  },
          "bizInstanceCount": { "type": "int",    "defaultValue": 3,                                                  "metadata": { "description": "Number of Business Layer Instances to create"   }  },
          "sqlinstanceCount": { "type": "int",    "defaultValue": 2,                                                  "metadata": { "description": "Number of SQL Instances to create"              }  },
-        "mgmtInstanceCount": { "type": "int",    "defaultValue": 1,                                                  "metadata": { "description": "Number of Management Instances to create"       }  }
+        "mgmtInstanceCount": { "type": "int",    "defaultValue": 1,                                                  "metadata": { "description": "Number of Management Instances to create"       }  },
+         "adminAccessRange": { "type": "string", "defaultValue": "192.168.55.0/24",                                  "metadata": { "description": "Network subnet where Admins live"               }  }
     },
 
 
@@ -106,20 +107,19 @@
                                  "bizVmName": { "value": "[variables(             'bizVmName')]"  },
                                 "bizNicName": { "value": "[variables(            'bizNicName')]"  },
 
-                             "sqlSubnetName": { "value": "[variables(         'sqlSubnetName')]"  },
-                    "sqlAvailabilitySetName": { "value": "[variables('sqlAvailabilitySetName')]"  },
-                          "sqlInstanceCount": { "value": "[parameters(     'sqlInstanceCount')]"  },
-                                 "sqlVmName": { "value": "[variables(             'sqlVmName')]"  },
-                                "sqlNicName": { "value": "[variables(            'sqlNicName')]"  },
+                             "sqlSubnetName": { "value": "[ variables(         'sqlSubnetName')]" },
+                    "sqlAvailabilitySetName": { "value": "[ variables('sqlAvailabilitySetName')]" },
+                          "sqlInstanceCount": { "value": "[parameters(      'sqlInstanceCount')]" },
+                                 "sqlVmName": { "value": "[ variables(             'sqlVmName')]" },
+                                "sqlNicName": { "value": "[ variables(            'sqlNicName')]" },
 
-                            "mgmtSubnetName": { "value": "[variables(        'mgmtSubnetName')]"  },
-                         "mgmtInstanceCount": { "value": "[parameters(    'mgmtInstanceCount')]"  },
-                                "mgmtVmName": { "value": "[variables(            'mgmtVmName')]"  },
-                               "mgmtNicName": { "value": "[variables(           'mgmtNicName')]"  }
-                
+                            "mgmtSubnetName": { "value": "[ variables(        'mgmtSubnetName')]" },
+                         "mgmtInstanceCount": { "value": "[parameters(     'mgmtInstanceCount')]" },
+                                "mgmtVmName": { "value": "[ variables(            'mgmtVmName')]" },
+                               "mgmtNicName": { "value": "[ variables(           'mgmtNicName')]" },
+                          "adminAccessRange": { "value": "[parameters(      'adminAccessRange')]" }
                 }
             }
         }
-        
     ]
 }

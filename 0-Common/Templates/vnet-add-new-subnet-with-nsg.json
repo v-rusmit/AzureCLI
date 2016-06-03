@@ -1,0 +1,28 @@
+﻿{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "apiVersion":               { "type": "string", "defaultValue":"2016-02-01",   "metadata": { "description": "Common API"                           } },
+                "existingVNETName": { "type": "string",                                "metadata": { "description": "Name of the VNET to add a subnet to"  } },
+                   "newSubnetName": { "type": "string",                                "metadata": { "description": "Name of the subnet to add"            } },
+          "newSubnetAddressPrefix": { "type": "string", "defaultValue": "10.0.0.0/24", "metadata": { "description": "Address space of the subnet to add"   } },
+        "networkSecurityGroupName": { "type": "string",                                "metadata": { "description": "Name of Network Security Group"       } }
+    },
+
+    "variables": { },
+
+    "resources": [
+
+        {
+            "name": "[concat(parameters('existingVNETName'), '/', parameters('newSubnetName'))]",
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2016-03-30",
+
+            "properties": {
+                "addressPrefix": "[parameters('newSubnetAddressPrefix')]",
+                "networkSecurityGroup": { "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroupName'))]" }
+            }
+        }
+    ]
+}

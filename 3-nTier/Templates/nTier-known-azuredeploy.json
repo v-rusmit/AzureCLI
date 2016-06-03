@@ -35,8 +35,8 @@
                 "mgmtSubnetName": { "type": "string",                               "metadata": { "description": "Name of the management Subnet"          } },
              "mgmtInstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of Mgmt Instances to create"     } },
                     "mgmtVmName": { "type": "string",                               "metadata": { "description": "RootName of the VM's of the mgmt tier"  } },
-                   "mgmtNicName": { "type": "string",                               "metadata": { "description": "RootName of the NIC's of the mgmt tier" } }
-
+                   "mgmtNicName": { "type": "string",                               "metadata": { "description": "RootName of the NIC's of the mgmt tier" } },
+              "adminAccessRange": { "type": "string",                               "metadata": { "description": "Network subnet where Admins live"       } }
     },
 
     "variables": {
@@ -115,6 +115,8 @@
             }
         },
 
+
+
         {
             "name": "biztier",
             "type": "Microsoft.Resources/deployments",
@@ -143,6 +145,8 @@
             }
         },
 
+
+
         {
             "name": "sqltier",
             "type": "Microsoft.Resources/deployments",
@@ -159,6 +163,8 @@
                      "virtualNetworkName": { "value": "[parameters(    'virtualNetworkName')]" },
                              "subnetName": { "value": "[parameters(         'sqlSubnetName')]" },
                             "subnetRange": { "value": "[ variables(        'sqlSubnetRange')]" },
+                         "bizSubnetRange": { "value": "[ variables(        'bizSubnetRange')]" },
+                        "mgmtSubnetRange": { "value": "[ variables(       'mgmtSubnetRange')]" },
                     "availabilitySetName": { "value": "[parameters('sqlAvailabilitySetName')]" },
                           "instanceCount": { "value": "[parameters(      'sqlInstanceCount')]" },
                  "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]" },
@@ -168,6 +174,10 @@
                 }
             }
         },
+
+
+
+ 
 
         {
             "name": "mgmttier",
@@ -182,9 +192,11 @@
 
                 "parameters": {
                              "apiVersion": { "value": "[parameters('apiVersion')]"             },
+                    "publicIPAddressName": { "value": "[parameters( 'jbPublicIPAddressName')]" },
                      "virtualNetworkName": { "value": "[parameters(    'virtualNetworkName')]" },
                              "subnetName": { "value": "[parameters(        'mgmtSubnetName')]" },
                             "subnetRange": { "value": "[ variables(       'mgmtSubnetRange')]" },
+                       "adminAccessRange": { "value": "[parameters(      'adminAccessRange')]" },
                           "instanceCount": { "value": "[parameters(     'mgmtInstanceCount')]" },
                  "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]" },
                  "diskStorageAccountRoot": { "value": "[parameters('diskStorageAccountRoot')]" },

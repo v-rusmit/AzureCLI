@@ -4,37 +4,139 @@
     
     "parameters": {
                     "apiVersion": { "type": "string", "defaultValue":"2016-02-01",  "metadata": { "description": "Common API"                             } },
+           "publicIPAddressName": { "type": "string",                               "metadata": { "description": "Name of JumpBox Public IP Address"      } },
             "virtualNetworkName": { "type": "string",                               "metadata": { "description": "Name of Virtual Network"                } },
                     "subnetName": { "type": "string",                               "metadata": { "description": "Name of the Subnet"                     } },
                    "subnetRange": { "type": "string",                               "metadata": { "description": "Range of the Subnet"                    } },
+              "adminAccessRange": { "type": "string",                               "metadata": { "description": "Network subnet where Admins live"       } },
                  "InstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of instances to create"          } },
         "diagStorageAccountName": { "type": "string",                               "metadata": { "description": "Name of Storage Account for diagnostics"} },
         "diskStorageAccountRoot": { "type": "string",                               "metadata": { "description": "Name of Storage Account for vhds"       } },
-                        "vmName": { "type": "string",                               "metadata": { "description": "RootName of the VM's"                   } },
-                       "nicName": { "type": "string",                               "metadata": { "description": "RootName of the NIC's"                  } }
+                        "vmName": { "type": "string",                               "metadata": { "description": "Name of the VM's"                       } },
+                       "nicName": { "type": "string",                               "metadata": { "description": "Name of the NIC"                        } }
     },
 
-    "variables": {  },
+    "variables": {
+          "diskStorageAccountName": "[concat(parameters('diskStorageAccountRoot'),'m'   )]",
+        "networkSecurityGroupName": "[concat(parameters('subnetName'),            '-nsg')]"
+    },
 
     "resources": [
-   
+
+        {
+            "name": "[variables('networkSecurityGroupName')]",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2016-03-30",
+
+            "properties": {
+                "securityRules": [
+                    {
+                        "name": "RDP",
+                        "properties": {
+                            "description": "Allow RDP for admins only",
+                            "protocol": "Tcp",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "3389",
+                            "sourceAddressPrefix": "[parameters('adminAccessRange')]",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 101,
+                            "direction": "Inbound"
+                        }
+                    }
+                ]
+            }
+        },
+
+
+
         {
             "name": "mgmt-sn",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "[parameters('apiVersion')]",
-     
+
+            "dependsOn": [ "[concat('Microsoft.Network/networkSecurityGroups/', variables('networkSecurityGroupName'))]" ],
+
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/vnet-add-new-subnet.json" },
+                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/vnet-add-new-subnet-with-nsg.json" },
 
                 "parameters": {
-                            "existingVNETName": { "value": "[parameters( 'virtualNetworkName')]" },
-                               "newSubnetName": { "value": "[parameters(         'SubnetName')]" },
-                      "newSubnetAddressPrefix": { "value": "[parameters(        'SubnetRange')]" }
-                   
+                            "existingVNETName": { "value": "[parameters(     'virtualNetworkName')]" },
+                               "newSubnetName": { "value": "[parameters(             'SubnetName')]" },
+                      "newSubnetAddressPrefix": { "value": "[parameters(            'SubnetRange')]" },
+                    "networkSecurityGroupName": { "value": "[variables('networkSecurityGroupName')]" }
                 }
             }
-        }    
-    
+        },    
+
+
+
+        {
+            "name": "mgmt-nic",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('apiVersion')]",
+
+            "dependsOn": [ "Microsoft.Resources/deployments/mgmt-sn" ],
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/nic-via-pip.json" },
+
+                "parameters": {
+                    "apiVersion":          { "value": "[parameters('apiVersion')]"          },
+                    "publicIPAddressName": { "value": "[parameters('publicIPAddressName')]" },
+                                "nicName": { "value": "[parameters(            'nicName')]" },
+                     "virtualNetworkName": { "value": "[parameters( 'virtualNetworkName')]" },
+                             "subnetName": { "value": "[parameters(         'subnetName')]" }
+                }
+            }
+        },
+
+
+
+        {
+            "name": "mgmt-sa",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('apiVersion')]",
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/storage-account.json" },
+
+                "parameters": {
+                    "apiVersion":         { "value": "[parameters(            'apiVersion')]" },
+                    "storageAccountName": { "value": "[ variables('diskStorageAccountName')]" }
+                }
+            }
+        },
+
+
+
+        {
+            "name": "vm",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('apiVersion')]",
+
+            "dependsOn": [
+                "Microsoft.Resources/deployments/mgmt-sn",
+                "Microsoft.Resources/deployments/mgmt-nic",
+                "Microsoft.Resources/deployments/mgmt-sa"
+            ],
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/vm-via-nic.json" },
+
+                "parameters": {
+                    "apiVersion":             { "value": "[parameters('apiVersion')]"             },
+                                    "vmName": { "value": "[parameters(                'vmName')]" },
+                    "diskStorageAccountName": { "value": "[ variables('diskStorageAccountName')]" },
+                    "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]" },
+                                   "nicName": { "value": "[parameters(               'nicName')]" }
+                }
+            }
+        }
     ]
 }
