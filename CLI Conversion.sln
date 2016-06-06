@@ -11,6 +11,8 @@ Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "2-MultiVM", "2-MultiVM\2-Mu
 EndProject
 Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "3-nTier", "3-nTier\3-nTier.deployproj", "{B7E7A71E-C73D-4A99-B6C2-2402CF24C7FE}"
 EndProject
+Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "4-VirtualDatacenter", "4-VirtualDatacenter\4-VirtualDatacenter.deployproj", "{4D6261FE-BCFC-436F-AB26-26E9D58C7C2C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{B7E7A71E-C73D-4A99-B6C2-2402CF24C7FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7E7A71E-C73D-4A99-B6C2-2402CF24C7FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7E7A71E-C73D-4A99-B6C2-2402CF24C7FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D6261FE-BCFC-436F-AB26-26E9D58C7C2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D6261FE-BCFC-436F-AB26-26E9D58C7C2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D6261FE-BCFC-436F-AB26-26E9D58C7C2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D6261FE-BCFC-436F-AB26-26E9D58C7C2C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

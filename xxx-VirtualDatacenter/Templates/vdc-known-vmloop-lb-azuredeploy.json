@@ -1,0 +1,87 @@
+﻿{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+
+    "parameters": {
+        "apiVersion":               { "type": "string", "defaultValue": "2016-02-01",  "metadata": { "description": "Common API" }                                         },
+              "virtualNetworkName": { "type": "string",                                "metadata": { "description": "Name of Virtual Network"    }                         },
+                      "subnetName": { "type": "string",                                "metadata": { "description": "Name of first/only subnet"  }                         },
+             "availabilitySetName": { "type": "string"                                                                                                                     },
+                "loadBalancerName": { "type": "string",                                "metadata": { "description": "This is the name of the load balancer"             }  },
+          "diskStorageAccountName": { "type": "string",                                "metadata": { "description": "Name of storage account for VHD's"                 }  },
+          "diagStorageAccountName": { "type": "string",                                "metadata": { "description": "Name of storage account for diagnostics"           }  },
+                       "thisIndex": { "type": "int",                                   "metadata": { "description": "Index Number (of a loop)"                          }  },
+                          "vmName": { "type": "string",                                "metadata": { "description": "Name of the virtual machine."                      }  }
+    },
+
+    "variables": { "nicName": "[concat(parameters('vmName'),'-nic')]" },
+
+    
+    "resources": [
+         
+        {
+            "name": "sa",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('apiVersion')]",
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/storage-account.json" },
+
+                "parameters": {
+                    "apiVersion":         { "value": "[parameters(            'apiVersion')]" },
+                    "storageAccountName": { "value": "[parameters('diskStorageAccountName')]" }
+                }
+            }
+        },
+
+
+        {
+            "name": "nic",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('apiVersion')]",
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/nic-inside-load-balancer.json" },
+
+                "parameters": {
+                    "apiVersion":         { "value": "[parameters('apiVersion')]" },
+                               "nicName": { "value": "[ variables(           'nicName')]" },
+                      "loadBalancerName": { "value": "[parameters(  'loadBalancerName')]" },
+                    "virtualNetworkName": { "value": "[parameters('virtualNetworkName')]" },
+                            "subnetName": { "value": "[parameters(        'subnetName')]" },
+                             "thisIndex": { "value": "[parameters(         'thisIndex')]" }
+                }
+            }
+        },
+
+        {
+            "name": "vm",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('apiVersion')]",
+
+            "dependsOn": [
+                "Microsoft.Resources/deployments/sa",
+                "Microsoft.Resources/deployments/nic"
+            ],
+            
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/vm-via-nic-with-availability-set.json" },
+
+                "parameters": {
+                                "apiVersion": { "value": "[parameters('apiVersion')]"             },
+                                    "vmName": { "value": "[parameters(                'vmName')]" },
+                    "diskStorageAccountName": { "value": "[parameters('diskStorageAccountName')]" },
+                    "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]" },        
+                                   "nicName": { "value": "[ variables(               'nicName')]" },
+                       "availabilitySetName": { "value": "[parameters(   'availabilitySetName')]" }
+                }
+            }
+        }
+
+
+       
+    ]
+}

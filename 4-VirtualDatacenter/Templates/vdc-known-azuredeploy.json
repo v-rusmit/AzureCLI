@@ -1,0 +1,210 @@
+﻿{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    
+    "parameters": {
+                    "apiVersion": { "type": "string", "defaultValue":"2016-02-01",  "metadata": { "description": "Common API"                             } },
+            "virtualNetworkName": { "type": "string",                               "metadata": { "description": "Name of Virtual Network"                } },
+        "diagStorageAccountName": { "type": "string",                               "metadata": { "description": "Name of Storage Account for diagnostics"} },
+        "diskStorageAccountRoot": { "type": "string",                               "metadata": { "description": "Name of Storage Account for vhds"       } },
+
+        "webPublicIPAddressName": { "type": "string",                               "metadata": { "description": "Name of Application Public IP Address"  } },
+           "bizPrivateIPAddress": { "type": "string",                               "metadata": { "description": "Actual    Biz Layer Public IP Address"  } },
+         "jbPublicIPAddressName": { "type": "string",                               "metadata": { "description": "Name of Application Public IP Address"  } },
+
+           "webLoadBalancerName": { "type": "string",                               "metadata": { "description": "Name of the web Load Balancer"          } },
+                 "webSubnetName": { "type": "string",                               "metadata": { "description": "Name of the web Subnet"                 } },
+        "webAvailabilitySetName": { "type": "string",                               "metadata": { "description": "Name of the web Availability Set"       } },
+              "webInstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of Web Tier Instances to create" } },
+                     "webVmName": { "type": "string",                               "metadata": { "description": "RootName of the VM's of the web tier"   } },
+                    "webNicName": { "type": "string",                               "metadata": { "description": "RootName of the NIC's of the web tier"  } },
+
+           "bizLoadBalancerName": { "type": "string",                               "metadata": { "description": "Name of the biz Load Balancer"          } },
+                 "bizSubnetName": { "type": "string",                               "metadata": { "description": "Name of the biz Subnet"                 } },
+        "bizAvailabilitySetName": { "type": "string",                               "metadata": { "description": "Name of the biz Availability Set"       } },
+              "bizInstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of Biz Layer Instances to create"} },
+                     "bizVmName": { "type": "string",                               "metadata": { "description": "RootName of the VM's of the biz tier"   } },
+                    "bizNicName": { "type": "string",                               "metadata": { "description": "RootName of the NIC's of the biz tier"  } },
+    
+                 "sqlSubnetName": { "type": "string",                               "metadata": { "description": "Name of the data Subnet"                } },
+        "sqlAvailabilitySetName": { "type": "string",                               "metadata": { "description": "Name of the data Availability Set"      } },
+              "sqlinstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of SQL Instances to create"      } },
+                     "sqlVmName": { "type": "string",                               "metadata": { "description": "RootName of the VM's of the sql tier"   } },
+                    "sqlNicName": { "type": "string",                               "metadata": { "description": "RootName of the NIC's of the sql tier"  } },
+
+                "mgmtSubnetName": { "type": "string",                               "metadata": { "description": "Name of the management Subnet"          } },
+             "mgmtInstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of Mgmt Instances to create"     } },
+                    "mgmtVmName": { "type": "string",                               "metadata": { "description": "RootName of the VM's of the mgmt tier"  } },
+                   "mgmtNicName": { "type": "string",                               "metadata": { "description": "RootName of the NIC's of the mgmt tier" } },
+              "adminAccessRange": { "type": "string",                               "metadata": { "description": "Network subnet where Admins live"       } }
+    },
+
+    "variables": {
+        "vnetAddressRange": "10.0.0.0/16",
+          "webSubnetRange": "10.0.0.0/24",
+          "bizSubnetRange": "10.0.1.0/24",
+          "sqlSubnetRange": "10.0.2.0/24",
+         "mgmtSubnetRange": "10.0.3.0/24"
+    },
+
+    "resources": [
+
+        {
+            "name": "appPip",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('apiVersion')]",
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/public-ip.json" },
+
+                "parameters": {
+                    "apiVersion":          { "value": "[parameters('apiVersion')]"             },
+                    "publicIPAddressName": { "value": "[parameters('webPublicIPAddressName')]" }
+                }
+            }
+        },
+
+
+
+        {
+            "name": "jbPip",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('apiVersion')]",
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/public-ip.json" },
+
+                "parameters": {
+                    "apiVersion":          { "value": "[parameters('apiVersion')]"            },
+                    "publicIPAddressName": { "value": "[parameters('jbPublicIPAddressName')]" }
+
+                }
+            }
+        },
+
+
+
+        {
+            "name": "webtier",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('apiVersion')]",
+
+            "dependsOn": [ "Microsoft.Resources/deployments/appPip" ],
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/sharedresources/vdc-webtier-azuredeploy.json" },
+
+                "parameters": {
+                             "apiVersion": { "value": "[parameters('apiVersion')]" },
+                    "publicIPAddressName": { "value": "[parameters('webPublicIPAddressName')]" },
+                     "virtualNetworkName": { "value": "[parameters(    'virtualNetworkName')]" },
+                       "loadBalancerName": { "value": "[parameters(   'webLoadBalancerName')]" },
+                             "subnetName": { "value": "[parameters(         'webSubnetName')]" },
+                            "subnetRange": { "value": "[ variables(        'webSubnetRange')]" },
+                    "availabilitySetName": { "value": "[parameters('webAvailabilitySetName')]" },
+                          "instanceCount": { "value": "[parameters(      'webInstanceCount')]" },
+                 "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]" },
+                 "diskStorageAccountRoot": { "value": "[parameters('diskStorageAccountRoot')]" },
+                                 "vmName": { "value": "[parameters(             'webVmName')]" },
+                                "nicName": { "value": "[parameters(            'webNicName')]" }
+
+                }
+            }
+        },
+
+
+
+        {
+            "name": "biztier",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('apiVersion')]",
+
+            "dependsOn": [  ],
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/sharedresources/vdc-biztier-azuredeploy.json" },
+
+                "parameters": {
+                             "apiVersion": { "value": "[parameters('apiVersion')]" },
+                       "privateIPAddress": { "value": "[parameters(   'bizPrivateIPAddress')]" },
+                     "virtualNetworkName": { "value": "[parameters(    'virtualNetworkName')]" },
+                       "loadBalancerName": { "value": "[parameters(   'bizLoadBalancerName')]" },
+                             "subnetName": { "value": "[parameters(         'bizSubnetName')]" },
+                            "subnetRange": { "value": "[ variables(        'bizSubnetRange')]" },
+                    "availabilitySetName": { "value": "[parameters('bizAvailabilitySetName')]" },
+                          "instanceCount": { "value": "[parameters(      'bizInstanceCount')]" },
+                 "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]" },
+                 "diskStorageAccountRoot": { "value": "[parameters('diskStorageAccountRoot')]" },
+                                 "vmName": { "value": "[parameters(             'bizVmName')]" },
+                                "nicName": { "value": "[parameters(            'bizNicName')]" }
+                }
+            }
+        },
+
+
+
+        {
+            "name": "sqltier",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('apiVersion')]",
+
+            "dependsOn": [  ],
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/sharedresources/vdc-sqltier-azuredeploy.json" },
+
+                "parameters": {
+                             "apiVersion": { "value": "[parameters('apiVersion')]" },
+                     "virtualNetworkName": { "value": "[parameters(    'virtualNetworkName')]" },
+                             "subnetName": { "value": "[parameters(         'sqlSubnetName')]" },
+                            "subnetRange": { "value": "[ variables(        'sqlSubnetRange')]" },
+                         "bizSubnetRange": { "value": "[ variables(        'bizSubnetRange')]" },
+                        "mgmtSubnetRange": { "value": "[ variables(       'mgmtSubnetRange')]" },
+                    "availabilitySetName": { "value": "[parameters('sqlAvailabilitySetName')]" },
+                          "instanceCount": { "value": "[parameters(      'sqlInstanceCount')]" },
+                 "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]" },
+                 "diskStorageAccountRoot": { "value": "[parameters('diskStorageAccountRoot')]" },
+                                 "vmName": { "value": "[parameters(             'sqlVmName')]" },
+                                "nicName": { "value": "[parameters(            'sqlNicName')]" }
+                }
+            }
+        },
+
+
+
+ 
+
+        {
+            "name": "mgmttier",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('apiVersion')]",
+
+            "dependsOn": [ "Microsoft.Resources/deployments/jbPip" ],
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/sharedresources/vdc-mgmttier-azuredeploy.json" },
+
+                "parameters": {
+                             "apiVersion": { "value": "[parameters('apiVersion')]"             },
+                    "publicIPAddressName": { "value": "[parameters( 'jbPublicIPAddressName')]" },
+                     "virtualNetworkName": { "value": "[parameters(    'virtualNetworkName')]" },
+                             "subnetName": { "value": "[parameters(        'mgmtSubnetName')]" },
+                            "subnetRange": { "value": "[ variables(       'mgmtSubnetRange')]" },
+                       "adminAccessRange": { "value": "[parameters(      'adminAccessRange')]" },
+                          "instanceCount": { "value": "[parameters(     'mgmtInstanceCount')]" },
+                 "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]" },
+                 "diskStorageAccountRoot": { "value": "[parameters('diskStorageAccountRoot')]" },
+                                 "vmName": { "value": "[parameters(            'mgmtVmName')]" },
+                                "nicName": { "value": "[parameters(           'mgmtNicName')]" }
+                }
+            }
+        }
+
+    ]
+}

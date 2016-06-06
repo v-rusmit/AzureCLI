@@ -1,0 +1,108 @@
+﻿{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    
+    "parameters": {
+                    "apiVersion": { "type": "string", "defaultValue":"2016-02-01",  "metadata": { "description": "Common API"                             } },
+            "virtualNetworkName": { "type": "string",                               "metadata": { "description": "Name of Virtual Network"                } },
+        "diagStorageAccountName": { "type": "string",                               "metadata": { "description": "Name of Storage Account for diagnostics"} },
+        "diskStorageAccountRoot": { "type": "string",                               "metadata": { "description": "Name of Storage Account for vhds"       } },
+        "appPublicIPAddressName": { "type": "string",                               "metadata": { "description": "Name of Public IP Address"              } },
+         "jbPublicIPAddressName": { "type": "string",                               "metadata": { "description": "Name of Public IP Address"              } },
+
+           "nvaLoadBalancerName": { "type": "string",                               "metadata": { "description": "Name of the nva Load Balancer"          } },
+                 "nvaSubnetName": { "type": "string",                               "metadata": { "description": "Name of the nva Subnet"                 } },
+        "nvaAvailabilitySetName": { "type": "string",                               "metadata": { "description": "Name of the nva Availability Set"       } },
+                     "nvaVmName": { "type": "string",                               "metadata": { "description": "RootName of the VM's of the nva tier"   } },
+                    "nvaNicName": { "type": "string",                               "metadata": { "description": "RootName of the NIC's of the nva tier"  } },
+              "nvaInstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of nva Tier Instances to create" } },
+
+           "st1PrivateIPAddress": { "type": "string",                               "metadata": { "description": "Private IP Address for Load Balancer"   } },
+           "st1LoadBalancerName": { "type": "string",                               "metadata": { "description": "Name of the st1 Load Balancer"          } },
+                 "st1SubnetName": { "type": "string",                               "metadata": { "description": "Name of the st1 Subnet"                 } },
+        "st1AvailabilitySetName": { "type": "string",                               "metadata": { "description": "Name of the st1 Availability Set"       } },
+                     "st1VmName": { "type": "string",                               "metadata": { "description": "RootName of the VM's of the st1 tier"   } },
+              "st1InstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of st1 Tier Instances to create" } },
+
+           "st2PrivateIPAddress": { "type": "string",                               "metadata": { "description": "Private IP Address for Load Balancer"   } },
+           "st2LoadBalancerName": { "type": "string",                               "metadata": { "description": "Name of the st2 Load Balancer"          } },
+                 "st2SubnetName": { "type": "string",                               "metadata": { "description": "Name of the st2 Subnet"                 } },
+        "st2AvailabilitySetName": { "type": "string",                               "metadata": { "description": "Name of the st2 Availability Set"       } },
+                     "st2VmName": { "type": "string",                               "metadata": { "description": "RootName of the VM's of the st2 tier"   } },
+              "st2InstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of st2 Tier Instances to create" } }   
+    },
+
+    "variables": {
+      "vnetAddressRange": "10.0.0.0/16",
+        "nvaSubnetRange": "10.0.0.0/24",
+        "st1SubnetRange": "10.0.2.0/24",
+        "st2SubnetRange": "10.0.3.0/24",
+       "mgmtSubnetRange": "10.0.4.0/24",
+        "sqlSubnetRange": "10.0.5.0/24",
+         "adSubnetRange": "10.0.6.0/24"
+    },
+
+    "resources": [
+
+        {
+            "name": "appPip",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('apiVersion')]",
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/public-ip.json" },
+
+                "parameters": {
+                    "apiVersion":          { "value": "[parameters('apiVersion')]"             },
+                    "publicIPAddressName": { "value": "[parameters('appPublicIPAddressName')]" }
+                }
+            }
+        },
+
+
+
+        {
+            "name": "jbPip",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('apiVersion')]",
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/public-ip.json" },
+
+                "parameters": {
+                    "apiVersion":          { "value": "[parameters('apiVersion')]"            },
+                    "publicIPAddressName": { "value": "[parameters('jbPublicIPAddressName')]" }
+                }
+            }
+        },
+
+
+
+        {
+            "name": "service-tier1",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('apiVersion')]",
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/sharedresources/vdc-known-servicetier-azuredeploy.json" },
+
+                "parameters": {
+                             "apiVersion": { "value": "[       parameters('apiVersion')]"                    },
+                       "privateIPAddress": { "value": "[       parameters(   'st1PrivateIPAddress')]"        },
+                     "virtualNetworkName": { "value": "[       parameters(    'virtualNetworkName')]"        },
+                       "loadBalancerName": { "value": "[       parameters(   'st1LoadBalancerName')]"        },
+                             "subnetName": { "value": "[       parameters(         'st1SubnetName')]"        },
+                            "subnetRange": { "value": "[        variables(        'st1SubnetRange')]"        },
+                    "availabilitySetName": { "value": "[       parameters('st1AvailabilitySetName')]"        },
+                          "instanceCount": { "value": "[       parameters(      'st1InstanceCount')]"        },
+                 "diagStorageAccountName": { "value": "[       parameters('diagStorageAccountName')]"        },
+                 "diskStorageAccountRoot": { "value": "[concat(parameters('diskStorageAccountRoot'),'s1')]"  },
+                                 "vmName": { "value": "[       parameters(             'st1VmName')]" }
+                }
+            }
+        }
+    ]
+}

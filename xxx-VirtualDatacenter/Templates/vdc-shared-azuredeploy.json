@@ -1,0 +1,48 @@
+﻿{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    
+    "parameters": {
+                      "apiVersion": { "type": "string", "defaultValue":"2016-02-01",  "metadata": { "description": "Common API"                      } },
+              "virtualNetworkName": { "type": "string",                               "metadata": { "description": "Name of Virtual Network"         } },
+             "virtualNetworkRange": { "type": "string", "defaultValue":"10.0.0.0/16", "metadata": { "description": "IP Range of Virtual Network"     } },
+          "diagStorageAccountName": { "type": "string",                               "metadata": { "description": "Name of storage account for diagnostics" } }    },
+    
+    "variables": { },
+
+    "resources": [
+
+        {
+            "name": "vnet",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('apiVersion')]",
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/vnet-empty.json" },
+
+                "parameters": {
+                    "apiVersion":         { "value": "[parameters('apiVersion')]"           },
+                    "virtualNetworkName": { "value": "[parameters('virtualNetworkName') ]"  },
+                         "addressPrefix": { "value": "[parameters('virtualNetworkRange') ]" }
+                }
+            }
+        },
+
+        {
+            "name": "sa",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('apiVersion')]",
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/storage-account.json" },
+
+                "parameters": {
+                    "apiVersion":         { "value": "[parameters(            'apiVersion')]" },
+                    "storageAccountName": { "value": "[parameters('diagStorageAccountName')]" }
+                }
+            }
+        }
+    ]
+}
