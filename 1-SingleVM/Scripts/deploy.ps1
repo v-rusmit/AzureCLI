@@ -1,6 +1,6 @@
 ﻿Login-AzureRmAccount
-Get-AzureRmSubscription
-Select-AzureRmSubscription -SubscriptionId "36da8c44-d1a8-4e47-9515-7ce3097645fc"    #MSDN/Visual Studio Enterprise
+Get-AzureRmSubscription -SubscriptionId "36da8c44-d1a8-4e47-9515-7ce3097645fc"
+Get-AzureRmSubscription -SubscriptionId "36da8c44-d1a8-4e47-9515-7ce3097645fc" | Select-AzureRmSubscription
 
 $filespec="C:\Users\KBergman\Source\Repos\AzureCLI\1-SingleVM\Templates"
 
