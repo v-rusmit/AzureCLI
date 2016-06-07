@@ -6,7 +6,7 @@
     "parameters": {
                   "appName": { "type": "string", "defaultValue": "myapp",                                            "metadata": { "description": "Name of Application"                            }  },
            "appEnvironment": { "type": "string", "defaultValue": "dev",   "allowedValues": [ "dev", "qa", "prod" ],  "metadata": { "description": "Environment for Application"                    }  },
-         "webInstanceCount": { "type": "int",    "defaultValue": 2,                                                  "metadata": { "description": "Number of Web Tier Instances to create"         }  },
+         "nvaInstanceCount": { "type": "int",    "defaultValue": 2,                                                  "metadata": { "description": "Number of nva Tier Instances to create"         }  },
          "staInstanceCount": { "type": "int",    "defaultValue": 3,                                                  "metadata": { "description": "Number of Business Layer Instances to create"   }  },
          "stbInstanceCount": { "type": "int",    "defaultValue": 3,                                                  "metadata": { "description": "Number of Business Layer Instances to create"   }  },
          "sqlInstanceCount": { "type": "int",    "defaultValue": 2,                                                  "metadata": { "description": "Number of SQL Instances to create"              }  },
@@ -25,32 +25,32 @@
         "diagStorageAccountName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'diag'))]",
         "diskStorageAccountRoot": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'disk'))]",
         "appPublicIPAddressName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'pip' ))]",
-        "jbPublicIPAddressName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'Jpip'))]",
+         "jbPublicIPAddressName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'Jpip'))]",
 
         "virtualNetworkName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-vnet')]",
 
-        "webLoadBalancerName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-web-lb')]",
+        "nvaLoadBalancerName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-nva-lb')]",
         "staLoadBalancerName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-sta-lb')]",
         "stbLoadBalancerName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-stb-lb')]",
 
-         "webSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-web-subnet')]",
+         "nvaSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-nva-subnet')]",
          "staSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-sta-subnet')]",
          "stbSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-stb-subnet')]",
          "sqlSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-sql-subnet')]",
         "mgmtSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-mgmt-subnet')]",
 
-        "webAvailabilitySetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-web-as')]",
+        "nvaAvailabilitySetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-nva-as')]",
         "staAvailabilitySetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-sta-as')]",
         "stbAvailabilitySetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-stb-as')]",
         "sqlAvailabilitySetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-sql-as')]",
 
-         "webVmName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-web-vm')]",
+         "nvaVmName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-nva-vm')]",
          "staVmName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-sta-vm')]",
          "stbVmName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-stb-vm')]",
          "sqlVmName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-sql-vm')]",
         "mgmtVmName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-mgmt-vm')]",
 
-         "webNicName": "[concat(variables('webVmName'),  '-nic')]",
+         "nvaNicName": "[concat(variables('nvaVmName'),  '-nic')]",
          "staNicName": "[concat(variables('staVmName'),  '-nic')]",
          "stbNicName": "[concat(variables('stbVmName'),  '-nic')]",
          "sqlNicName": "[concat(variables('sqlVmName'),  '-nic')]",
@@ -96,17 +96,17 @@
                     "diagStorageAccountName": { "value": "[variables('diagStorageAccountName')]"  },
                     "diskStorageAccountRoot": { "value": "[variables('diskStorageAccountRoot')]"  },
 
-                    "webPublicIPAddressName": { "value": "[variables( 'appPublicIPAddressName')]" },
+                    "nvaPublicIPAddressName": { "value": "[variables( 'appPublicIPAddressName')]" },
                        "staPrivateIPAddress": { "value": "[variables('staPrivateIPAddress')    ]" },
                        "stbPrivateIPAddress": { "value": "[variables('stbPrivateIPAddress')    ]" },
                      "jbPublicIPAddressName": { "value": "[variables(  'jbPublicIPAddressName')]" },
 
-                       "webLoadBalancerName": { "value": "[variables(   'webLoadBalancerName')]"  },
-                             "webSubnetName": { "value": "[variables(         'webSubnetName')]"  },
-                    "webAvailabilitySetName": { "value": "[variables('webAvailabilitySetName')]"  },
-                          "webInstanceCount": { "value": "[parameters(     'webInstanceCount')]"  },
-                                 "webVmName": { "value": "[variables(             'webVmName')]"  },
-                                "webNicName": { "value": "[variables(            'webNicName')]"  },
+                       "nvaLoadBalancerName": { "value": "[variables(   'nvaLoadBalancerName')]"  },
+                             "nvaSubnetName": { "value": "[variables(         'nvaSubnetName')]"  },
+                    "nvaAvailabilitySetName": { "value": "[variables('nvaAvailabilitySetName')]"  },
+                          "nvaInstanceCount": { "value": "[parameters(     'nvaInstanceCount')]"  },
+                                 "nvaVmName": { "value": "[variables(             'nvaVmName')]"  },
+                                "nvaNicName": { "value": "[variables(            'nvaNicName')]"  },
                     
                        "staLoadBalancerName": { "value": "[variables(   'staLoadBalancerName')]"  },
                              "staSubnetName": { "value": "[variables(         'staSubnetName')]"  },
@@ -121,7 +121,6 @@
                           "stbInstanceCount": { "value": "[parameters(     'stbInstanceCount')]"  },
                                  "stbVmName": { "value": "[variables(             'stbVmName')]"  },
                                 "stbNicName": { "value": "[variables(            'stbNicName')]"  },
-
 
                              "sqlSubnetName": { "value": "[ variables(         'sqlSubnetName')]" },
                     "sqlAvailabilitySetName": { "value": "[ variables('sqlAvailabilitySetName')]" },
