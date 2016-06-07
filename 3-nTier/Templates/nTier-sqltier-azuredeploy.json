@@ -126,7 +126,6 @@
                         "virtualNetworkName": { "value": "[parameters(    'virtualNetworkName')]" },
                                 "subnetName": { "value": "[parameters(            'subnetName')]" },
                        "availabilitySetName": { "value": "[parameters(   'availabilitySetName')]" },
-                          "loadBalancerName": { "value": "" },
                     "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]" },
                                  "thisIndex": { "value": "[copyIndex()]"                                                  },
                                     "vmName": { "value": "[concat(parameters( 'vmName'),                   copyIndex())]" },

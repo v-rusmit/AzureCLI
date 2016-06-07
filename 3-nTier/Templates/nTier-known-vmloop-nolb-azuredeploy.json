@@ -7,7 +7,6 @@
               "virtualNetworkName": { "type": "string",                                "metadata": { "description": "Name of Virtual Network"    }                         },
                       "subnetName": { "type": "string",                                "metadata": { "description": "Name of first/only subnet"  }                         },
              "availabilitySetName": { "type": "string"                                                                                                                     },
-                "loadBalancerName": { "type": "string",                                "metadata": { "description": "This is the name of the load balancer"             }  },
           "diskStorageAccountName": { "type": "string",                                "metadata": { "description": "Name of storage account for VHD's"                 }  },
           "diagStorageAccountName": { "type": "string",                                "metadata": { "description": "Name of storage account for diagnostics"           }  },
                        "thisIndex": { "type": "int",                                   "metadata": { "description": "Index Number (of a loop)"                          }  },

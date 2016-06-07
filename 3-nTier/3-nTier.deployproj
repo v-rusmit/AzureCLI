@@ -38,7 +38,6 @@
     <None Include="Templates\nTier-mgmttier-azuredeploy.json" />
     <None Include="Templates\nTier-shared-azuredeploy.json" />
     <None Include="Templates\nTier-sqltier-azuredeploy.json" />
-    <None Include="Templates\nTier-vm-azuredeploy.json" />
     <None Include="Templates\nTier-webtier-azuredeploy.json" />
   </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />

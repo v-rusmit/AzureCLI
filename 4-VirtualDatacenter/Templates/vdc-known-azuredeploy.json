@@ -18,44 +18,44 @@
         "nvaAvailabilitySetName": { "type": "string",                               "metadata": { "description": "Name of the nva Availability Set"       } },
               "nvaInstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of nva Tier Instances to create" } },
                      "nvaVmName": { "type": "string",                               "metadata": { "description": "RootName of the VM's of the nva tier"   } },
-                    "nvaNicName": { "type": "string",                               "metadata": { "description": "RootName of the NIC's of the nva tier"  } },
 
            "staLoadBalancerName": { "type": "string",                               "metadata": { "description": "Name of the sta Load Balancer"          } },
                  "staSubnetName": { "type": "string",                               "metadata": { "description": "Name of the sta Subnet"                 } },
         "staAvailabilitySetName": { "type": "string",                               "metadata": { "description": "Name of the sta Availability Set"       } },
               "staInstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of sta Layer Instances to create"} },
                      "staVmName": { "type": "string",                               "metadata": { "description": "RootName of the VM's of the sta tier"   } },
-                    "staNicName": { "type": "string",                               "metadata": { "description": "RootName of the NIC's of the sta tier"  } },
 
            "stbLoadBalancerName": { "type": "string",                               "metadata": { "description": "Name of the stb Load Balancer"          } },
                  "stbSubnetName": { "type": "string",                               "metadata": { "description": "Name of the stb Subnet"                 } },
         "stbAvailabilitySetName": { "type": "string",                               "metadata": { "description": "Name of the stb Availability Set"       } },
               "stbInstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of stb Layer Instbnces to create"} },
                      "stbVmName": { "type": "string",                               "metadata": { "description": "RootName of the VM's of the stb tier"   } },
-                    "stbNicName": { "type": "string",                               "metadata": { "description": "RootName of the NIC's of the stb tier"  } },
                         
                  "sqlSubnetName": { "type": "string",                               "metadata": { "description": "Name of the data Subnet"                } },
         "sqlAvailabilitySetName": { "type": "string",                               "metadata": { "description": "Name of the data Availability Set"      } },
               "sqlinstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of SQL Instances to create"      } },
                      "sqlVmName": { "type": "string",                               "metadata": { "description": "RootName of the VM's of the sql tier"   } },
-                    "sqlNicName": { "type": "string",                               "metadata": { "description": "RootName of the NIC's of the sql tier"  } },
 
                 "mgmtSubnetName": { "type": "string",                               "metadata": { "description": "Name of the management Subnet"          } },
              "mgmtInstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of Mgmt Instances to create"     } },
                     "mgmtVmName": { "type": "string",                               "metadata": { "description": "RootName of the VM's of the mgmt tier"  } },
-                   "mgmtNicName": { "type": "string",                               "metadata": { "description": "RootName of the NIC's of the mgmt tier" } },
-              "adminAccessRange": { "type": "string",                               "metadata": { "description": "Network subnet where Admins live"       } }
+              "adminAccessRange": { "type": "string",                               "metadata": { "description": "Network subnet where Admins live"       } },
+
+                  "adSubnetName": { "type": "string",                               "metadata": { "description": "Name of the AD Subnet"                } },
+         "adAvailabilitySetName": { "type": "string",                               "metadata": { "description": "Name of the AD Availability Set"      } },
+               "adInstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of ad Instances to create"     } },
+                      "adVmName": { "type": "string",                               "metadata": { "description": "RootName of the VM's of the AD tier"  } },
     },
 
     "variables": {
         "vnetAddressRange": "10.0.0.0/16",
-          "nvaSubnetRange": "10.0.0.0/24",
           "staSubnetRange": "10.0.2.0/24",
           "stbSubnetRange": "10.0.3.0/24",
          "mgmtSubnetRange": "10.0.4.0/24",
          "dmzxSubnetRange": "10.0.5.0/24",
          "dmzySubnetRange": "10.0.6.0/24",
-          "sqlSubnetRange": "10.0.9.0/24"
+          "sqlSubnetRange": "10.0.8.0/24",
+           "adSubnetRange": "10.0.9.0/24"
     },
 
     "resources": [
@@ -117,11 +117,12 @@
                           "instanceCount": { "value": "[       parameters(      'staInstanceCount'       )]" },
                  "diagStorageAccountName": { "value": "[       parameters('diagStorageAccountName'       )]" },
                  "diskStorageAccountRoot": { "value": "[concat(parameters('diskStorageAccountRoot'),'sta')]" },
-                                 "vmName": { "value": "[       parameters(             'staVmName'       )]" },
-                                "nicName": { "value": "[       parameters(            'staNicName'       )]" }
+                                 "vmName": { "value": "[       parameters(             'staVmName'       )]" }
                 }
             }
         },
+
+
 
         {
             "name": "serviceTier-B",
@@ -143,13 +144,39 @@
                           "instanceCount": { "value": "[       parameters(      'stbInstanceCount'       )]" },
                  "diagStorageAccountName": { "value": "[       parameters('diagStorageAccountName'       )]" },
                  "diskStorageAccountRoot": { "value": "[concat(parameters('diskStorageAccountRoot'),'stb')]" },
-                                 "vmName": { "value": "[       parameters(             'stbVmName'       )]" },
-                                "nicName": { "value": "[       parameters(            'stbNicName'       )]" }
+                                 "vmName": { "value": "[       parameters(             'stbVmName'       )]" }
                 }
             }
         },
 
- {
+
+
+        {
+            "name": "adtier",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('apiVersion')]",
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/sharedresources/vdc-adtier-azuredeploy.json" },
+
+                "parameters": {
+                             "apiVersion": { "value": "[       parameters('apiVersion')                  ]" },
+                     "virtualNetworkName": { "value": "[       parameters(    'virtualNetworkName')      ]" },
+                             "subnetName": { "value": "[       parameters(          'adSubnetName')      ]" },
+                            "subnetRange": { "value": "[        variables(         'adSubnetRange')      ]" },
+                    "availabilitySetName": { "value": "[       parameters( 'adAvailabilitySetName')      ]" },
+                          "instanceCount": { "value": "[       parameters(       'adInstanceCount')      ]" },
+                 "diagStorageAccountName": { "value": "[       parameters('diagStorageAccountName')      ]" },
+                 "diskStorageAccountRoot": { "value": "[concat(parameters('diskStorageAccountRoot'),'ad')]" },
+                                 "vmName": { "value": "[       parameters(              'adVmName')      ]" }
+                }
+            }
+        },
+            
+
+
+        {
             "name": "mgmttier",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "[parameters('apiVersion')]",
@@ -170,12 +197,9 @@
                           "instanceCount": { "value": "[parameters(     'mgmtInstanceCount')]" },
                  "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]" },
                  "diskStorageAccountRoot": { "value": "[parameters('diskStorageAccountRoot')]" },
-                                 "vmName": { "value": "[parameters(            'mgmtVmName')]" },
-                                "nicName": { "value": "[parameters(           'mgmtNicName')]" }
+                                 "vmName": { "value": "[parameters(            'mgmtVmName')]" }
                 }
             }
         }
-            
-
     ]
 }

@@ -11,6 +11,7 @@
          "stbInstanceCount": { "type": "int",    "defaultValue": 3,                                                  "metadata": { "description": "Number of Business Layer Instances to create"   }  },
          "sqlInstanceCount": { "type": "int",    "defaultValue": 2,                                                  "metadata": { "description": "Number of SQL Instances to create"              }  },
         "mgmtInstanceCount": { "type": "int",    "defaultValue": 1,                                                  "metadata": { "description": "Number of Management Instances to create"       }  },
+          "adInstanceCount": { "type": "int",    "defaultValue": 2,                                                  "metadata": { "description": "Number of Active Directory Instances to create" }  },
          "adminAccessRange": { "type": "string", "defaultValue": "192.168.55.0/24",                                  "metadata": { "description": "Network subnet where Admins live"               }  }
     },
 
@@ -25,7 +26,7 @@
         "diagStorageAccountName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'diag'))]",
         "diskStorageAccountRoot": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'disk'))]",
         "appPublicIPAddressName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'pip' ))]",
-         "jbPublicIPAddressName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'Jpip'))]",
+        "jbPublicIPAddressName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'Jpip'))]",
 
         "virtualNetworkName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-vnet')]",
 
@@ -38,23 +39,21 @@
          "stbSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-stb-subnet')]",
          "sqlSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-sql-subnet')]",
         "mgmtSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-mgmt-subnet')]",
+         "adSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),    '-ad-subnet')]",
 
         "nvaAvailabilitySetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-nva-as')]",
         "staAvailabilitySetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-sta-as')]",
         "stbAvailabilitySetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-stb-as')]",
         "sqlAvailabilitySetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-sql-as')]",
+         "adAvailabilitySetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-ad-as')]",
 
          "nvaVmName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-nva-vm')]",
          "staVmName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-sta-vm')]",
          "stbVmName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-stb-vm')]",
          "sqlVmName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-sql-vm')]",
         "mgmtVmName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-mgmt-vm')]",
+          "adVmName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),   '-ad-vm')]"
 
-         "nvaNicName": "[concat(variables('nvaVmName'),  '-nic')]",
-         "staNicName": "[concat(variables('staVmName'),  '-nic')]",
-         "stbNicName": "[concat(variables('stbVmName'),  '-nic')]",
-         "sqlNicName": "[concat(variables('sqlVmName'),  '-nic')]",
-        "mgmtNicName": "[concat(variables('mgmtVmName'), '-nic')]"
     },
 
     "resources": [
@@ -106,33 +105,33 @@
                     "nvaAvailabilitySetName": { "value": "[variables('nvaAvailabilitySetName')]"  },
                           "nvaInstanceCount": { "value": "[parameters(     'nvaInstanceCount')]"  },
                                  "nvaVmName": { "value": "[variables(             'nvaVmName')]"  },
-                                "nvaNicName": { "value": "[variables(            'nvaNicName')]"  },
                     
                        "staLoadBalancerName": { "value": "[variables(   'staLoadBalancerName')]"  },
                              "staSubnetName": { "value": "[variables(         'staSubnetName')]"  },
                     "staAvailabilitySetName": { "value": "[variables('staAvailabilitySetName')]"  },
                           "staInstanceCount": { "value": "[parameters(     'staInstanceCount')]"  },
                                  "staVmName": { "value": "[variables(             'staVmName')]"  },
-                                "staNicName": { "value": "[variables(            'staNicName')]"  },
 
                        "stbLoadBalancerName": { "value": "[variables(   'stbLoadBalancerName')]"  },
                              "stbSubnetName": { "value": "[variables(         'stbSubnetName')]"  },
                     "stbAvailabilitySetName": { "value": "[variables('stbAvailabilitySetName')]"  },
                           "stbInstanceCount": { "value": "[parameters(     'stbInstanceCount')]"  },
                                  "stbVmName": { "value": "[variables(             'stbVmName')]"  },
-                                "stbNicName": { "value": "[variables(            'stbNicName')]"  },
 
                              "sqlSubnetName": { "value": "[ variables(         'sqlSubnetName')]" },
                     "sqlAvailabilitySetName": { "value": "[ variables('sqlAvailabilitySetName')]" },
                           "sqlInstanceCount": { "value": "[parameters(      'sqlInstanceCount')]" },
                                  "sqlVmName": { "value": "[ variables(             'sqlVmName')]" },
-                                "sqlNicName": { "value": "[ variables(            'sqlNicName')]" },
 
                             "mgmtSubnetName": { "value": "[ variables(        'mgmtSubnetName')]" },
                          "mgmtInstanceCount": { "value": "[parameters(     'mgmtInstanceCount')]" },
                                 "mgmtVmName": { "value": "[ variables(            'mgmtVmName')]" },
-                               "mgmtNicName": { "value": "[ variables(           'mgmtNicName')]" },
-                          "adminAccessRange": { "value": "[parameters(      'adminAccessRange')]" }
+                          "adminAccessRange": { "value": "[parameters(      'adminAccessRange')]" },
+
+                              "adSubnetName": { "value": "[ variables(         'adSubnetName')]" },
+                     "adAvailabilitySetName": { "value": "[ variables('adAvailabilitySetName')]" },
+                           "adInstanceCount": { "value": "[parameters(      'adInstanceCount')]" },
+                                  "adVmName": { "value": "[ variables(             'adVmName')]" }
                 }
             }
         }
