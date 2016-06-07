@@ -9,7 +9,6 @@
                     "subnetName": { "type": "string",                               "metadata": { "description": "Name of the Subnet"                     } },
                    "subnetRange": { "type": "string",                               "metadata": { "description": "Range of the Subnet"                    } },
               "adminAccessRange": { "type": "string",                               "metadata": { "description": "Network subnet where Admins live"       } },
-                 "InstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of instances to create"          } },
         "diagStorageAccountName": { "type": "string",                               "metadata": { "description": "Name of Storage Account for diagnostics"} },
         "diskStorageAccountRoot": { "type": "string",                               "metadata": { "description": "Name of Storage Account for vhds"       } },
                         "vmName": { "type": "string",                               "metadata": { "description": "Name of the VM's"                       } }

@@ -9,8 +9,6 @@
         "diskStorageAccountRoot": { "type": "string",                               "metadata": { "description": "Name of Storage Account for vhds"       } },
 
         "nvaPublicIPAddressName": { "type": "string",                               "metadata": { "description": "Name of Application Public IP Address"  } },
-           "staPrivateIPAddress": { "type": "string",                               "metadata": { "description": "Actual    Biz Layer Public IP Address"  } },
-           "stbPrivateIPAddress": { "type": "string",                               "metadata": { "description": "Actual    Biz Layer Public IP Address"  } },
          "jbPublicIPAddressName": { "type": "string",                               "metadata": { "description": "Name of Application Public IP Address"  } },
 
            "nvaLoadBalancerName": { "type": "string",                               "metadata": { "description": "Name of the nva Load Balancer"          } },
@@ -31,13 +29,13 @@
               "stbInstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of stb Layer Instbnces to create"} },
                      "stbVmName": { "type": "string",                               "metadata": { "description": "RootName of the VM's of the stb tier"   } },
                         
-                 "sqlSubnetName": { "type": "string",                               "metadata": { "description": "Name of the data Subnet"                } },
-        "sqlAvailabilitySetName": { "type": "string",                               "metadata": { "description": "Name of the data Availability Set"      } },
+           "sqlLoadBalancerName": { "type": "string",                               "metadata": { "description": "Name of the SQL Load Balancer"          } },
+                 "sqlSubnetName": { "type": "string",                               "metadata": { "description": "Name of the SQL Subnet"                } },
+        "sqlAvailabilitySetName": { "type": "string",                               "metadata": { "description": "Name of the SQL Availability Set"      } },
               "sqlinstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of SQL Instances to create"      } },
                      "sqlVmName": { "type": "string",                               "metadata": { "description": "RootName of the VM's of the sql tier"   } },
 
                 "mgmtSubnetName": { "type": "string",                               "metadata": { "description": "Name of the management Subnet"          } },
-             "mgmtInstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of Mgmt Instances to create"     } },
                     "mgmtVmName": { "type": "string",                               "metadata": { "description": "RootName of the VM's of the mgmt tier"  } },
               "adminAccessRange": { "type": "string",                               "metadata": { "description": "Network subnet where Admins live"       } },
 
@@ -49,12 +47,12 @@
 
     "variables": {
         "vnetAddressRange": "10.0.0.0/16",
-          "staSubnetRange": "10.0.2.0/24",
-          "stbSubnetRange": "10.0.3.0/24",
+          "staSubnetRange": "10.0.2.0/24",      "staPrivateIPAddress": "10.0.2.250",
+          "stbSubnetRange": "10.0.3.0/24",      "stbPrivateIPAddress": "10.0.3.250",
          "mgmtSubnetRange": "10.0.4.0/24",
          "dmzxSubnetRange": "10.0.5.0/24",
          "dmzySubnetRange": "10.0.6.0/24",
-          "sqlSubnetRange": "10.0.8.0/24",
+          "sqlSubnetRange": "10.0.8.0/24",      "sqlPrivateIPAddress": "10.0.8.250",
            "adSubnetRange": "10.0.9.0/24"
     },
 
@@ -95,6 +93,30 @@
             }
         },
 
+        {
+            "name": "sqlAlwaysOn",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('apiVersion')]",
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/sharedresources/vdc-biztier-azuredeploy.json" },
+
+                "parameters": {
+                             "apiVersion": { "value": "[       parameters('apiVersion')]" },
+                       "privateIPAddress": { "value": "[        variables(   'sqlPrivateIPAddress'       )]" },
+                     "virtualNetworkName": { "value": "[       parameters(    'virtualNetworkName'       )]" },
+                       "loadBalancerName": { "value": "[       parameters(   'sqlLoadBalancerName'       )]" },
+                             "subnetName": { "value": "[       parameters(         'sqlSubnetName'       )]" },
+                            "subnetRange": { "value": "[        variables(        'sqlSubnetRange'       )]" },
+                    "availabilitySetName": { "value": "[       parameters('sqlAvailabilitySetName'       )]" },
+                          "instanceCount": { "value": "[       parameters(      'sqlInstanceCount'       )]" },
+                 "diagStorageAccountName": { "value": "[       parameters('diagStorageAccountName'       )]" },
+                 "diskStorageAccountRoot": { "value": "[concat(parameters('diskStorageAccountRoot'),'sql')]" },
+                                 "vmName": { "value": "[       parameters(             'sqlVmName'       )]" }
+                }
+            }
+        },
 
 
         {
@@ -108,7 +130,7 @@
 
                 "parameters": {
                              "apiVersion": { "value": "[       parameters('apiVersion')]" },
-                       "privateIPAddress": { "value": "[       parameters(   'staPrivateIPAddress'       )]" },
+                       "privateIPAddress": { "value": "[        variables(   'staPrivateIPAddress'       )]" },
                      "virtualNetworkName": { "value": "[       parameters(    'virtualNetworkName'       )]" },
                        "loadBalancerName": { "value": "[       parameters(   'staLoadBalancerName'       )]" },
                              "subnetName": { "value": "[       parameters(         'staSubnetName'       )]" },
@@ -135,7 +157,7 @@
 
                 "parameters": {
                              "apiVersion": { "value": "[       parameters('apiVersion')]" },
-                       "privateIPAddress": { "value": "[       parameters(   'stbPrivateIPAddress'       )]" },
+                       "privateIPAddress": { "value": "[        variables(   'stbPrivateIPAddress'       )]" },
                      "virtualNetworkName": { "value": "[       parameters(    'virtualNetworkName'       )]" },
                        "loadBalancerName": { "value": "[       parameters(   'stbLoadBalancerName'       )]" },
                              "subnetName": { "value": "[       parameters(         'stbSubnetName'       )]" },
@@ -194,7 +216,6 @@
                              "subnetName": { "value": "[parameters(        'mgmtSubnetName')]" },
                             "subnetRange": { "value": "[ variables(       'mgmtSubnetRange')]" },
                        "adminAccessRange": { "value": "[parameters(      'adminAccessRange')]" },
-                          "instanceCount": { "value": "[parameters(     'mgmtInstanceCount')]" },
                  "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]" },
                  "diskStorageAccountRoot": { "value": "[parameters('diskStorageAccountRoot')]" },
                                  "vmName": { "value": "[parameters(            'mgmtVmName')]" }
