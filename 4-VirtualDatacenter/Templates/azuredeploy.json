@@ -6,9 +6,10 @@
     "parameters": {
                   "appName": { "type": "string", "defaultValue": "myapp",                                            "metadata": { "description": "Name of Application"                            }  },
            "appEnvironment": { "type": "string", "defaultValue": "dev",   "allowedValues": [ "dev", "qa", "prod" ],  "metadata": { "description": "Environment for Application"                    }  },
-         "webInstanceCount": { "type": "int",    "defaultValue": 3,                                                  "metadata": { "description": "Number of Web Tier Instances to create"         }  },
-         "bizInstanceCount": { "type": "int",    "defaultValue": 3,                                                  "metadata": { "description": "Number of Business Layer Instances to create"   }  },
-         "sqlinstanceCount": { "type": "int",    "defaultValue": 2,                                                  "metadata": { "description": "Number of SQL Instances to create"              }  },
+         "webInstanceCount": { "type": "int",    "defaultValue": 2,                                                  "metadata": { "description": "Number of Web Tier Instances to create"         }  },
+         "staInstanceCount": { "type": "int",    "defaultValue": 3,                                                  "metadata": { "description": "Number of Business Layer Instances to create"   }  },
+         "stbInstanceCount": { "type": "int",    "defaultValue": 3,                                                  "metadata": { "description": "Number of Business Layer Instances to create"   }  },
+         "sqlInstanceCount": { "type": "int",    "defaultValue": 2,                                                  "metadata": { "description": "Number of SQL Instances to create"              }  },
         "mgmtInstanceCount": { "type": "int",    "defaultValue": 1,                                                  "metadata": { "description": "Number of Management Instances to create"       }  },
          "adminAccessRange": { "type": "string", "defaultValue": "192.168.55.0/24",                                  "metadata": { "description": "Network subnet where Admins live"               }  }
     },
@@ -18,36 +19,42 @@
         "apiVersion": "2016-02-01",
 
         "vnetAddressRange": "10.0.0.0/16",
-        "bizPrivateIPAddress": "10.0.1.250",
+        "staPrivateIPAddress": "10.0.2.250",
+        "stbPrivateIPAddress": "10.0.3.250",
 
         "diagStorageAccountName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'diag'))]",
         "diskStorageAccountRoot": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'disk'))]",
         "appPublicIPAddressName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'pip' ))]",
-         "jbPublicIPAddressName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'Jpip'))]",
+        "jbPublicIPAddressName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'Jpip'))]",
 
-            "virtualNetworkName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-vnet')]",
+        "virtualNetworkName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-vnet')]",
 
-           "webLoadBalancerName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-web-lb')]",
-           "bizLoadBalancerName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-biz-lb')]",
+        "webLoadBalancerName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-web-lb')]",
+        "staLoadBalancerName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-sta-lb')]",
+        "stbLoadBalancerName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-stb-lb')]",
 
-                "webSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-web-subnet')]",
-                "bizSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-biz-subnet')]",
-                "sqlSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-sql-subnet')]",
-               "mgmtSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-mgmt-subnet')]",
+         "webSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-web-subnet')]",
+         "staSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-sta-subnet')]",
+         "stbSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-stb-subnet')]",
+         "sqlSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-sql-subnet')]",
+        "mgmtSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-mgmt-subnet')]",
 
-       "webAvailabilitySetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-web-as')]",
-       "bizAvailabilitySetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-biz-as')]",
-       "sqlAvailabilitySetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-sql-as')]",
+        "webAvailabilitySetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-web-as')]",
+        "staAvailabilitySetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-sta-as')]",
+        "stbAvailabilitySetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-stb-as')]",
+        "sqlAvailabilitySetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-sql-as')]",
 
-                    "webVmName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-web-vm')]",
-                    "bizVmName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-biz-vm')]",
-                    "sqlVmName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-sql-vm')]",
-                   "mgmtVmName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-mgmt-vm')]",
+         "webVmName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-web-vm')]",
+         "staVmName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-sta-vm')]",
+         "stbVmName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-stb-vm')]",
+         "sqlVmName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-sql-vm')]",
+        "mgmtVmName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-mgmt-vm')]",
 
-                   "webNicName": "[concat(variables('webVmName'),  '-nic')]",
-                   "bizNicName": "[concat(variables('bizVmName'),  '-nic')]",
-                   "sqlNicName": "[concat(variables('sqlVmName'),  '-nic')]",
-                  "mgmtNicName": "[concat(variables('mgmtVmName'), '-nic')]"
+         "webNicName": "[concat(variables('webVmName'),  '-nic')]",
+         "staNicName": "[concat(variables('staVmName'),  '-nic')]",
+         "stbNicName": "[concat(variables('stbVmName'),  '-nic')]",
+         "sqlNicName": "[concat(variables('sqlVmName'),  '-nic')]",
+        "mgmtNicName": "[concat(variables('mgmtVmName'), '-nic')]"
     },
 
     "resources": [
@@ -90,7 +97,8 @@
                     "diskStorageAccountRoot": { "value": "[variables('diskStorageAccountRoot')]"  },
 
                     "webPublicIPAddressName": { "value": "[variables( 'appPublicIPAddressName')]" },
-                       "bizPrivateIPAddress": { "value": "[variables('bizPrivateIPAddress')    ]" },
+                       "staPrivateIPAddress": { "value": "[variables('staPrivateIPAddress')    ]" },
+                       "stbPrivateIPAddress": { "value": "[variables('stbPrivateIPAddress')    ]" },
                      "jbPublicIPAddressName": { "value": "[variables(  'jbPublicIPAddressName')]" },
 
                        "webLoadBalancerName": { "value": "[variables(   'webLoadBalancerName')]"  },
@@ -100,12 +108,20 @@
                                  "webVmName": { "value": "[variables(             'webVmName')]"  },
                                 "webNicName": { "value": "[variables(            'webNicName')]"  },
                     
-                       "bizLoadBalancerName": { "value": "[variables(   'bizLoadBalancerName')]"  },
-                             "bizSubnetName": { "value": "[variables(         'bizSubnetName')]"  },
-                    "bizAvailabilitySetName": { "value": "[variables('bizAvailabilitySetName')]"  },
-                          "bizInstanceCount": { "value": "[parameters(     'bizInstanceCount')]"  },
-                                 "bizVmName": { "value": "[variables(             'bizVmName')]"  },
-                                "bizNicName": { "value": "[variables(            'bizNicName')]"  },
+                       "staLoadBalancerName": { "value": "[variables(   'staLoadBalancerName')]"  },
+                             "staSubnetName": { "value": "[variables(         'staSubnetName')]"  },
+                    "staAvailabilitySetName": { "value": "[variables('staAvailabilitySetName')]"  },
+                          "staInstanceCount": { "value": "[parameters(     'staInstanceCount')]"  },
+                                 "staVmName": { "value": "[variables(             'staVmName')]"  },
+                                "staNicName": { "value": "[variables(            'staNicName')]"  },
+
+                       "stbLoadBalancerName": { "value": "[variables(   'stbLoadBalancerName')]"  },
+                             "stbSubnetName": { "value": "[variables(         'stbSubnetName')]"  },
+                    "stbAvailabilitySetName": { "value": "[variables('stbAvailabilitySetName')]"  },
+                          "stbInstanceCount": { "value": "[parameters(     'stbInstanceCount')]"  },
+                                 "stbVmName": { "value": "[variables(             'stbVmName')]"  },
+                                "stbNicName": { "value": "[variables(            'stbNicName')]"  },
+
 
                              "sqlSubnetName": { "value": "[ variables(         'sqlSubnetName')]" },
                     "sqlAvailabilitySetName": { "value": "[ variables('sqlAvailabilitySetName')]" },
