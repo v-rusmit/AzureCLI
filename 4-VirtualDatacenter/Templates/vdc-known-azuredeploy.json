@@ -11,11 +11,12 @@
         "nvaPublicIPAddressName": { "type": "string",                               "metadata": { "description": "Name of Application Public IP Address"  } },
          "jbPublicIPAddressName": { "type": "string",                               "metadata": { "description": "Name of Application Public IP Address"  } },
 
-           "nvaLoadBalancerName": { "type": "string",                               "metadata": { "description": "Name of the nva Load Balancer"          } },
-                 "nvaSubnetName": { "type": "string",                               "metadata": { "description": "Name of the nva Subnet"                 } },
-        "nvaAvailabilitySetName": { "type": "string",                               "metadata": { "description": "Name of the nva Availability Set"       } },
-              "nvaInstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of nva Tier Instances to create" } },
-                     "nvaVmName": { "type": "string",                               "metadata": { "description": "RootName of the VM's of the nva tier"   } },
+           "nvaLoadBalancerName": { "type": "string",                               "metadata": { "description": "Name of the dmz Load Balancer"          } },
+           "nvaPublicSubnetName": { "type": "string",                               "metadata": { "description": "Name of the dma Public Subnet"          } },
+          "nvaPrivateSubnetName": { "type": "string",                               "metadata": { "description": "Name of the dmz Private Subnet"         } },
+        "nvaAvailabilitySetName": { "type": "string",                               "metadata": { "description": "Name of the dmz Availability Set"       } },
+              "nvaInstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of dmz Tier Instances to create" } },
+                     "nvaVmName": { "type": "string",                               "metadata": { "description": "RootName of the VM's of the dmz tier"   } },
 
            "staLoadBalancerName": { "type": "string",                               "metadata": { "description": "Name of the sta Load Balancer"          } },
                  "staSubnetName": { "type": "string",                               "metadata": { "description": "Name of the sta Subnet"                 } },
@@ -46,14 +47,14 @@
     },
 
     "variables": {
-        "vnetAddressRange": "10.0.0.0/16",
-          "staSubnetRange": "10.0.2.0/24",      "staPrivateIPAddress": "10.0.2.250",
-          "stbSubnetRange": "10.0.3.0/24",      "stbPrivateIPAddress": "10.0.3.250",
-         "mgmtSubnetRange": "10.0.4.0/24",
-         "dmzxSubnetRange": "10.0.5.0/24",
-         "dmzySubnetRange": "10.0.6.0/24",
-          "sqlSubnetRange": "10.0.8.0/24",      "sqlPrivateIPAddress": "10.0.8.250",
-           "adSubnetRange": "10.0.9.0/24"
+             "vnetAddressRange": "10.0.0.0/16",
+         "dmzPublicSubnetRange": "10.0.1.0/25",      
+        "dmzPrivateSubnetRange": "10.0.1.128/25",      
+               "staSubnetRange": "10.0.2.0/24",      "staPrivateIPAddress": "10.0.2.250",
+               "stbSubnetRange": "10.0.3.0/24",      "stbPrivateIPAddress": "10.0.3.250",
+              "mgmtSubnetRange": "10.0.4.0/24",
+               "sqlSubnetRange": "10.0.8.0/24",      "sqlPrivateIPAddress": "10.0.8.250",
+                "adSubnetRange": "10.0.9.0/24"
     },
 
     "resources": [
@@ -93,10 +94,68 @@
             }
         },
 
+
+
+        {
+            "name": "adTier",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('apiVersion')]",
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/sharedresources/vdc-adtier-azuredeploy.json" },
+
+                "parameters": {
+                             "apiVersion": { "value": "[       parameters('apiVersion')                  ]" },
+                     "virtualNetworkName": { "value": "[       parameters(    'virtualNetworkName')      ]" },
+                             "subnetName": { "value": "[       parameters(          'adSubnetName')      ]" },
+                            "subnetRange": { "value": "[        variables(         'adSubnetRange')      ]" },
+                    "availabilitySetName": { "value": "[       parameters( 'adAvailabilitySetName')      ]" },
+                          "instanceCount": { "value": "[       parameters(       'adInstanceCount')      ]" },
+                 "diagStorageAccountName": { "value": "[       parameters('diagStorageAccountName')      ]" },
+                 "diskStorageAccountRoot": { "value": "[concat(parameters('diskStorageAccountRoot'),'ad')]" },
+                                 "vmName": { "value": "[       parameters(              'adVmName')      ]" }
+                }
+            }
+        },
+
+
+
+        {
+            "name": "dmzTier",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('apiVersion')]",
+
+            "dependsOn": [ "Microsoft.Resources/deployments/nvaPip" ],
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/sharedresources/vdc-dmztier-azuredeploy.json" },
+
+                "parameters": {
+                             "apiVersion": { "value": "[       parameters('apiVersion')]" },
+                    "publicIPAddressName": { "value": "[       parameters('nvaPublicIPAddressName'       )]" },
+                     "virtualNetworkName": { "value": "[       parameters(    'virtualNetworkName'       )]" },
+                       "loadBalancerName": { "value": "[       parameters(   'nvaLoadBalancerName'       )]" },
+                       "publicSubnetName": { "value": "[       parameters(   'nvaPublicSubnetName'       )]" },
+                      "publicSubnetRange": { "value": "[        variables(  'dmzPublicSubnetRange'       )]" },
+                      "privateSubnetName": { "value": "[       parameters(  'nvaPrivateSubnetName'       )]" },
+                     "privateSubnetRange": { "value": "[        variables( 'dmzPrivateSubnetRange'       )]" },
+                    "availabilitySetName": { "value": "[       parameters('nvaAvailabilitySetName'       )]" },
+                          "instanceCount": { "value": "[       parameters(      'nvaInstanceCount'       )]" },
+                 "diagStorageAccountName": { "value": "[       parameters('diagStorageAccountName'       )]" },
+                 "diskStorageAccountRoot": { "value": "[concat(parameters('diskStorageAccountRoot'),'nva')]" },
+                                 "vmName": { "value": "[       parameters(             'nvaVmName'       )]" }
+                }
+            }
+        },
+
         {
             "name": "sqlAlwaysOn",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "[parameters('apiVersion')]",
+
+            "dependsOn": [ "Microsoft.Resources/deployments/adTier" ],
 
             "properties": {
                 "mode": "incremental",
@@ -117,6 +176,7 @@
                 }
             }
         },
+
 
 
         {
@@ -174,32 +234,7 @@
 
 
         {
-            "name": "adtier",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
-
-            "properties": {
-                "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/sharedresources/vdc-adtier-azuredeploy.json" },
-
-                "parameters": {
-                             "apiVersion": { "value": "[       parameters('apiVersion')                  ]" },
-                     "virtualNetworkName": { "value": "[       parameters(    'virtualNetworkName')      ]" },
-                             "subnetName": { "value": "[       parameters(          'adSubnetName')      ]" },
-                            "subnetRange": { "value": "[        variables(         'adSubnetRange')      ]" },
-                    "availabilitySetName": { "value": "[       parameters( 'adAvailabilitySetName')      ]" },
-                          "instanceCount": { "value": "[       parameters(       'adInstanceCount')      ]" },
-                 "diagStorageAccountName": { "value": "[       parameters('diagStorageAccountName')      ]" },
-                 "diskStorageAccountRoot": { "value": "[concat(parameters('diskStorageAccountRoot'),'ad')]" },
-                                 "vmName": { "value": "[       parameters(              'adVmName')      ]" }
-                }
-            }
-        },
-            
-
-
-        {
-            "name": "mgmttier",
+            "name": "mgmtTier",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "[parameters('apiVersion')]",
 
@@ -222,5 +257,6 @@
                 }
             }
         }
+
     ]
 }

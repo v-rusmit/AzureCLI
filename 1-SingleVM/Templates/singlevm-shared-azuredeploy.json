@@ -26,10 +26,10 @@
 
                 "parameters": {
                     "networkSecurityGroupName": { "value": "[parameters('networkSecurityGroupName')]" },
-                          "virtualNetworkName": { "value": "[parameters('virtualNetworkName')]" },
-                                  "subnetName": { "value": "[parameters('subnetName')]" },
-                         "virtualNetworkRange": { "value": "[parameters('virtualNetworkRange')]" },
-                                 "subnetRange": { "value": "[parameters('subnetRange')]" }
+                          "virtualNetworkName": { "value": "[parameters(      'virtualNetworkName')]" },
+                                  "subnetName": { "value": "[parameters(              'subnetName')]" },
+                         "virtualNetworkRange": { "value": "[parameters(     'virtualNetworkRange')]" },
+                                 "subnetRange": { "value": "[parameters(             'subnetRange')]" }
                 }
             }
         }

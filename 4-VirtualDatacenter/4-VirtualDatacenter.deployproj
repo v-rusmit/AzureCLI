@@ -32,6 +32,8 @@
     <Content Include="Templates\azuredeploy.parameters.json" />
     <None Include="Scripts\deploy.ps1" />
     <None Include="Templates\vdc-adtier-azuredeploy.json" />
+    <None Include="Templates\vdc-dmztier-azuredeploy.json" />
+    <None Include="Templates\vdc-known-vmloop-linux-lb-azuredeploy.json" />
     <None Include="Templates\vdc-known-vmloop-nolb-azuredeploy.json" />
     <None Include="Templates\vdc-known-vmloop-lb-azuredeploy.json" />
     <None Include="Templates\vdc-known-azuredeploy.json" />
