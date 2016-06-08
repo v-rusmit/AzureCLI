@@ -10,7 +10,7 @@
          "bizInstanceCount": { "type": "int",    "defaultValue": 3,                                                  "metadata": { "description": "Number of Business Layer Instances to create"   }  },
          "sqlinstanceCount": { "type": "int",    "defaultValue": 2,                                                  "metadata": { "description": "Number of SQL Instances to create"              }  },
         "mgmtInstanceCount": { "type": "int",    "defaultValue": 1,                                                  "metadata": { "description": "Number of Management Instances to create"       }  },
-         "adminAccessRange": { "type": "string", "defaultValue": "192.168.55.0/24",                                  "metadata": { "description": "Network subnet where Admins live"               }  }
+         "adminAccessRange": { "type": "string", "defaultValue": "216.21.164.178",                                   "metadata": { "description": "Network subnet where Admins live"               }  }
     },
 
 
