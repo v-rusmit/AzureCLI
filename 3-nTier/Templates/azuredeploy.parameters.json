@@ -4,6 +4,6 @@
     "parameters": {
         "appName":          { "value": "my3app" },
         "appEnvironment":   { "value": "qa" },
-        "adminAccessRange": { "value": "192.168.99.0/24" }
+        "adminAccessRange": { "value": "216.21.164.178" }
     }
 }

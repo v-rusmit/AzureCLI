@@ -10,13 +10,12 @@
                     "subnetName": { "type": "string",                               "metadata": { "description": "Name of the Subnet"                     } },
                    "subnetRange": { "type": "string",                               "metadata": { "description": "Range of the Subnet"                    } },
            "availabilitySetName": { "type": "string",                               "metadata": { "description": "Name of the Availability Set"           } },
+      "networkSecurityGroupName": { "type": "string",                               "metadata": { "description": "Name of the Security Group"             } },
                  "InstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of instances to create"          } },
         "diagStorageAccountName": { "type": "string",                               "metadata": { "description": "Name of Storage Account for diagnostics"} },
         "diskStorageAccountRoot": { "type": "string",                               "metadata": { "description": "Name of Storage Account for vhds"       } },
                         "vmName": { "type": "string",                               "metadata": { "description": "RootName of the VM's"                   } }
     },
-
-    "variables": { },
 
     "resources": [
 
@@ -45,13 +44,14 @@
      
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/vnet-add-new-subnet.json" },
+                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/vnet-add-new-subnet-with-nsg.json" },
 
                 "parameters": {
-                    "apiVersion":             { "value": "[parameters('apiVersion')]"          },
-                          "existingVNETName": { "value": "[parameters( 'virtualNetworkName')]" },
-                             "newSubnetName": { "value": "[parameters(         'subnetName')]" },
-                    "newSubnetAddressPrefix": { "value": "[parameters(        'subnetRange')]" }
+                    "apiVersion":               { "value": "[parameters('apiVersion')              ]" },
+                            "existingVNETName": { "value": "[parameters(      'virtualNetworkName')]" },
+                               "newSubnetName": { "value": "[parameters(              'subnetName')]" },
+                      "newSubnetAddressPrefix": { "value": "[parameters(             'subnetRange')]" },
+                    "networkSecurityGroupName": { "value": "[parameters('networkSecurityGroupName')]" }
                 }
             }
         },
