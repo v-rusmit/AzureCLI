@@ -3,3 +3,6 @@
 ################################################################################
 
 /1-SingleVM/bin/Debug/staging/1-SingleVM/Templates
+/2-MultiVM/bin/Debug/staging/2-MultiVM/Templates
+/3-nTier/bin/Debug/staging/3-nTier/Templates
+/4-VirtualDatacenter/bin/Debug/staging/4-VirtualDatacenter/Templates
