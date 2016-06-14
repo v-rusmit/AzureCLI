@@ -87,7 +87,7 @@
             "apiVersion": "[parameters('apiVersion')]",
 
             "copy": {
-                "name": "vmCopy",
+                "name": "vmcopy",
                 "count": "[parameters('instanceCount')]"
             },
 
@@ -98,14 +98,13 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/sharedresources/vdc-known-vmloop-lb-azuredeploy.json" },
+                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/sharedresources/vdc-known-vmloop-nolb-azuredeploy.json" },
 
                 "parameters": {
                     "apiVersion":             { "value": "[parameters('apiVersion')]" },
                         "virtualNetworkName": { "value": "[parameters(    'virtualNetworkName')]" },
                                 "subnetName": { "value": "[parameters(            'subnetName')]" },
                        "availabilitySetName": { "value": "[parameters(   'availabilitySetName')]" },
-                          "loadBalancerName": { "value": "[parameters(      'loadBalancerName')]" },
                     "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]" },
                                  "thisIndex": { "value": "[                                             copyIndex() ]" },
                                     "vmName": { "value": "[concat(parameters( 'vmName'),                copyIndex())]" },
@@ -113,5 +112,6 @@
                 }
             }
         }
+    
     ]
 }
