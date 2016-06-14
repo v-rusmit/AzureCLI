@@ -114,8 +114,27 @@
                                    "nicName": { "value": "[parameters(               'nicName')]" }
                 }
             }
-        }
+        },
 
+
+
+        {
+            "name": "vmdsc",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('apiVersion')]",
+
+            "dependsOn": [ "Microsoft.Resources/deployments/vm" ],
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/applyDSC-web.json" },
+
+                "parameters": {
+                    "apiVersion": { "value": "[parameters('apiVersion')]"  },
+                    "vmName":     { "value": "[parameters('vmName')]"      }
+                }
+            }
+        }
 
 
     ]

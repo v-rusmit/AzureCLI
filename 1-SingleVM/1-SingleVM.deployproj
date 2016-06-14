@@ -34,5 +34,15 @@
     <None Include="Templates\singlevm-known-azuredeploy.json" />
     <None Include="Templates\singlevm-shared-azuredeploy.json" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\0-Common\0-Common.deployproj">
+      <Targets>
+      </Targets>
+      <AdditionalProperties>
+      </AdditionalProperties>
+      <IncludeFilePath>
+      </IncludeFilePath>
+    </ProjectReference>
+  </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />
 </Project>
