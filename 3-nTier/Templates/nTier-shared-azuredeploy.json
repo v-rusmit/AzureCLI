@@ -3,10 +3,10 @@
     "contentVersion": "1.0.0.0",
     
     "parameters": {
-                      "apiVersion": { "type": "string", "defaultValue":"2016-02-01",  "metadata": { "description": "Common API"                      } },
-              "virtualNetworkName": { "type": "string",                               "metadata": { "description": "Name of Virtual Network"         } },
-             "virtualNetworkRange": { "type": "string", "defaultValue":"10.0.0.0/16", "metadata": { "description": "IP Range of Virtual Network"     } },
-          "diagStorageAccountName": { "type": "string",                               "metadata": { "description": "Name of storage account for diagnostics" } }    },
+        "commonSettings":         { "type": "object",                               "metadata": { "description": "Common API values"                         } },
+            "virtualNetworkName": { "type": "string",                               "metadata": { "description": "Name of Virtual Network"                   } },
+           "virtualNetworkRange": { "type": "string", "defaultValue":"10.0.0.0/16", "metadata": { "description": "IP Range of Virtual Network"               } },
+        "diagStorageAccountName": { "type": "string",                               "metadata": { "description": "Name of storage account for diagnostics" } } },
     
     "variables": { },
 
@@ -15,14 +15,13 @@
         {
             "name": "vnet",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/vnet-empty.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'vnet-empty.json')]" },
 
                 "parameters": {
-                    "apiVersion":         { "value": "[parameters('apiVersion')]"           },
                     "virtualNetworkName": { "value": "[parameters('virtualNetworkName') ]"  },
                          "addressPrefix": { "value": "[parameters('virtualNetworkRange') ]" }
                 }
@@ -32,14 +31,13 @@
         {
             "name": "sa",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/storage-account.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'storage-account.json')]" },
 
                 "parameters": {
-                    "apiVersion":         { "value": "[parameters(            'apiVersion')]" },
                     "storageAccountName": { "value": "[parameters('diagStorageAccountName')]" }
                 }
             }

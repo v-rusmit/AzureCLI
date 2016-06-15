@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     
     "parameters": {
-                    "apiVersion": { "type": "string", "defaultValue":"2016-02-01",  "metadata": { "description": "Common API"                             } },
+        "commonSettings":         { "type": "object",                               "metadata": { "description": "Common API values"                      } },
             "virtualNetworkName": { "type": "string",                               "metadata": { "description": "Name of Virtual Network"                } },
                     "subnetName": { "type": "string",                               "metadata": { "description": "Name of the Subnet"                     } },
                    "subnetRange": { "type": "string",                               "metadata": { "description": "Range of the Subnet"                    } },
@@ -66,16 +66,15 @@
         {
             "name": "sql-sn",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
 
             "dependsOn": [ "[concat('Microsoft.Network/networkSecurityGroups/', variables('networkSecurityGroupName'))]" ],
      
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/vnet-add-new-subnet-with-nsg.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'vnet-add-new-subnet-with-nsg.json')]" },
 
                 "parameters": {
-                    "apiVersion":               { "value": "[parameters('apiVersion')]"               },
                             "existingVNETName": { "value": "[parameters(      'virtualNetworkName')]" },
                                "newSubnetName": { "value": "[parameters(              'SubnetName')]" },
                       "newSubnetAddressPrefix": { "value": "[parameters(             'SubnetRange')]" },
@@ -88,14 +87,13 @@
         {
             "name": "sql-as",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/availability-set.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'availability-set.json')]" },
 
                 "parameters": {
-                    "apiVersion": { "value": "[parameters('apiVersion')]" },
                     "availabilitySetName": { "value": "[parameters('availabilitySetName')]" }
                 }
             }
@@ -106,7 +104,7 @@
         {
             "name": "[concat('vmLoopSql', copyIndex())]",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
 
             "dependsOn": [
                 "Microsoft.Resources/deployments/sql-sn",
@@ -119,15 +117,15 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/sharedresources/nTier-known-vmloop-nolb-azuredeploy.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').templatePath,'nTier-known-vmloop-nolb-azuredeploy.json')]" },
 
                 "parameters": {
-                                "apiVersion": { "value": "[parameters('apiVersion')]" },
+                    "commonSettings":         { "value": "[parameters('commonSettings')]"         },
                         "virtualNetworkName": { "value": "[parameters(    'virtualNetworkName')]" },
                                 "subnetName": { "value": "[parameters(            'subnetName')]" },
                        "availabilitySetName": { "value": "[parameters(   'availabilitySetName')]" },
                     "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]" },
-                                 "thisIndex": { "value": "[copyIndex()]"                                                  },
+                                 "thisIndex": { "value": "[                                                copyIndex() ]" },
                                     "vmName": { "value": "[concat(parameters( 'vmName'),                   copyIndex())]" },
                                    "nicName": { "value": "[concat(parameters('nicName'),                   copyIndex())]" },
                     "diskStorageAccountName": { "value": "[concat(parameters('diskStorageAccountRoot'),'s',copyIndex())]" }

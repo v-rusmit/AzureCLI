@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     
     "parameters": {
-                    "apiVersion": { "type": "string", "defaultValue":"2016-02-01",  "metadata": { "description": "Common API"                             } },
+        "commonSettings":         { "type": "object",                               "metadata": { "description": "Common API values"                      } },
               "privateIPAddress": { "type": "string",                               "metadata": { "description": "Actual Private IP Address"              } },
             "virtualNetworkName": { "type": "string",                               "metadata": { "description": "Name of Virtual Network"                } },
               "loadBalancerName": { "type": "string",                               "metadata": { "description": "Name of the Load Balancer"              } },
@@ -24,16 +24,15 @@
         {
             "name": "biz-lb",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
      
             "dependsOn": [ "Microsoft.Resources/deployments/biz-sn" ],
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/load-balancer-with-private-ip.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'load-balancer-with-private-ip.json')]" },
 
                 "parameters": {
-                    "apiVersion":         { "value": "[parameters('apiVersion')]"          },
                       "loadBalancerName": { "value": "[parameters(  'loadBalancerName')]"  },
                       "privateIPAddress": { "value": "[parameters(  'privateIPAddress')]"  },
                     "virtualNetworkName": { "value": "[parameters('virtualNetworkName')]"  },
@@ -47,14 +46,13 @@
         {
             "name": "biz-sn",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
      
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/vnet-add-new-subnet.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'vnet-add-new-subnet.json')]" },
 
                 "parameters": {
-                    "apiVersion":             { "value": "[parameters('apiVersion')]"          },
                           "existingVNETName": { "value": "[parameters( 'virtualNetworkName')]" },
                              "newSubnetName": { "value": "[parameters(         'SubnetName')]" },
                     "newSubnetAddressPrefix": { "value": "[parameters(        'SubnetRange')]" }
@@ -67,14 +65,13 @@
         {
             "name": "biz-as",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
      
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/availability-set.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'availability-set.json')]" },
 
                 "parameters": {
-                    "apiVersion":          { "value": "[parameters('apiVersion')]"          },
                     "availabilitySetName": { "value": "[parameters('availabilitySetName')]" }
                 }
             }
@@ -85,7 +82,7 @@
         {
             "name": "[concat('vmLoopBiz', copyIndex())]",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
 
             "dependsOn": [
                 "Microsoft.Resources/deployments/biz-lb",
@@ -99,22 +96,21 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/sharedresources/nTier-known-vmloop-lb-azuredeploy.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').templatePath,'nTier-known-vmloop-lb-azuredeploy.json')]" },
 
                 "parameters": {
-                                "apiVersion": { "value": "[parameters('apiVersion')]" },
+                    "commonSettings":         { "value": "[parameters('commonSettings')]" },
                         "virtualNetworkName": { "value": "[parameters(    'virtualNetworkName')]" },
                                 "subnetName": { "value": "[parameters(            'subnetName')]" },
                        "availabilitySetName": { "value": "[parameters(   'availabilitySetName')]" },
                           "loadBalancerName": { "value": "[parameters(      'loadBalancerName')]" },
                     "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]" },
-                                 "thisIndex": { "value": "[copyIndex()]"                                                  },
+                                 "thisIndex": { "value": "[                                                copyIndex() ]" },
                                     "vmName": { "value": "[concat(parameters( 'vmName'),                   copyIndex())]" },
                                    "nicName": { "value": "[concat(parameters('nicName'),                   copyIndex())]" },
                     "diskStorageAccountName": { "value": "[concat(parameters('diskStorageAccountRoot'),'b',copyIndex())]" }
                 }
             }
         }
-    
     ]
 }
