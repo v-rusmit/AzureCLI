@@ -31,6 +31,7 @@
     <Content Include="Templates\azuredeploy.json" />
     <Content Include="Templates\azuredeploy.parameters.json" />
     <None Include="Scripts\Deploy-AzureResourceGroup.ps1" />
+    <None Include="Templates\metadata.json" />
     <None Include="Templates\multivm-known-loop-azuredeploy.json" />
     <None Include="Templates\multivm-known-azuredeploy.json" />
     <None Include="Templates\multivm-shared-azuredeploy.json" />
