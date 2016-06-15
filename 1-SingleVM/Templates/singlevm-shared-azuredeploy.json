@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     
     "parameters": {
-        "commonSettings":           { "type": "object",                               "metadata": { "description": "Common API values"                       } },
+        "commonSettings":           { "type": "object",                               "metadata": { "description": "Common API values"               } },
         "networkSecurityGroupName": { "type": "string",                               "metadata": { "description": "Name of Network Security Group"  } },
               "virtualNetworkName": { "type": "string",                               "metadata": { "description": "Name of Virtual Network"         } },
                       "subnetName": { "type": "string",                               "metadata": { "description": "Name of first/only subnet"       } },

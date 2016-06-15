@@ -35,5 +35,15 @@
     <None Include="Templates\multivm-known-azuredeploy.json" />
     <None Include="Templates\multivm-shared-azuredeploy.json" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\0-Common\0-Common.deployproj">
+      <Targets>
+      </Targets>
+      <AdditionalProperties>
+      </AdditionalProperties>
+      <IncludeFilePath>
+      </IncludeFilePath>
+    </ProjectReference>
+  </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />
 </Project>

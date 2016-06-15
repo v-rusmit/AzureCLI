@@ -3,17 +3,17 @@
     "contentVersion": "1.0.0.0",
 
     "parameters": {
-        "apiVersion":               { "type": "string", "defaultValue": "2016-02-01",  "metadata": { "description": "Common API" }                                         },
-              "virtualNetworkName": { "type": "string",                                "metadata": { "description": "Name of Virtual Network"    }                         },
-                      "subnetName": { "type": "string",                                "metadata": { "description": "Name of first/only subnet"  }                         },
-             "availabilitySetName": { "type": "string"                                                                                                                     },
-                "loadBalancerName": { "type": "string",                                "metadata": { "description": "This is the name of the load balancer"             }  },
-             "publicIPAddressName": { "type": "string",                                "metadata": { "description": "This is the name of the IP Address"                }  },
-          "diskStorageAccountName": { "type": "string",                                "metadata": { "description": "Name of storage account for VHD's"                 }  },
-          "diagStorageAccountName": { "type": "string",                                "metadata": { "description": "Name of storage account for diagnostics"           }  },
-                   "instanceCount": { "type": "int",    "defaultValue": 2,             "metadata": { "description": "Number of Instances to create"                     }  },
-                     "nicNameRoot": { "type": "string",                                "metadata": { "description": "Rootname of the simulated Network interface card." }  },
-                      "vmNameRoot": { "type": "string",                                "metadata": { "description": "Rootname of the virtual machine."                  }  }
+        "commonSettings":         { "type": "object",                      "metadata": { "description": "Common API values"                                 } },
+            "virtualNetworkName": { "type": "string",                      "metadata": { "description": "Name of Virtual Network"                           } },
+                    "subnetName": { "type": "string",                      "metadata": { "description": "Name of first/only subnet"                         } },
+           "availabilitySetName": { "type": "string"                                                                                                          },
+              "loadBalancerName": { "type": "string",                      "metadata": { "description": "This is the name of the load balancer"             } },
+           "publicIPAddressName": { "type": "string",                      "metadata": { "description": "This is the name of the IP Address"                } },
+        "diskStorageAccountName": { "type": "string",                      "metadata": { "description": "Name of storage account for VHD's"                 } },
+        "diagStorageAccountName": { "type": "string",                      "metadata": { "description": "Name of storage account for diagnostics"           } },
+                 "instanceCount": { "type": "int",    "defaultValue": 2,   "metadata": { "description": "Number of Instances to create"                     } },
+                   "nicNameRoot": { "type": "string",                      "metadata": { "description": "Rootname of the simulated Network interface card." } },
+                    "vmNameRoot": { "type": "string",                      "metadata": { "description": "Rootname of the virtual machine."                  } }
     },
 
     "resources": [
@@ -21,14 +21,13 @@
         {
             "name": "as",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/availability-set.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'availability-set.json')]" },
 
                 "parameters": {
-                             "apiVersion": { "value": "[parameters(         'apiVersion')]" },
                     "availabilitySetName": { "value": "[parameters('availabilitySetName')]" }
                 }
             }
@@ -39,14 +38,13 @@
         {
             "name": "lb",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/load-balancer-with-public-ip.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'load-balancer-with-public-ip.json')]" },
 
                 "parameters": {
-                             "apiVersion": { "value": "[parameters(         'apiVersion')]" },
                        "loadBalancerName": { "value": "[parameters(   'loadBalancerName')]" },
                     "publicIPAddressName": { "value": "[parameters('publicIPAddressName')]" }
                 }
@@ -58,14 +56,13 @@
         {
             "name": "diag",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/storage-account.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'storage-account.json')]" },
 
                 "parameters": {
-                            "apiVersion": { "value": "[parameters(            'apiVersion')]" },
                     "storageAccountName": { "value": "[parameters('diagStorageAccountName')]" }
                 }
             }
@@ -76,7 +73,7 @@
         {
             "name": "[concat('vmLoop', copyIndex())]",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
 
             "dependsOn": [
                 "Microsoft.Resources/deployments/as",
@@ -91,16 +88,16 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/sharedresources/multivm-known-loop-azuredeploy.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').templatePath,'multivm-known-loop-azuredeploy.json')]" },
 
                 "parameters": {
-                                "apiVersion": { "value": "[parameters('apiVersion')]" },
+                    "commonSettings":         { "value": "[parameters('commonSettings')]"         },
                         "virtualNetworkName": { "value": "[parameters(    'virtualNetworkName')]" },
                                 "subnetName": { "value": "[parameters(            'subnetName')]" },
                        "availabilitySetName": { "value": "[parameters(   'availabilitySetName')]" },
                           "loadBalancerName": { "value": "[parameters(      'loadBalancerName')]" },
                     "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]" },
-                                 "thisIndex": { "value": "[copyIndex()]"                                               },
+                                 "thisIndex": { "value": "[                                              copyIndex()]" },
                                     "vmName": { "value": "[concat(parameters( 'vmNameRoot'),            copyIndex())]" },
                                    "nicName": { "value": "[concat(parameters('nicNameRoot'),            copyIndex())]" },
                     "diskStorageAccountName": { "value": "[concat(parameters('diskStorageAccountName'), copyIndex())]" }
