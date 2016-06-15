@@ -43,7 +43,7 @@ architecture is suitable for hybrid applications with the following characterist
 
 The following diagram highlights the components in this architecture:
 
- ![GitHub Logo](HN_1-02.png)
+ ![GitHub Logo](../images/hybridNetwork.png)
 
 * **On-premises network.** This is a network of computers and devices, connected through a
 private local-area network running within an organization.

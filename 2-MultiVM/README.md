@@ -32,7 +32,7 @@ to this architecture.
 
 ## Architecture diagram
 
-diagram goes here
+![GitHub Logo](../images/multiVM.png)
 
 ###### The architecture has the following components:
 * **Availability Set.** Put the VMs into an Availability Set

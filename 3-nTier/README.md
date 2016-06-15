@@ -32,7 +32,7 @@ Azure has two different deployment models: Resource Manager (../resource-groupov
 ## Architecture diagram
 The following diagram builds on the topology shown in Running multiple VMs on Azure (../guidance-compute-multi-vm/). 
 
- ![GitHub Logo](img-02.png)
+ ![GitHub Logo](../images/nTierVM.png)
 
 * **Availability Sets.** Create an Availability Set (../virtual-machines-windows-manageavailability/#configure-each-application-tier-into-separate-availability-sets) for each tier, and provision at least two VMs in each tier. This approach is required to reach the availability SLA (https://azure.microsoft.com/en-us/support/legal/sla/virtualmachines/v1_0/) for VMs.
 

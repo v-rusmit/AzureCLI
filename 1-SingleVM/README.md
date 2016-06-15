@@ -43,7 +43,7 @@ set. For more information, see Running multiple Windows VMs on Azure
 Provisioning VM in Azure involves more moving parts than just the VM itself. There are
 compute, networking, and storage elements
 
- ![GitHub Logo](single_1-02.png)
+ ![GitHub Logo](../images/singleVM.png)
 
 * **Resource group.** A resource group (../resource-group-overview/)is a container that
 holds related resources. Create a resource group to hold the resources
@@ -255,7 +255,7 @@ access-built-inroles/#devtest-lab-user)and Network Contributor(../role-based-acc
 inroles/#network-contributor). A user can be assigned to multiple roles, and you can create
 custom roles for even more fine-grained permissions.
 
-  ###### Note:
+###### Note:
 
 > RBAC does not limit the actions that a user logged into a VM can perform.
 > Those permissions are determined by the account type on the guest OS.
