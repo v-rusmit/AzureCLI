@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     
     "parameters": {
-                      "apiVersion": { "type": "string", "defaultValue":"2016-02-01",  "metadata": { "description": "Common API"                      } },
+        "commonSettings":           { "type": "object",                               "metadata": { "description": "Common API values"                       } },
         "networkSecurityGroupName": { "type": "string",                               "metadata": { "description": "Name of Network Security Group"  } },
               "virtualNetworkName": { "type": "string",                               "metadata": { "description": "Name of Virtual Network"         } },
                       "subnetName": { "type": "string",                               "metadata": { "description": "Name of first/only subnet"       } },
@@ -18,11 +18,11 @@
         {
             "name": "nsg",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/security-group-with-vnet.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'security-group-with-vnet.json')]" },
 
                 "parameters": {
                     "networkSecurityGroupName": { "value": "[parameters('networkSecurityGroupName')]" },
