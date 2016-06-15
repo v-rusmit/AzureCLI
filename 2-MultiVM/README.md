@@ -34,7 +34,6 @@ to this architecture.
 
 diagram goes here
 
-
 ###### The architecture has the following components:
 * **Availability Set.** Put the VMs into an Availability Set
 (../virtual-machines-windowsmanage-availability/). This makes the VMs eligible
