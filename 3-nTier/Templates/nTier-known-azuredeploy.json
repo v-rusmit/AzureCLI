@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     
     "parameters": {
-                    "apiVersion": { "type": "string", "defaultValue":"2016-02-01",  "metadata": { "description": "Common API"                             } },
+        "commonSettings":         { "type": "object",                               "metadata": { "description": "Common API values"                      } },
             "virtualNetworkName": { "type": "string",                               "metadata": { "description": "Name of Virtual Network"                } },
         "diagStorageAccountName": { "type": "string",                               "metadata": { "description": "Name of Storage Account for diagnostics"} },
         "diskStorageAccountRoot": { "type": "string",                               "metadata": { "description": "Name of Storage Account for vhds"       } },
@@ -52,14 +52,13 @@
         {
             "name": "appPip",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/public-ip.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'public-ip.json')]" },
 
                 "parameters": {
-                    "apiVersion":          { "value": "[parameters('apiVersion')]"             },
                     "publicIPAddressName": { "value": "[parameters('webPublicIPAddressName')]" }
                 }
             }
@@ -70,14 +69,13 @@
         {
             "name": "jbPip",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/public-ip.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'public-ip.json')]" },
 
                 "parameters": {
-                    "apiVersion":          { "value": "[parameters('apiVersion')]"            },
                     "publicIPAddressName": { "value": "[parameters('jbPublicIPAddressName')]" }
 
                 }
@@ -89,16 +87,16 @@
         {
             "name": "webtier",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
 
             "dependsOn": [ "Microsoft.Resources/deployments/appPip" ],
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/sharedresources/nTier-webtier-azuredeploy.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').templatePath,'nTier-webtier-azuredeploy.json')]" },
 
                 "parameters": {
-                             "apiVersion": { "value": "[parameters('apiVersion')]" },
+                    "commonSettings":      { "value": "[parameters('commonSettings')]"         },
                     "publicIPAddressName": { "value": "[parameters('webPublicIPAddressName')]" },
                      "virtualNetworkName": { "value": "[parameters(    'virtualNetworkName')]" },
                        "loadBalancerName": { "value": "[parameters(   'webLoadBalancerName')]" },
@@ -120,16 +118,16 @@
         {
             "name": "biztier",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
 
             "dependsOn": [  ],
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/sharedresources/nTier-biztier-azuredeploy.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').templatePath,'nTier-biztier-azuredeploy.json')]" },
 
                 "parameters": {
-                             "apiVersion": { "value": "[parameters('apiVersion')]" },
+                    "commonSettings":      { "value": "[parameters('commonSettings')]"         },
                        "privateIPAddress": { "value": "[parameters(   'bizPrivateIPAddress')]" },
                      "virtualNetworkName": { "value": "[parameters(    'virtualNetworkName')]" },
                        "loadBalancerName": { "value": "[parameters(   'bizLoadBalancerName')]" },
@@ -150,16 +148,16 @@
         {
             "name": "sqltier",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
 
             "dependsOn": [  ],
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/sharedresources/nTier-sqltier-azuredeploy.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').templatePath,'nTier-sqltier-azuredeploy.json')]" },
 
                 "parameters": {
-                             "apiVersion": { "value": "[parameters('apiVersion')]" },
+                    "commonSettings":      { "value": "[parameters('commonSettings')]"         },
                      "virtualNetworkName": { "value": "[parameters(    'virtualNetworkName')]" },
                              "subnetName": { "value": "[parameters(         'sqlSubnetName')]" },
                             "subnetRange": { "value": "[ variables(        'sqlSubnetRange')]" },
@@ -176,22 +174,20 @@
         },
 
 
-
  
-
         {
             "name": "mgmttier",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
 
             "dependsOn": [ "Microsoft.Resources/deployments/jbPip" ],
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/sharedresources/nTier-mgmttier-azuredeploy.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').templatePath,'nTier-mgmttier-azuredeploy.json')]" },
 
                 "parameters": {
-                             "apiVersion": { "value": "[parameters('apiVersion')]"             },
+                    "commonSettings":      { "value": "[parameters('commonSettings')]"         },
                     "publicIPAddressName": { "value": "[parameters( 'jbPublicIPAddressName')]" },
                      "virtualNetworkName": { "value": "[parameters(    'virtualNetworkName')]" },
                              "subnetName": { "value": "[parameters(        'mgmtSubnetName')]" },
@@ -205,6 +201,5 @@
                 }
             }
         }
-
     ]
 }

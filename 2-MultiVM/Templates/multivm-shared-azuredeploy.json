@@ -3,11 +3,11 @@
     "contentVersion": "1.0.0.0",
     
     "parameters": {
-                      "apiVersion": { "type": "string", "defaultValue":"2016-02-01",  "metadata": { "description": "Common API"                      } },
-              "virtualNetworkName": { "type": "string",                               "metadata": { "description": "Name of Virtual Network"         } },
-                      "subnetName": { "type": "string",                               "metadata": { "description": "Name of first/only subnet"       } },
-             "virtualNetworkRange": { "type": "string", "defaultValue":"10.0.0.0/16", "metadata": { "description": "IP Range of Virtual Network"     } },
-                     "subnetRange": { "type": "string", "defaultValue":"10.0.0.0/24", "metadata": { "description": "IP Range of subnet"              } }
+        "commonSettings":      { "type": "object",                               "metadata": { "description": "Common API values"               } },
+         "virtualNetworkName": { "type": "string",                               "metadata": { "description": "Name of Virtual Network"         } },
+                 "subnetName": { "type": "string",                               "metadata": { "description": "Name of first/only subnet"       } },
+        "virtualNetworkRange": { "type": "string", "defaultValue":"10.0.0.0/16", "metadata": { "description": "IP Range of Virtual Network"     } },
+                "subnetRange": { "type": "string", "defaultValue":"10.0.0.0/24", "metadata": { "description": "IP Range of subnet"              } }
     },
     
     "variables": { },
@@ -17,14 +17,13 @@
         {
             "name": "vnet",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/virtual-network.json" },
-
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'virtual-network.json')]" },
+ 
                 "parameters": {
-                    "apiVersion"        : { "value": "[parameters(         'apiVersion')]" },
                     "virtualNetworkName": { "value": "[parameters( 'virtualNetworkName')]" },
                             "subnetName": { "value": "[parameters(         'subnetName')]" },
                           "addressRange": { "value": "[parameters('virtualNetworkRange')]" },

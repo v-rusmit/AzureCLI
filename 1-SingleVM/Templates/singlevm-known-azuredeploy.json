@@ -3,14 +3,14 @@
     "contentVersion": "1.0.0.0",
     
     "parameters": {
-        "apiVersion":               { "type": "string", "defaultValue":"2016-02-01",  "metadata": { "description": "Common API"                              } },
-          "diskStorageAccountName": { "type": "string",                               "metadata": { "description": "Name of storage account for VHD's"       } },
-          "diagStorageAccountName": { "type": "string",                               "metadata": { "description": "Name of storage account for diagnostics" } },
-             "publicIPAddressName": { "type": "string",                               "metadata": { "description": "Name of public IP Address for VM"        } },
-                      "subnetName": { "type": "string",                               "metadata": { "description": "Name of subnet for VM's"                 } },
-              "virtualNetworkName": { "type": "string",                               "metadata": { "description": "Name of virtual network"                 } },
-                          "vmName": { "type": "string",                               "metadata": { "description": "Name of virtual machine"                 } },
-                         "nicName": { "type": "string",                               "metadata": { "description": "Name of nic to be assigned to VM"        } }
+        "commonSettings":           { "type": "object", "metadata": { "description": "Common API values"                       } },
+          "diskStorageAccountName": { "type": "string", "metadata": { "description": "Name of storage account for VHD's"       } },
+          "diagStorageAccountName": { "type": "string", "metadata": { "description": "Name of storage account for diagnostics" } },
+             "publicIPAddressName": { "type": "string", "metadata": { "description": "Name of public IP Address for VM"        } },
+                      "subnetName": { "type": "string", "metadata": { "description": "Name of subnet for VM's"                 } },
+              "virtualNetworkName": { "type": "string", "metadata": { "description": "Name of virtual network"                 } },
+                          "vmName": { "type": "string", "metadata": { "description": "Name of virtual machine"                 } },
+                         "nicName": { "type": "string", "metadata": { "description": "Name of nic to be assigned to VM"        } }
     },
     
     "variables": { },
@@ -20,13 +20,12 @@
         {
             "name": "sa1",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/storage-account.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'storage-account.json')]" },
                 "parameters": {
-                    "apiVersion":         { "value": "[parameters('apiVersion')]"             },
                     "storageAccountName": { "value": "[parameters('diskStorageAccountName')]" }
                 }
             }
@@ -37,13 +36,12 @@
         {
             "name": "sa2",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/storage-account.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'storage-account.json')]" },
                 "parameters": {
-                    "apiVersion":         { "value": "[parameters('apiVersion')]"             },
                     "storageAccountName": { "value": "[parameters('diagStorageAccountName')]" }
                 }
             }
@@ -54,14 +52,13 @@
         {
             "name": "pip",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/public-ip.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'public-ip.json')]" },
 
                 "parameters": {
-                    "apiVersion":          { "value": "[parameters('apiVersion')]" },
                     "publicIPAddressName": { "value": "[parameters('publicIPAddressName')]" }
                 }
             }
@@ -72,16 +69,15 @@
         {
             "name": "nic",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
 
             "dependsOn": [ "Microsoft.Resources/deployments/pip" ],
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/nic-via-pip.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'nic-via-pip.json')]" },
 
                 "parameters": {
-                    "apiVersion":          { "value": "[parameters('apiVersion')]"          },
                     "publicIPAddressName": { "value": "[parameters('publicIPAddressName')]" },
                                 "nicName": { "value": "[parameters(            'nicName')]" },
                      "virtualNetworkName": { "value": "[parameters( 'virtualNetworkName')]" },
@@ -94,7 +90,7 @@
         {
             "name": "vm",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
 
             "dependsOn": [
                 "Microsoft.Resources/deployments/sa1",
@@ -104,18 +100,35 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/vm-via-nic.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'vm-via-nic.json')]" },
 
                 "parameters": {
-                    "apiVersion":             { "value": "[parameters('apiVersion')]"             },
                                     "vmName": { "value": "[parameters(                'vmName')]" },
                     "diskStorageAccountName": { "value": "[parameters('diskStorageAccountName')]" },
                     "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]" },
                                    "nicName": { "value": "[parameters(               'nicName')]" }
                 }
             }
-        }
+        },
 
+
+
+        {
+            "name": "vmdsc",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
+
+            "dependsOn": [ "Microsoft.Resources/deployments/vm" ],
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'applyDSC-web.json')]" },
+
+                "parameters": {
+                    "vmName":     { "value": "[parameters('vmName')]"      }
+                }
+            }
+        }
 
 
     ]

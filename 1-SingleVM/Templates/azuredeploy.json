@@ -3,12 +3,20 @@
     "contentVersion": "1.0.0.0",
 
     "parameters": {
-               "appName": { "type": "string", "defaultValue": "myapp",                                            "metadata": { "description": "Name of Application" }    },
-        "appEnvironment": { "type": "string", "defaultValue": "dev",   "allowedValues": [ "dev", "qa", "prod" ],  "metadata": { "description": "Environment for Application" }    }
+               "appName": { "type": "string", "defaultValue": "myapp",                                                     "metadata": { "description": "Name of Application"                      } },
+        "appEnvironment": { "type": "string", "defaultValue": "dev",   "allowedValues": [ "dev", "qa", "prod" ],           "metadata": { "description": "Environment for Application"              } },
+          "templatePath": { "type": "string", "defaultValue": "https://azureclisa.blob.core.windows.net/sharedresources/", "metadata": { "description": "Path to templates for this implmentation" } },
+    "commonTemplatePath": { "type": "string", "defaultValue": "https://azureclisa.blob.core.windows.net/templates/",       "metadata": { "description": "Path to core/common/reusable templatess"  } }
     },
   
     "variables": {
-        "apiVersion": "2016-02-01",
+
+        "commonSettings": {
+            "apiVersion": "2016-02-01",
+                  "templatePath": "[parameters(      'templatePath')]",
+            "commonTemplatePath": "[parameters('commonTemplatePath')]"
+        },
+
 
           "diskStorageAccountName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'disk'))]",
           "diagStorageAccountName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'diag'))]",
@@ -25,14 +33,14 @@
         {
             "name": "shared",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[variables('apiVersion')]",
+            "apiVersion": "[variables('commonSettings').apiVersion]",
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/sharedresources/singlevm-shared-azuredeploy.json" },
+                "templateLink": { "uri": "[concat(parameters('templatePath'),'singlevm-shared-azuredeploy.json')]" },
 
                 "parameters": {
-                                  "apiVersion": { "value": "[variables('apiVersion')]" },
+                              "commonSettings": { "value": "[variables('commonSettings')]"           },
                     "networkSecurityGroupName": { "value": "[variables('networkSecurityGroupName')]" },
                           "virtualNetworkName": { "value": "[variables(      'virtualNetworkName')]" },
                                   "subnetName": { "value": "[variables(              'subnetName')]" }
@@ -45,16 +53,16 @@
         {
             "name": "known",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[variables('apiVersion')]",
+            "apiVersion": "[variables('commonSettings').apiVersion]",
 
             "dependsOn": [ "Microsoft.Resources/deployments/shared" ],
            
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/sharedresources/singlevm-known-azuredeploy.json" },
+                "templateLink": { "uri": "[concat(parameters('templatePath'),'singlevm-known-azuredeploy.json')]" },
 
                 "parameters": {
-                                  "apiVersion": { "value": "[variables('apiVersion')]" },
+                              "commonSettings": { "value": "[variables('commonSettings')]"         },
                       "diskStorageAccountName": { "value": "[variables('diskStorageAccountName')]" },
                       "diagStorageAccountName": { "value": "[variables('diagStorageAccountName')]" },
                          "publicIPAddressName": { "value": "[variables(   'publicIPAddressName')]" },

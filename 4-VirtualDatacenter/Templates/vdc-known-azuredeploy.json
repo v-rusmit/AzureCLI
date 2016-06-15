@@ -266,7 +266,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/sharedresources/vdc-biztier-azuredeploy.json" },
+                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/sharedresources/vdc-sqltier-azuredeploy.json" },
 
                 "parameters": {
                              "apiVersion": { "value": "[       parameters('apiVersion')]" },

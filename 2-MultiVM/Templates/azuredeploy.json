@@ -3,14 +3,22 @@
     "contentVersion": "1.0.0.0",
 
     "parameters": {
-               "appName": { "type": "string", "defaultValue": "myapp",                                            "metadata": { "description": "Name of Application"            }  },
-        "appEnvironment": { "type": "string", "defaultValue": "dev",   "allowedValues": [ "dev", "qa", "prod" ],  "metadata": { "description": "Environment for Application"    }  },
-         "instanceCount": { "type": "int",    "defaultValue": 2,                                                  "metadata": { "description": "Number of Instances to create"  }  }
-    },
+               "appName": { "type": "string", "defaultValue": "myapp",                                                     "metadata": { "description": "Name of Application"                      } },
+        "appEnvironment": { "type": "string", "defaultValue": "dev",   "allowedValues": [ "dev", "qa", "prod" ],           "metadata": { "description": "Environment for Application"              } },
+         "instanceCount": { "type": "int",    "defaultValue": 2,                                                           "metadata": { "description": "Number of Instances to create"            } },
+          "templatePath": { "type": "string", "defaultValue": "https://azureclisa.blob.core.windows.net/sharedresources/", "metadata": { "description": "Path to templates for this implmentation" } },
+    "commonTemplatePath": { "type": "string", "defaultValue": "https://azureclisa.blob.core.windows.net/templates/",       "metadata": { "description": "Path to core/common/reusable templatess"  } }
+     },
 
 
     "variables": {
-        "apiVersion": "2016-02-01",
+
+        "commonSettings": {
+            "apiVersion": "2016-02-01",
+                  "templatePath": "[parameters(      'templatePath')]",
+            "commonTemplatePath": "[parameters('commonTemplatePath')]"
+        },
+
         "diskStorageAccountName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'disk'))]",
         "diagStorageAccountName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'diag'))]",
            "publicIPAddressName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'pip' ))]",
@@ -27,16 +35,16 @@
         {
             "name": "shared",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[variables('apiVersion')]",
+            "apiVersion": "[variables('commonSettings').apiVersion]",
 
             "properties": {
                 "mode": "incremental",
                 "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/sharedresources/multivm-shared-azuredeploy.json" },
 
                 "parameters": {
-                                  "apiVersion": { "value": "[variables('apiVersion')]" },
-                          "virtualNetworkName": { "value": "[variables(      'virtualNetworkName')]" },
-                                  "subnetName": { "value": "[variables(              'subnetName')]" }
+                        "commonSettings": { "value": "[variables('commonSettings')]"     },
+                    "virtualNetworkName": { "value": "[variables('virtualNetworkName')]" },
+                            "subnetName": { "value": "[variables(        'subnetName')]" }
                 }
             }
         },
@@ -46,7 +54,7 @@
         {
             "name": "known",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[variables('apiVersion')]",
+            "apiVersion": "[variables('commonSettings').apiVersion]",
 
             "dependsOn": [ "Microsoft.Resources/deployments/shared" ],
            
@@ -55,23 +63,19 @@
                 "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/sharedresources/multivm-known-azuredeploy.json" },
 
                 "parameters": {
-                                  "apiVersion": { "value": "[ variables('apiVersion')]" },
-                          "virtualNetworkName": { "value": "[ variables(      'virtualNetworkName')]" },
-                                  "subnetName": { "value": "[ variables(              'subnetName')]" },
-                         "availabilitySetName": { "value": "[ variables(     'availabilitySetName')]" },
-                            "loadBalancerName": { "value": "[ variables(        'loadBalancerName')]" },
-                         "publicIPAddressName": { "value": "[ variables(     'publicIPAddressName')]" },
-                      "diskStorageAccountName": { "value": "[ variables(  'diskStorageAccountName')]" },
-                      "diagStorageAccountName": { "value": "[ variables(  'diagStorageAccountName')]" },
-                               "instanceCount": { "value": "[parameters('instanceCount')]" },
-                                  "vmNameRoot": { "value": "[ variables(   'vmNameRoot')]" },
-                                 "nicNameRoot": { "value": "[ variables(  'nicNameRoot')]" }
+                            "commonSettings": { "value": "[ variables('commonSettings')]"           },
+                        "virtualNetworkName": { "value": "[ variables(      'virtualNetworkName')]" },
+                                "subnetName": { "value": "[ variables(              'subnetName')]" },
+                       "availabilitySetName": { "value": "[ variables(     'availabilitySetName')]" },
+                          "loadBalancerName": { "value": "[ variables(        'loadBalancerName')]" },
+                       "publicIPAddressName": { "value": "[ variables(     'publicIPAddressName')]" },
+                    "diskStorageAccountName": { "value": "[ variables(  'diskStorageAccountName')]" },
+                    "diagStorageAccountName": { "value": "[ variables(  'diagStorageAccountName')]" },
+                             "instanceCount": { "value": "[parameters('instanceCount')]" },
+                                "vmNameRoot": { "value": "[ variables(   'vmNameRoot')]" },
+                               "nicNameRoot": { "value": "[ variables(  'nicNameRoot')]" }
                 }
             }
         }   
-
-
-
-
-  ]
+    ]
 }

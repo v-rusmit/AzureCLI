@@ -1,0 +1,6 @@
+﻿{
+    "itemDisplayName": "nTier Model",
+    "description": "Sample deployment template for a nTier environment, featuring multiple VM's in web/biz/data tiers",
+    "author": "Kevin Bergman",
+    "dateCreated":  "2016-06-10"
+}

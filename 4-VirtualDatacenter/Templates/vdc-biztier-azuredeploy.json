@@ -87,7 +87,7 @@
             "apiVersion": "[parameters('apiVersion')]",
 
             "copy": {
-                "name": "vmcopy",
+                "name": "vmCopy",
                 "count": "[parameters('instanceCount')]"
             },
 
@@ -113,6 +113,5 @@
                 }
             }
         }
-    
     ]
 }
