@@ -21,3 +21,15 @@ Quisque a justo interdum,
 The sample solution configures a stateless web presence application running on each instance.
 [![Deploy in Azure](../images/.png)](http://github.com)
 [![Demo the solution](../images/.png)](http://github.com)
+
+## Deploy using CLI
+* Download scripts from [here](http://github.com).
+* [How to video](http://github.com) (3 min)
+
+## Deploy using PowerShell
+* Download scripts from [here](http://github.com).
+* [How to video](http://github.com) (3 min)
+
+## Deploy using ARM Template
+* Download scripts from [here](http://github.com).
+* [How to video](http://github.com) (3 min)
