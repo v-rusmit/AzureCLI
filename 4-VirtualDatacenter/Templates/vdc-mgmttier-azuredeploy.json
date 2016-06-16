@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     
     "parameters": {
-                    "apiVersion": { "type": "string", "defaultValue":"2016-02-01",  "metadata": { "description": "Common API"                             } },
+        "commonSettings":         { "type": "object",                               "metadata": { "description": "Common API values"                      } },
            "publicIPAddressName": { "type": "string",                               "metadata": { "description": "Name of JumpBox Public IP Address"      } },
             "virtualNetworkName": { "type": "string",                               "metadata": { "description": "Name of Virtual Network"                } },
                     "subnetName": { "type": "string",                               "metadata": { "description": "Name of the Subnet"                     } },
@@ -53,13 +53,13 @@
         {
             "name": "mgmt-sn",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
 
             "dependsOn": [ "[concat('Microsoft.Network/networkSecurityGroups/', variables('networkSecurityGroupName'))]" ],
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/vnet-add-new-subnet-with-nsg.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'vnet-add-new-subnet-with-nsg.json')]" },
 
                 "parameters": {
                             "existingVNETName": { "value": "[parameters(     'virtualNetworkName')]" },
@@ -75,16 +75,15 @@
         {
             "name": "mgmt-nic",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
 
             "dependsOn": [ "Microsoft.Resources/deployments/mgmt-sn" ],
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/nic-via-pip.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'nic-via-pip.json')]" },
 
                 "parameters": {
-                    "apiVersion":          { "value": "[parameters('apiVersion')]"          },
                     "publicIPAddressName": { "value": "[parameters('publicIPAddressName')]" },
                                 "nicName": { "value": "[ variables(            'nicName')]" },
                      "virtualNetworkName": { "value": "[parameters( 'virtualNetworkName')]" },
@@ -98,14 +97,13 @@
         {
             "name": "mgmt-sa",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/storage-account.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'storage-account.json')]" },
 
                 "parameters": {
-                    "apiVersion":         { "value": "[parameters(            'apiVersion')]" },
                     "storageAccountName": { "value": "[ variables('diskStorageAccountName')]" }
                 }
             }
@@ -116,7 +114,7 @@
         {
             "name": "vm",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
 
             "dependsOn": [
                 "Microsoft.Resources/deployments/mgmt-sn",
@@ -126,10 +124,9 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/vm-via-nic.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'vm-via-nic.json')]" },
 
                 "parameters": {
-                    "apiVersion":             { "value": "[parameters('apiVersion')]"             },
                                     "vmName": { "value": "[parameters(                'vmName')]" },
                     "diskStorageAccountName": { "value": "[ variables('diskStorageAccountName')]" },
                     "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]" },

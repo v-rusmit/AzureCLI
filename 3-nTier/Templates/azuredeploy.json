@@ -66,7 +66,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(variables('commonSettings').TemplatePath,'nTier-shared-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(variables('commonSettings').templatePath,'nTier-shared-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":         { "value": "[variables('commonSettings')]"         },
@@ -88,7 +88,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(variables('commonSettings').TemplatePath,'nTier-known-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(variables('commonSettings').templatePath,'nTier-known-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":         { "value": "[variables('commonSettings')]"          },

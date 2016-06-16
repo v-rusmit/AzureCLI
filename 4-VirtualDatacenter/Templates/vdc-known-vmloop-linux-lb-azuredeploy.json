@@ -3,16 +3,16 @@
     "contentVersion": "1.0.0.0",
 
     "parameters": {
-        "apiVersion":               { "type": "string", "defaultValue": "2016-02-01",  "metadata": { "description": "Common API" }                                         },
-              "virtualNetworkName": { "type": "string",                                "metadata": { "description": "Name of Virtual Network"                           }  },
-                "publicSubnetName": { "type": "string",                                "metadata": { "description": "Name of the subnet"                                }  },
-               "privateSubnetName": { "type": "string",                                "metadata": { "description": "Name of the  subnet"                               }  },
-             "availabilitySetName": { "type": "string"                                                                                                                     },
-                "loadBalancerName": { "type": "string",                                "metadata": { "description": "This is the name of the load balancer"             }  },
-          "diskStorageAccountName": { "type": "string",                                "metadata": { "description": "Name of storage account for VHD's"                 }  },
-          "diagStorageAccountName": { "type": "string",                                "metadata": { "description": "Name of storage account for diagnostics"           }  },
-                       "thisIndex": { "type": "int",                                   "metadata": { "description": "Index Number (of a loop)"                          }  },
-                          "vmName": { "type": "string",                                "metadata": { "description": "Name of the virtual machine."                      }  }
+        "commonSettings":         { "type": "object",                               "metadata": { "description": "Common API values"                                    } },
+              "virtualNetworkName": { "type": "string",                                "metadata": { "description": "Name of Virtual Network"                           } },
+                "publicSubnetName": { "type": "string",                                "metadata": { "description": "Name of the subnet"                                } },
+               "privateSubnetName": { "type": "string",                                "metadata": { "description": "Name of the  subnet"                               } },
+             "availabilitySetName": { "type": "string"                                                                                                                    },
+                "loadBalancerName": { "type": "string",                                "metadata": { "description": "This is the name of the load balancer"             } },
+          "diskStorageAccountName": { "type": "string",                                "metadata": { "description": "Name of storage account for VHD's"                 } },
+          "diagStorageAccountName": { "type": "string",                                "metadata": { "description": "Name of storage account for diagnostics"           } },
+                       "thisIndex": { "type": "int",                                   "metadata": { "description": "Index Number (of a loop)"                          } },
+                          "vmName": { "type": "string",                                "metadata": { "description": "Name of the virtual machine."                      } }
     },
 
     "variables": {
@@ -26,14 +26,13 @@
         {
             "name": "[parameters('diskStorageAccountName')]",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/storage-account.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'storage-account.json')]" },
 
                 "parameters": {
-                    "apiVersion":         { "value": "[parameters(            'apiVersion')]" },
                     "storageAccountName": { "value": "[parameters('diskStorageAccountName')]" }
                 }
             }
@@ -44,14 +43,13 @@
         {
             "name": "[variables('publicNicName')]",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
    
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/nic-inside-load-balancer.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'nic-inside-load-balancer.json')]" },
 
                 "parameters": {
-                            "apiVersion": { "value": "[parameters('apiVersion')]"         },
                                "nicName": { "value": "[ variables(     'publicNicName')]" },
                       "loadBalancerName": { "value": "[parameters(  'loadBalancerName')]" },
                     "virtualNetworkName": { "value": "[parameters('virtualNetworkName')]" },
@@ -65,14 +63,13 @@
         {
             "name": "[variables('privateNicName')]",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
    
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/nic.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'nic.json')]" },
 
                 "parameters": {
-                            "apiVersion": { "value": "[parameters('apiVersion')]"         },
                                "nicName": { "value": "[ variables(    'privateNicName')]" },
                     "virtualNetworkName": { "value": "[parameters('virtualNetworkName')]" },
                             "subnetName": { "value": "[parameters( 'privateSubnetName')]" }
@@ -85,7 +82,7 @@
         {
             "name": "[parameters('vmName')]",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
 
             "dependsOn": [
                 "[concat('Microsoft.Resources/deployments/', parameters('diskStorageAccountName'))]",
@@ -95,10 +92,9 @@
             
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/linuxvm-with-dual-nic-in-availability-set.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'linuxvm-with-dual-nic-in-availability-set.json')]" },
 
                 "parameters": {
-                                "apiVersion": { "value": "[parameters('apiVersion')]"             },
                                     "vmName": { "value": "[parameters(                'vmName')]" },
                     "diskStorageAccountName": { "value": "[parameters('diskStorageAccountName')]" },
                     "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]" },        

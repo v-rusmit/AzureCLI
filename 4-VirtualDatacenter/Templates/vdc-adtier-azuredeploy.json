@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     
     "parameters": {
-                    "apiVersion": { "type": "string", "defaultValue":"2016-02-01",  "metadata": { "description": "Common API"                             } },
+        "commonSettings":         { "type": "object",                               "metadata": { "description": "Common API values"                      } },
             "virtualNetworkName": { "type": "string",                               "metadata": { "description": "Name of Virtual Network"                } },
                     "subnetName": { "type": "string",                               "metadata": { "description": "Name of the Subnet"                     } },
                    "subnetRange": { "type": "string",                               "metadata": { "description": "Range of the Subnet"                    } },
@@ -21,14 +21,13 @@
         {
             "name": "[parameters('availabilitySetName')]",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/availability-set.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'availability-set.json')]" },
 
                 "parameters": {
-                    "apiVersion":          { "value": "[parameters('apiVersion')]" },
                     "availabilitySetName": { "value": "[parameters('availabilitySetName')]" }
                 }
             }
@@ -39,14 +38,13 @@
         {
             "name": "[parameters('subnetName')]",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
      
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/vnet-add-new-subnet.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'vnet-add-new-subnet.json')]" },
 
                 "parameters": {
-                    "apiVersion":             { "value": "[parameters('apiVersion')]"          },
                           "existingVNETName": { "value": "[parameters( 'virtualNetworkName')]" },
                              "newSubnetName": { "value": "[parameters(         'subnetName')]" },
                     "newSubnetAddressPrefix": { "value": "[parameters(        'subnetRange')]" }
@@ -59,7 +57,7 @@
         {
             "name": "[concat(copyIndex(),parameters('vmName'))]",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').apiVersion]",
 
             "copy": {
                 "name": "vmcopy",
@@ -73,10 +71,10 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/sharedresources/vdc-known-vmloop-nolb-azuredeploy.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').templatePath,'vdc-known-vmloop-nolb-azuredeploy.json')]" },
 
                 "parameters": {
-                    "apiVersion":             { "value": "[parameters('apiVersion')]" },
+                    "commonSettings":         { "value": "[parameters('commonSettings')]"         },
                         "virtualNetworkName": { "value": "[parameters(    'virtualNetworkName')]" },
                                 "subnetName": { "value": "[parameters(            'subnetName')]" },
                        "availabilitySetName": { "value": "[parameters(   'availabilitySetName')]" },
