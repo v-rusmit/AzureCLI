@@ -66,7 +66,7 @@
         {
             "name": "sql-sn",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
             "dependsOn": [ "[concat('Microsoft.Network/networkSecurityGroups/', variables('networkSecurityGroupName'))]" ],
      
@@ -87,7 +87,7 @@
         {
             "name": "sql-as",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
             "properties": {
                 "mode": "incremental",
@@ -104,7 +104,7 @@
         {
             "name": "[concat('vmLoopSql', copyIndex())]",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
             "dependsOn": [
                 "Microsoft.Resources/deployments/sql-sn",

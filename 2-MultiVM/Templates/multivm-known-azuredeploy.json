@@ -21,7 +21,7 @@
         {
             "name": "as",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
             "properties": {
                 "mode": "incremental",
@@ -38,7 +38,7 @@
         {
             "name": "lb",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
             "properties": {
                 "mode": "incremental",
@@ -56,7 +56,7 @@
         {
             "name": "diag",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
             "properties": {
                 "mode": "incremental",
@@ -73,7 +73,7 @@
         {
             "name": "[concat('vmLoop', copyIndex())]",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
             "dependsOn": [
                 "Microsoft.Resources/deployments/as",

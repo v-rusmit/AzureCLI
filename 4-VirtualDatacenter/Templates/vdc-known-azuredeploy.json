@@ -66,7 +66,7 @@
         {
             "name": "nvaPip",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
             "properties": {
                 "mode": "incremental",
@@ -83,7 +83,7 @@
         {
             "name": "jbPip",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
             "properties": {
                 "mode": "incremental",
@@ -199,7 +199,7 @@
         {
             "name": "adTier",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
             "properties": {
                 "mode": "incremental",
@@ -224,7 +224,7 @@
         {
             "name": "dmzTier",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
             "dependsOn": [ "Microsoft.Resources/deployments/nvaPip" ],
 
@@ -255,7 +255,7 @@
         {
             "name": "sqlAlwaysOn",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
             "dependsOn": [
                 "Microsoft.Resources/deployments/adTier",
@@ -288,7 +288,7 @@
         {
             "name": "serviceTier-A",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
             "dependsOn": [ "[concat('Microsoft.Network/networkSecurityGroups/', variables('serviceTierNSGName'))]" ],
 
@@ -318,7 +318,7 @@
         {
             "name": "serviceTier-B",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
             "dependsOn": [ "[concat('Microsoft.Network/networkSecurityGroups/', variables('serviceTierNSGName'))]" ],
 
@@ -348,7 +348,7 @@
         {
             "name": "mgmtTier",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
             "dependsOn": [ "Microsoft.Resources/deployments/jbPip" ],
 

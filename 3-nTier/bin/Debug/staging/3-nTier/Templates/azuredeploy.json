@@ -19,7 +19,7 @@
     "variables": {
 
         "commonSettings": {
-            "apiVersion": "2016-02-01",
+            "resourceApiVersion": "2016-02-01",
                   "templatePath": "[parameters(      'templatePath')]",
             "commonTemplatePath": "[parameters('commonTemplatePath')]"
         },
@@ -62,11 +62,11 @@
         {
                   "name": "shared",
                   "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[variables('commonSettings').apiVersion]",
+            "apiVersion": "[variables('commonSettings').resourceApiVersion]",
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(variables('commonSettings').TemplatePath,'nTier-shared-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(variables('commonSettings').templatePath,'nTier-shared-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":         { "value": "[variables('commonSettings')]"         },
@@ -82,13 +82,13 @@
         {
                   "name": "known",
                   "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[variables('commonSettings').apiVersion]",
+            "apiVersion": "[variables('commonSettings').resourceApiVersion]",
 
             "dependsOn": [ "Microsoft.Resources/deployments/shared" ],
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(variables('commonSettings').TemplatePath,'nTier-known-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(variables('commonSettings').templatePath,'nTier-known-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":         { "value": "[variables('commonSettings')]"          },

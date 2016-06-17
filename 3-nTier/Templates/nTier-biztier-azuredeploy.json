@@ -24,7 +24,7 @@
         {
             "name": "biz-lb",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
      
             "dependsOn": [ "Microsoft.Resources/deployments/biz-sn" ],
 
@@ -46,7 +46,7 @@
         {
             "name": "biz-sn",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
      
             "properties": {
                 "mode": "incremental",
@@ -65,7 +65,7 @@
         {
             "name": "biz-as",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
      
             "properties": {
                 "mode": "incremental",
@@ -82,7 +82,7 @@
         {
             "name": "[concat('vmLoopBiz', copyIndex())]",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
             "dependsOn": [
                 "Microsoft.Resources/deployments/biz-lb",

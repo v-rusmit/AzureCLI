@@ -24,7 +24,7 @@
         {
             "name": "web-lb",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
      
             "properties": {
                 "mode": "incremental",
@@ -41,7 +41,7 @@
         {
             "name": "web-sn",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
      
             "properties": {
                 "mode": "incremental",
@@ -60,7 +60,7 @@
         {
             "name": "web-as",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
      
             "properties": {
                 "mode": "incremental",
@@ -76,7 +76,7 @@
         {
             "name": "[concat('vmLoopWeb', copyIndex())]",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
             "dependsOn": [
                 "Microsoft.Resources/deployments/web-lb",

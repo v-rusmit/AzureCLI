@@ -22,7 +22,7 @@
         {
             "name": "[parameters('availabilitySetName')]",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
             "properties": {
                 "mode": "incremental",
@@ -39,7 +39,7 @@
         {
             "name": "[parameters('subnetName')]",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
      
             "properties": {
                 "mode": "incremental",
@@ -59,7 +59,7 @@
         {
             "name": "[parameters('loadBalancerName')]",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
             "dependsOn": [ "[concat('Microsoft.Resources/deployments/', parameters('subnetName')) ]" ],
 
@@ -81,7 +81,7 @@
         {
             "name": "[concat(copyIndex(),parameters('vmName'))]",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
             "copy": {
                 "name": "vmcopy",

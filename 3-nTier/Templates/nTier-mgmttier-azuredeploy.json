@@ -54,7 +54,7 @@
         {
             "name": "mgmt-sn",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
             "dependsOn": [ "[concat('Microsoft.Network/networkSecurityGroups/', variables('networkSecurityGroupName'))]" ],
 
@@ -76,7 +76,7 @@
         {
             "name": "mgmt-nic",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
             "dependsOn": [ "Microsoft.Resources/deployments/mgmt-sn" ],
 
@@ -98,7 +98,7 @@
         {
             "name": "mgmt-sa",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
             "properties": {
                 "mode": "incremental",
@@ -115,7 +115,7 @@
         {
             "name": "vm",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
             "dependsOn": [
                 "Microsoft.Resources/deployments/mgmt-sn",

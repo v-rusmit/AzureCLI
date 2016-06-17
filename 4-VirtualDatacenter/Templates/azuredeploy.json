@@ -20,7 +20,7 @@
     "variables": {
 
         "commonSettings": {
-            "apiVersion": "2016-02-01",
+            "resourceApiVersion": "2016-02-01",       // all tempaltes in this hierarchical project use this value for  "type": "Microsoft.Resources/deployments",
                   "templatePath": "[parameters(      'templatePath')]",
             "commonTemplatePath": "[parameters('commonTemplatePath')]"
         },
@@ -30,7 +30,7 @@
         "diagStorageAccountName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'diag'))]",
         "diskStorageAccountRoot": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'disk'))]",
         "appPublicIPAddressName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'pip' ))]",
-        "jbPublicIPAddressName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'Jpip'))]",
+         "jbPublicIPAddressName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'Jpip'))]",
 
         "virtualNetworkName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-vnet')]",
 
@@ -67,7 +67,7 @@
         {
                   "name": "shared",
                   "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[variables('commonSettings').apiVersion]",
+            "apiVersion": "[variables('commonSettings').resourceApiVersion]",
 
             "properties": {
                 "mode": "incremental",
@@ -87,7 +87,7 @@
         {
                   "name": "known",
                   "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[variables('commonSettings').apiVersion]",
+            "apiVersion": "[variables('commonSettings').resourceApiVersion]",
 
             "dependsOn": [ "Microsoft.Resources/deployments/shared" ],
 

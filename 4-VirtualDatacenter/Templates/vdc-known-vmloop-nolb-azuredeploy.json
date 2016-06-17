@@ -20,7 +20,7 @@
         {
             "name": "[parameters('diskStorageAccountName')]",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
             "properties": {
                 "mode": "incremental",
@@ -36,7 +36,7 @@
         {
             "name": "[variables('nicName')]",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
    
             "properties": {
                 "mode": "incremental",
@@ -55,7 +55,7 @@
         {
             "name": "[parameters('vmName')]",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
             "dependsOn": [
                 "[concat('Microsoft.Resources/deployments/', parameters('diskStorageAccountName'))]",

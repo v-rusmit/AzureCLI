@@ -25,7 +25,7 @@
         {
             "name": "dmz-lb",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
      
             "properties": {
                 "mode": "incremental",
@@ -43,7 +43,7 @@
         {
             "name": "dmz-sn-public",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
      
             "properties": {
                 "mode": "incremental",
@@ -63,7 +63,7 @@
         {
             "name": "dmz-sn-private",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
             "dependsOn": [ "Microsoft.Resources/deployments/dmz-sn-public" ],
      
@@ -85,7 +85,7 @@
         {
             "name": "dmz-as",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
      
             "properties": {
                 "mode": "incremental",
@@ -101,7 +101,7 @@
         {
             "name": "[concat('vmLoopDMZ', copyIndex())]",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').apiVersion]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
             "dependsOn": [
                 "Microsoft.Resources/deployments/dmz-lb",
