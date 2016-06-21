@@ -3,87 +3,18 @@
     "contentVersion": "1.0.0.0",
     
     "parameters": {
-        "commonSettings":         { "type": "object",                               "metadata": { "description": "Common API values"                      } },
-            "virtualNetworkName": { "type": "string",                               "metadata": { "description": "Name of Virtual Network"                } },
-                    "subnetName": { "type": "string",                               "metadata": { "description": "Name of the Subnet"                     } },
-                   "subnetRange": { "type": "string",                               "metadata": { "description": "Range of the Subnet"                    } },
-                "bizSubnetRange": { "type": "string",                               "metadata": { "description": "Range of the Subnet"                    } },
-               "mgmtSubnetRange": { "type": "string",                               "metadata": { "description": "Range of the Subnet"                    } },
-           "availabilitySetName": { "type": "string",                               "metadata": { "description": "Name of the Availability Set"           } },
-                 "InstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of instances to create"          } },
-        "diagStorageAccountName": { "type": "string",                               "metadata": { "description": "Name of Storage Account for diagnostics"} },
-        "diskStorageAccountRoot": { "type": "string",                               "metadata": { "description": "Name of Storage Account for vhds"       } },
-                        "vmName": { "type": "string",                               "metadata": { "description": "RootName of the VM's"                   } },
-                       "nicName": { "type": "string",                               "metadata": { "description": "RootName of the NIC's"                  } }
+        "commonSettings":           { "type": "object",                       "metadata": { "description": "Common API values"                      } },
+        "virtualNetworkParameters": { "type": "object",                       "metadata": { "description": "Common VNET values"                     } },
+             "availabilitySetName": { "type": "string",                       "metadata": { "description": "Name of the Availability Set"           } },
+                   "InstanceCount": { "type": "int",    "defaultValue": 1,    "metadata": { "description": "Number of instances to create"          } },
+          "diagStorageAccountName": { "type": "string",                       "metadata": { "description": "Name of Storage Account for diagnostics"} },
+          "diskStorageAccountRoot": { "type": "string",                       "metadata": { "description": "Name of Storage Account for vhds"       } },
+                          "vmName": { "type": "string",                       "metadata": { "description": "RootName of the VM's"                   } },
+                         "nicName": { "type": "string",                       "metadata": { "description": "RootName of the NIC's"                  } }
     },
 
-    "variables": { "networkSecurityGroupName": "[concat(parameters('subnetName'), '-nsg')]" },
 
     "resources": [
-   
-        {
-            "name": "[variables('networkSecurityGroupName')]",
-            "type": "Microsoft.Network/networkSecurityGroups",
-            "location": "[resourceGroup().location]",
-            "apiVersion": "2016-03-30",
-
-            "properties": {
-                "securityRules": [
-                    {
-                        "name": "biz",
-                        "properties": {
-                            "description": "Allow Business Tier",
-                            "protocol": "*",
-                            "sourcePortRange": "*",
-                            "destinationPortRange": "*",
-                            "sourceAddressPrefix": "[parameters('bizSubnetRange')]",
-                            "destinationAddressPrefix": "*",
-                            "access": "Allow",
-                            "priority": 100,
-                            "direction": "Inbound"
-                        }
-                    },
-                    {
-                        "name": "RDP",
-                        "properties": {
-                            "description": "Allow RDP from Management JumpBox",
-                            "protocol": "Tcp",
-                            "sourcePortRange": "*",
-                            "destinationPortRange": "3389",
-                            "sourceAddressPrefix": "[parameters('mgmtSubnetRange')]",
-                            "destinationAddressPrefix": "*",
-                            "access": "Allow",
-                            "priority": 200,
-                            "direction": "Inbound"
-                        }
-                    }
-                ]
-            }
-        },
-
-
-
-        {
-            "name": "sql-sn",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
-
-            "dependsOn": [ "[concat('Microsoft.Network/networkSecurityGroups/', variables('networkSecurityGroupName'))]" ],
-     
-            "properties": {
-                "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'vnet-add-new-subnet-with-nsg.json')]" },
-
-                "parameters": {
-                            "existingVNETName": { "value": "[parameters(      'virtualNetworkName')]" },
-                               "newSubnetName": { "value": "[parameters(              'SubnetName')]" },
-                      "newSubnetAddressPrefix": { "value": "[parameters(             'SubnetRange')]" },
-                    "networkSecurityGroupName": { "value": "[ variables('networkSecurityGroupName')]" }
-                   
-                }
-            }
-        },
-
         {
             "name": "sql-as",
             "type": "Microsoft.Resources/deployments",
@@ -91,9 +22,10 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'availability-set.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/availability-set.json')]" },
 
                 "parameters": {
+                    "commonSettings":      { "value": "[parameters('commonSettings')]"      },
                     "availabilitySetName": { "value": "[parameters('availabilitySetName')]" }
                 }
             }
@@ -106,25 +38,20 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
-            "dependsOn": [
-                "Microsoft.Resources/deployments/sql-sn",
-                "Microsoft.Resources/deployments/sql-as"        ],
+            "dependsOn": [ "Microsoft.Resources/deployments/sql-as" ],
 
-            "copy": {
-                "name": "vmcopy",
-                "count": "[parameters('instanceCount')]"
-            },
+            "copy": { "name": "vmcopy", "count": "[parameters('instanceCount')]" },
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').templatePath,'nTier-known-vmloop-nolb-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/nTier-known-vmloop-nolb-azuredeploy.json')]" },
 
                 "parameters": {
-                    "commonSettings":         { "value": "[parameters('commonSettings')]"         },
-                        "virtualNetworkName": { "value": "[parameters(    'virtualNetworkName')]" },
-                                "subnetName": { "value": "[parameters(            'subnetName')]" },
-                       "availabilitySetName": { "value": "[parameters(   'availabilitySetName')]" },
-                    "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]" },
+                    "commonSettings":         { "value": "[parameters('commonSettings')]"                                 },
+                        "virtualNetworkName": { "value": "[parameters('virtualNetworkParameters').virtualNetworkName]"    },
+                                "subnetName": { "value": "[parameters('virtualNetworkParameters').sqlSubnetName]"         },
+                       "availabilitySetName": { "value": "[parameters(   'availabilitySetName')]"                         },
+                    "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]"                         },
                                  "thisIndex": { "value": "[                                                copyIndex() ]" },
                                     "vmName": { "value": "[concat(parameters( 'vmName'),                   copyIndex())]" },
                                    "nicName": { "value": "[concat(parameters('nicName'),                   copyIndex())]" },

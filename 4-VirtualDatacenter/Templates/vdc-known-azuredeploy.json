@@ -70,9 +70,10 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'public-ip.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/public-ip.json')]" },
 
                 "parameters": {
+                    "commonSettings":      { "value": "[parameters('commonSettings')]"         },
                     "publicIPAddressName": { "value": "[parameters('nvaPublicIPAddressName')]" }
                 }
             }
@@ -87,9 +88,10 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'public-ip.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/public-ip.json')]" },
 
                 "parameters": {
+                    "commonSettings":      { "value": "[parameters('commonSettings')]"        },
                     "publicIPAddressName": { "value": "[parameters('jbPublicIPAddressName')]" }
 
                 }
@@ -203,7 +205,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').TemplatePath,'vdc-adtier-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/vdc-adtier-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":      { "value": "[parameters('commonSettings')]"                      },
@@ -230,7 +232,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').TemplatePath,'vdc-dmztier-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/vdc-dmztier-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":      { "value": "[parameters('commonSettings')]"                       },
@@ -264,7 +266,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').TemplatePath,'vdc-sqltier-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/vdc-sqltier-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":      { "value": "[parameters('commonSettings')]"                       },
@@ -294,7 +296,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').TemplatePath,'vdc-biztier-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/vdc-biztier-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":      { "value": "[parameters('commonSettings')]"                       },
@@ -324,7 +326,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').TemplatePath,'vdc-biztier-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/vdc-biztier-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":      { "value": "[parameters('commonSettings')]"                       },
@@ -354,7 +356,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').TemplatePath,'vdc-mgmttier-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/vdc-mgmttier-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":      { "value": "[parameters('commonSettings')]"         },

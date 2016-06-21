@@ -23,9 +23,10 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'storage-account.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/storage-account.json')]" },
 
                 "parameters": {
+                    "commonSettings":     { "value": "[parameters('commonSettings')]"         },
                     "storageAccountName": { "value": "[parameters('diskStorageAccountName')]" }
                 }
             }
@@ -39,9 +40,10 @@
    
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'nic.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/nic.json')]" },
 
                 "parameters": {
+                    "commonSettings":     { "value": "[parameters('commonSettings')]"     },
                                "nicName": { "value": "[parameters(           'nicName')]" },
                     "virtualNetworkName": { "value": "[parameters('virtualNetworkName')]" },
                             "subnetName": { "value": "[parameters(        'subnetName')]" }
@@ -63,9 +65,10 @@
             
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'vm-via-nic-with-availability-set.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/vm-via-nic-with-availability-set.json')]" },
 
                 "parameters": {
+                    "commonSettings":         { "value": "[parameters('commonSettings')]"         },
                                     "vmName": { "value": "[parameters(                'vmName')]" },
                     "diskStorageAccountName": { "value": "[parameters('diskStorageAccountName')]" },
                     "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]" },        

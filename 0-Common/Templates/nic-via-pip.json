@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     
     "parameters": {
-        "apiVersion"         : { "type": "string", "defaultValue":"2016-02-01",  "metadata": { "description": "Common API"                                                                                            } },
+        "commonSettings":      { "type": "object", "metadata": { "description": "Common API values"                              } },
         "publicIPAddressName": { "type": "string", "metadata": { "description": "Name of public IP Address for VM"               } },
                     "nicName": { "type": "string", "metadata": { "description": "Name of the simulated Network interface card."  } },
          "virtualNetworkName": { "type": "string", "metadata": { "description": "Name of the Virtual Network."                   } },

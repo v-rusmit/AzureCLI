@@ -59,9 +59,10 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'vnet-add-new-subnet-with-nsg.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/vnet-add-new-subnet-with-nsg.json')]" },
 
                 "parameters": {
+                    "commonSettings":           { "value": "[parameters('commonSettings')]"          },
                             "existingVNETName": { "value": "[parameters(     'virtualNetworkName')]" },
                                "newSubnetName": { "value": "[parameters(             'SubnetName')]" },
                       "newSubnetAddressPrefix": { "value": "[parameters(            'SubnetRange')]" },
@@ -81,9 +82,10 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'nic-via-pip.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/nic-via-pip.json')]" },
 
                 "parameters": {
+                    "commonSettings":      { "value": "[parameters('commonSettings')]"      },
                     "publicIPAddressName": { "value": "[parameters('publicIPAddressName')]" },
                                 "nicName": { "value": "[ variables(            'nicName')]" },
                      "virtualNetworkName": { "value": "[parameters( 'virtualNetworkName')]" },
@@ -101,9 +103,10 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'storage-account.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/storage-account.json')]" },
 
                 "parameters": {
+                    "commonSettings":     { "value": "[parameters('commonSettings')]"         },
                     "storageAccountName": { "value": "[ variables('diskStorageAccountName')]" }
                 }
             }
@@ -124,9 +127,10 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'vm-via-nic.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/vm-via-nic.json')]" },
 
                 "parameters": {
+                    "commonSettings":         { "value": "[parameters('commonSettings')]"         },
                                     "vmName": { "value": "[parameters(                'vmName')]" },
                     "diskStorageAccountName": { "value": "[ variables('diskStorageAccountName')]" },
                     "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]" },

@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
 
     "parameters": {
-        "apiVersion":         { "type": "string", "defaultValue":"2016-02-01",  "metadata": { "description": "Common API"              } },
+        "commonSettings":     { "type": "object",                               "metadata": { "description": "Common API values"       } },
         "virtualNetworkName": { "type": "string",                               "metadata": { "description": "Name of Virtual Network" } },
         "addressPrefix":      { "type": "string", "defaultValue": "10.0.0.0/8", "metadata": { "description": "Address prefix"          } }
     },

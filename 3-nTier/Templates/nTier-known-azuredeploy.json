@@ -3,49 +3,39 @@
     "contentVersion": "1.0.0.0",
     
     "parameters": {
-        "commonSettings":         { "type": "object",                               "metadata": { "description": "Common API values"                      } },
-            "virtualNetworkName": { "type": "string",                               "metadata": { "description": "Name of Virtual Network"                } },
-        "diagStorageAccountName": { "type": "string",                               "metadata": { "description": "Name of Storage Account for diagnostics"} },
-        "diskStorageAccountRoot": { "type": "string",                               "metadata": { "description": "Name of Storage Account for vhds"       } },
+        "commonSettings":           { "type": "object",                       "metadata": { "description": "Common API values"                      } },
+        "virtualNetworkParameters": { "type": "object",                       "metadata": { "description": "Common VNET values"                     } },
+        "diagStorageAccountName":   { "type": "string",                       "metadata": { "description": "Name of Storage Account for diagnostics"} },
+        "diskStorageAccountRoot":   { "type": "string",                       "metadata": { "description": "Name of Storage Account for vhds"       } },
+      "networkSecurityGroupName":   { "type": "string",                       "metadata": { "description": "Name of Network Security Group"         } },
 
         "webPublicIPAddressName": { "type": "string",                               "metadata": { "description": "Name of Application Public IP Address"  } },
            "bizPrivateIPAddress": { "type": "string",                               "metadata": { "description": "Actual    Biz Layer Public IP Address"  } },
          "jbPublicIPAddressName": { "type": "string",                               "metadata": { "description": "Name of Application Public IP Address"  } },
 
            "webLoadBalancerName": { "type": "string",                               "metadata": { "description": "Name of the web Load Balancer"          } },
-                 "webSubnetName": { "type": "string",                               "metadata": { "description": "Name of the web Subnet"                 } },
         "webAvailabilitySetName": { "type": "string",                               "metadata": { "description": "Name of the web Availability Set"       } },
               "webInstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of Web Tier Instances to create" } },
                      "webVmName": { "type": "string",                               "metadata": { "description": "RootName of the VM's of the web tier"   } },
                     "webNicName": { "type": "string",                               "metadata": { "description": "RootName of the NIC's of the web tier"  } },
 
            "bizLoadBalancerName": { "type": "string",                               "metadata": { "description": "Name of the biz Load Balancer"          } },
-                 "bizSubnetName": { "type": "string",                               "metadata": { "description": "Name of the biz Subnet"                 } },
         "bizAvailabilitySetName": { "type": "string",                               "metadata": { "description": "Name of the biz Availability Set"       } },
               "bizInstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of Biz Layer Instances to create"} },
                      "bizVmName": { "type": "string",                               "metadata": { "description": "RootName of the VM's of the biz tier"   } },
                     "bizNicName": { "type": "string",                               "metadata": { "description": "RootName of the NIC's of the biz tier"  } },
     
-                 "sqlSubnetName": { "type": "string",                               "metadata": { "description": "Name of the data Subnet"                } },
         "sqlAvailabilitySetName": { "type": "string",                               "metadata": { "description": "Name of the data Availability Set"      } },
               "sqlinstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of SQL Instances to create"      } },
                      "sqlVmName": { "type": "string",                               "metadata": { "description": "RootName of the VM's of the sql tier"   } },
                     "sqlNicName": { "type": "string",                               "metadata": { "description": "RootName of the NIC's of the sql tier"  } },
 
-                "mgmtSubnetName": { "type": "string",                               "metadata": { "description": "Name of the management Subnet"          } },
              "mgmtInstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of Mgmt Instances to create"     } },
                     "mgmtVmName": { "type": "string",                               "metadata": { "description": "RootName of the VM's of the mgmt tier"  } },
                    "mgmtNicName": { "type": "string",                               "metadata": { "description": "RootName of the NIC's of the mgmt tier" } },
               "adminAccessRange": { "type": "string",                               "metadata": { "description": "Network subnet where Admins live"       } }
     },
 
-    "variables": {
-        "vnetAddressRange": "10.0.0.0/16",
-          "webSubnetRange": "10.0.0.0/24",
-          "bizSubnetRange": "10.0.1.0/24",
-          "sqlSubnetRange": "10.0.2.0/24",
-         "mgmtSubnetRange": "10.0.3.0/24"
-    },
 
     "resources": [
 
@@ -56,9 +46,10 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'public-ip.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/public-ip.json')]" },
 
                 "parameters": {
+                    "commonSettings":      { "value": "[parameters('commonSettings')]"         },
                     "publicIPAddressName": { "value": "[parameters('webPublicIPAddressName')]" }
                 }
             }
@@ -73,9 +64,10 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'public-ip.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/public-ip.json')]" },
 
                 "parameters": {
+                    "commonSettings":      { "value": "[parameters('commonSettings')]"        },
                     "publicIPAddressName": { "value": "[parameters('jbPublicIPAddressName')]" }
 
                 }
@@ -93,22 +85,19 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').templatePath,'nTier-webtier-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/nTier-webtier-azuredeploy.json')]" },
 
                 "parameters": {
-                    "commonSettings":      { "value": "[parameters('commonSettings')]"         },
-                    "publicIPAddressName": { "value": "[parameters('webPublicIPAddressName')]" },
-                     "virtualNetworkName": { "value": "[parameters(    'virtualNetworkName')]" },
-                       "loadBalancerName": { "value": "[parameters(   'webLoadBalancerName')]" },
-                             "subnetName": { "value": "[parameters(         'webSubnetName')]" },
-                            "subnetRange": { "value": "[ variables(        'webSubnetRange')]" },
-                    "availabilitySetName": { "value": "[parameters('webAvailabilitySetName')]" },
-                          "instanceCount": { "value": "[parameters(      'webInstanceCount')]" },
-                 "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]" },
-                 "diskStorageAccountRoot": { "value": "[parameters('diskStorageAccountRoot')]" },
-                                 "vmName": { "value": "[parameters(             'webVmName')]" },
-                                "nicName": { "value": "[parameters(            'webNicName')]" }
-
+                    "commonSettings":           { "value": "[parameters('commonSettings')]"           },
+                    "virtualNetworkParameters": { "value": "[parameters('virtualNetworkParameters')]" },
+                       "publicIPAddressName":   { "value": "[parameters('webPublicIPAddressName')]"   },
+                          "loadBalancerName":   { "value": "[parameters(   'webLoadBalancerName')]"   },
+                       "availabilitySetName":   { "value": "[parameters('webAvailabilitySetName')]"   },
+                             "instanceCount":   { "value": "[parameters(      'webInstanceCount')]"   },
+                    "diagStorageAccountName":   { "value": "[parameters('diagStorageAccountName')]"   },
+                    "diskStorageAccountRoot":   { "value": "[parameters('diskStorageAccountRoot')]"   },
+                                    "vmName":   { "value": "[parameters(             'webVmName')]"   },
+                                   "nicName":   { "value": "[parameters(            'webNicName')]"   }
                 }
             }
         },
@@ -124,21 +113,19 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').templatePath,'nTier-biztier-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/nTier-biztier-azuredeploy.json')]" },
 
                 "parameters": {
-                    "commonSettings":      { "value": "[parameters('commonSettings')]"         },
-                       "privateIPAddress": { "value": "[parameters(   'bizPrivateIPAddress')]" },
-                     "virtualNetworkName": { "value": "[parameters(    'virtualNetworkName')]" },
-                       "loadBalancerName": { "value": "[parameters(   'bizLoadBalancerName')]" },
-                             "subnetName": { "value": "[parameters(         'bizSubnetName')]" },
-                            "subnetRange": { "value": "[ variables(        'bizSubnetRange')]" },
-                    "availabilitySetName": { "value": "[parameters('bizAvailabilitySetName')]" },
-                          "instanceCount": { "value": "[parameters(      'bizInstanceCount')]" },
-                 "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]" },
-                 "diskStorageAccountRoot": { "value": "[parameters('diskStorageAccountRoot')]" },
-                                 "vmName": { "value": "[parameters(             'bizVmName')]" },
-                                "nicName": { "value": "[parameters(            'bizNicName')]" }
+                    "commonSettings":           { "value": "[parameters('commonSettings')]"           },
+                    "virtualNetworkParameters": { "value": "[parameters('virtualNetworkParameters')]" },
+                          "privateIPAddress":   { "value": "[parameters(   'bizPrivateIPAddress')]"   },
+                          "loadBalancerName":   { "value": "[parameters(   'bizLoadBalancerName')]"   },
+                       "availabilitySetName":   { "value": "[parameters('bizAvailabilitySetName')]"   },
+                             "instanceCount":   { "value": "[parameters(      'bizInstanceCount')]"   },
+                    "diagStorageAccountName":   { "value": "[parameters('diagStorageAccountName')]"   },
+                    "diskStorageAccountRoot":   { "value": "[parameters('diskStorageAccountRoot')]"   },
+                                    "vmName":   { "value": "[parameters(             'bizVmName')]"   },
+                                   "nicName":   { "value": "[parameters(            'bizNicName')]"   }
                 }
             }
         },
@@ -154,21 +141,17 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').templatePath,'nTier-sqltier-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/nTier-sqltier-azuredeploy.json')]" },
 
                 "parameters": {
-                    "commonSettings":      { "value": "[parameters('commonSettings')]"         },
-                     "virtualNetworkName": { "value": "[parameters(    'virtualNetworkName')]" },
-                             "subnetName": { "value": "[parameters(         'sqlSubnetName')]" },
-                            "subnetRange": { "value": "[ variables(        'sqlSubnetRange')]" },
-                         "bizSubnetRange": { "value": "[ variables(        'bizSubnetRange')]" },
-                        "mgmtSubnetRange": { "value": "[ variables(       'mgmtSubnetRange')]" },
-                    "availabilitySetName": { "value": "[parameters('sqlAvailabilitySetName')]" },
-                          "instanceCount": { "value": "[parameters(      'sqlInstanceCount')]" },
-                 "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]" },
-                 "diskStorageAccountRoot": { "value": "[parameters('diskStorageAccountRoot')]" },
-                                 "vmName": { "value": "[parameters(             'sqlVmName')]" },
-                                "nicName": { "value": "[parameters(            'sqlNicName')]" }
+                    "commonSettings":           { "value": "[parameters('commonSettings')]"           },
+                    "virtualNetworkParameters": { "value": "[parameters('virtualNetworkParameters')]" },
+                       "availabilitySetName":   { "value": "[parameters('sqlAvailabilitySetName')]"   },
+                             "instanceCount":   { "value": "[parameters(      'sqlInstanceCount')]"   },
+                    "diagStorageAccountName":   { "value": "[parameters('diagStorageAccountName')]"   },
+                    "diskStorageAccountRoot":   { "value": "[parameters('diskStorageAccountRoot')]"   },
+                                    "vmName":   { "value": "[parameters(             'sqlVmName')]"   },
+                                   "nicName":   { "value": "[parameters(            'sqlNicName')]"   }
                 }
             }
         },
@@ -184,22 +167,82 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').templatePath,'nTier-mgmttier-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/nTier-mgmttier-azuredeploy.json')]" },
 
                 "parameters": {
-                    "commonSettings":      { "value": "[parameters('commonSettings')]"         },
-                    "publicIPAddressName": { "value": "[parameters( 'jbPublicIPAddressName')]" },
-                     "virtualNetworkName": { "value": "[parameters(    'virtualNetworkName')]" },
-                             "subnetName": { "value": "[parameters(        'mgmtSubnetName')]" },
-                            "subnetRange": { "value": "[ variables(       'mgmtSubnetRange')]" },
-                       "adminAccessRange": { "value": "[parameters(      'adminAccessRange')]" },
-                          "instanceCount": { "value": "[parameters(     'mgmtInstanceCount')]" },
-                 "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]" },
-                 "diskStorageAccountRoot": { "value": "[parameters('diskStorageAccountRoot')]" },
-                                 "vmName": { "value": "[parameters(            'mgmtVmName')]" },
-                                "nicName": { "value": "[parameters(           'mgmtNicName')]" }
+                    "commonSettings":           { "value": "[parameters('commonSettings')]"           },
+                    "virtualNetworkParameters": { "value": "[parameters('virtualNetworkParameters')]" },
+                       "publicIPAddressName":   { "value": "[parameters( 'jbPublicIPAddressName')]"   },
+                             "instanceCount":   { "value": "[parameters(     'mgmtInstanceCount')]"   },
+                    "diagStorageAccountName":   { "value": "[parameters('diagStorageAccountName')]"   },
+                    "diskStorageAccountRoot":   { "value": "[parameters('diskStorageAccountRoot')]"   },
+                                    "vmName":   { "value": "[parameters(            'mgmtVmName')]"   },
+                                   "nicName":   { "value": "[parameters(           'mgmtNicName')]"   }
                 }
             }
-        }
+        },
+
+
+
+        {
+            "name": "[parameters('networkSecurityGroupName')]",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2016-03-30",
+
+            "dependsOn": [
+                "Microsoft.Resources/deployments/biztier",
+                "Microsoft.Resources/deployments/sqltier",
+                "Microsoft.Resources/deployments/mgmttier"
+            ],
+
+
+            "properties": {
+                "securityRules": [
+                    {
+                        "name": "sqlInbound",
+                        "properties": {
+                            "description": "Allow Business Tier",
+                            "access": "Allow",
+                            "priority": 100,
+                            "direction": "Inbound",
+                            "protocol": "*",
+                                 "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                                 "sourceAddressPrefix": "[parameters('virtualNetworkParameters').bizSubnetRange]",
+                            "destinationAddressPrefix": "[parameters('virtualNetworkParameters').sqlSubnetRange]"
+                        }
+                    },
+                    {
+                        "name": "RDPinternal",
+                        "properties": {
+                            "description": "Allow RDP from Management JumpBox",
+                            "access": "Allow",
+                            "priority": 200,
+                            "direction": "Inbound",
+                            "protocol": "Tcp",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "3389",
+                            "sourceAddressPrefix": "[parameters('virtualNetworkParameters').mgmtSubnetRange]",
+                            "destinationAddressPrefix": "*"
+                        }
+                    },
+                    {
+                        "name": "RDPexternal",
+                        "properties": {
+                            "description": "Allow RDP for admins only",
+                            "access": "Allow",
+                            "priority": 101,
+                            "direction": "Inbound",
+                            "protocol": "Tcp",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "3389",
+                            "sourceAddressPrefix": "[parameters('adminAccessRange')]",
+                            "destinationAddressPrefix": "*"
+                        }
+                    }
+                ]
+            }
+        } 
     ]
 }

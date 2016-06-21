@@ -25,9 +25,10 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'availability-set.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/availability-set.json')]" },
 
                 "parameters": {
+                    "commonSettings":      { "value": "[parameters('commonSettings')]"      },
                     "availabilitySetName": { "value": "[parameters('availabilitySetName')]" }
                 }
             }
@@ -42,9 +43,10 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'load-balancer-with-public-ip.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/load-balancer-with-public-ip.json')]" },
 
                 "parameters": {
+                    "commonSettings":      { "value": "[parameters('commonSettings')]"      },
                        "loadBalancerName": { "value": "[parameters(   'loadBalancerName')]" },
                     "publicIPAddressName": { "value": "[parameters('publicIPAddressName')]" }
                 }
@@ -60,9 +62,10 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'storage-account.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/storage-account.json')]" },
 
                 "parameters": {
+                    "commonSettings":     { "value": "[parameters('commonSettings')]"         },
                     "storageAccountName": { "value": "[parameters('diagStorageAccountName')]" }
                 }
             }
@@ -88,7 +91,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').templatePath,'multivm-known-loop-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/multivm-known-loop-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":         { "value": "[parameters('commonSettings')]"         },

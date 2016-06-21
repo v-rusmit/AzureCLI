@@ -22,9 +22,10 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'security-group-with-vnet.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/security-group-with-vnet.json')]" },
 
                 "parameters": {
+                    "commonSettings":           { "value": "[parameters('commonSettings')]"           },
                     "networkSecurityGroupName": { "value": "[parameters('networkSecurityGroupName')]" },
                           "virtualNetworkName": { "value": "[parameters(      'virtualNetworkName')]" },
                                   "subnetName": { "value": "[parameters(              'subnetName')]" },

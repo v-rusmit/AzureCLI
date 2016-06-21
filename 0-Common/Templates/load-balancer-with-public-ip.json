@@ -1,12 +1,12 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
+
     "parameters": {
-        "apiVersion":          { "type": "string", "defaultValue":"2016-02-01", "metadata": { "description": "Common API"                            } },
+        "commonSettings":      { "type": "object",                              "metadata": { "description": "Common API values"                     } },
            "loadBalancerName": { "type": "string",                              "metadata": { "description": "This is the name of the load balancer" } },
         "publicIPAddressName": { "type": "string",                              "metadata": { "description": "This is the name of the IP Address"    } }
     },
-
 
     "variables": {
 
@@ -28,14 +28,14 @@
         {
             "name": "pip",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://azureclisa.blob.core.windows.net/templates/public-ip.json" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/public-ip.json')]" },
 
                 "parameters": {
-                    "apiVersion": { "value": "[parameters('apiVersion')]" },
+                    "commonSettings":      { "value": "[parameters('commonSettings')]"      },
                     "publicIPAddressName": { "value": "[parameters('publicIPAddressName')]" }
                 }
             }

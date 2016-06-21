@@ -18,11 +18,12 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'vnet-empty.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/vnet-empty.json')]" },
 
                 "parameters": {
-                    "virtualNetworkName": { "value": "[parameters('virtualNetworkName') ]" },
-                    "addressPrefix": { "value": "[parameters('virtualNetworkRange') ]" }
+                    "commonSettings":     { "value": "[parameters('commonSettings')]"       },
+                    "virtualNetworkName": { "value": "[parameters('virtualNetworkName') ]"  },
+                    "addressPrefix":      { "value": "[parameters('virtualNetworkRange') ]" }
                 }
             }
         },
@@ -36,9 +37,10 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'storage-account.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/storage-account.json')]" },
 
                 "parameters": {
+                    "commonSettings":     { "value": "[parameters('commonSettings')]"         },
                     "storageAccountName": { "value": "[parameters('diagStorageAccountName')]" }
                 }
             }

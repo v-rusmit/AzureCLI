@@ -29,9 +29,10 @@
      
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'load-balancer-with-public-ip.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/load-balancer-with-public-ip.json')]" },
 
                 "parameters": {
+                    "commonSettings":      { "value": "[parameters('commonSettings')]"      },
                        "loadBalancerName": { "value": "[parameters(   'loadBalancerName')]" },
                     "publicIPAddressName": { "value": "[parameters('PublicIPAddressName')]" }
                 }
@@ -47,9 +48,10 @@
      
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'vnet-add-new-subnet.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/vnet-add-new-subnet.json')]" },
 
                 "parameters": {
+                    "commonSettings":         { "value": "[parameters('commonSettings')]"      },
                           "existingVNETName": { "value": "[parameters( 'virtualNetworkName')]" },
                              "newSubnetName": { "value": "[parameters(   'publicSubnetName')]" },
                     "newSubnetAddressPrefix": { "value": "[parameters(  'publicSubnetRange')]" }
@@ -69,9 +71,10 @@
      
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'vnet-add-new-subnet.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/vnet-add-new-subnet.json')]" },
 
                 "parameters": {
+                    "commonSettings":         { "value": "[parameters('commonSettings')]"      },
                           "existingVNETName": { "value": "[parameters( 'virtualNetworkName')]" },
                              "newSubnetName": { "value": "[parameters(  'privateSubnetName')]" },
                     "newSubnetAddressPrefix": { "value": "[parameters( 'privateSubnetRange')]" }
@@ -89,9 +92,10 @@
      
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'availability-set.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/availability-set.json')]" },
 
                 "parameters": {
+                    "commonSettings":      { "value": "[parameters('commonSettings')]"      },
                     "availabilitySetName": { "value": "[parameters('availabilitySetName')]" }
                 }
             }
@@ -117,7 +121,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').templatePath,'vdc-known-vmloop-linux-lb-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/vdc-known-vmloop-linux-lb-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":         { "value": "[parameters('commonSettings')]"         },

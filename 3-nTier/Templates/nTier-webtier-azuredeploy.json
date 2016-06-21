@@ -3,18 +3,16 @@
     "contentVersion": "1.0.0.0",
     
     "parameters": {
-        "commonSettings":         { "type": "object",                               "metadata": { "description": "Common API values"                      } },
-           "publicIPAddressName": { "type": "string",                               "metadata": { "description": "Name of Application Public IP Address"  } },
-            "virtualNetworkName": { "type": "string",                               "metadata": { "description": "Name of Virtual Network"                } },
-              "loadBalancerName": { "type": "string",                               "metadata": { "description": "Name of the Load Balancer"              } },
-                    "subnetName": { "type": "string",                               "metadata": { "description": "Name of the Subnet"                     } },
-                   "subnetRange": { "type": "string",                               "metadata": { "description": "Range of the Subnet"                    } },
-           "availabilitySetName": { "type": "string",                               "metadata": { "description": "Name of the Availability Set"           } },
-                 "InstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of instances to create"          } },
-        "diagStorageAccountName": { "type": "string",                               "metadata": { "description": "Name of Storage Account for diagnostics"} },
-        "diskStorageAccountRoot": { "type": "string",                               "metadata": { "description": "Name of Storage Account for vhds"       } },
-                        "vmName": { "type": "string",                               "metadata": { "description": "RootName of the VM's"                   } },
-                       "nicName": { "type": "string",                               "metadata": { "description": "RootName of the NIC's"                  } }
+        "commonSettings":           { "type": "object",                       "metadata": { "description": "Common API values"                      } },
+        "virtualNetworkParameters": { "type": "object",                       "metadata": { "description": "Common VNET values"                     } },
+           "publicIPAddressName":   { "type": "string",                       "metadata": { "description": "Name of Application Public IP Address"  } },
+              "loadBalancerName":   { "type": "string",                       "metadata": { "description": "Name of the Load Balancer"              } },
+           "availabilitySetName":   { "type": "string",                       "metadata": { "description": "Name of the Availability Set"           } },
+                 "InstanceCount":   { "type": "int",    "defaultValue": 1,    "metadata": { "description": "Number of instances to create"          } },
+        "diagStorageAccountName":   { "type": "string",                       "metadata": { "description": "Name of Storage Account for diagnostics"} },
+        "diskStorageAccountRoot":   { "type": "string",                       "metadata": { "description": "Name of Storage Account for vhds"       } },
+                        "vmName":   { "type": "string",                       "metadata": { "description": "RootName of the VM's"                   } },
+                       "nicName":   { "type": "string",                       "metadata": { "description": "RootName of the NIC's"                  } }
     },
 
     "variables": { },
@@ -28,33 +26,16 @@
      
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'load-balancer-with-public-ip.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/load-balancer-with-public-ip.json')]" },
 
                 "parameters": {
+                    "commonSettings":      { "value": "[parameters('commonSettings')]"      },
                        "loadBalancerName": { "value": "[parameters(   'loadBalancerName')]" },
                     "publicIPAddressName": { "value": "[parameters('PublicIPAddressName')]" }
                 }
             }
         },
     
-
-        {
-            "name": "web-sn",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
-     
-            "properties": {
-                "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'vnet-add-new-subnet.json')]" },
-
-                "parameters": {
-                          "existingVNETName": { "value": "[parameters( 'virtualNetworkName')]" },
-                             "newSubnetName": { "value": "[parameters(         'SubnetName')]" },
-                    "newSubnetAddressPrefix": { "value": "[parameters(        'SubnetRange')]" }
-                   
-                }
-            }
-        },
 
         
         {
@@ -64,9 +45,10 @@
      
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'availability-set.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/availability-set.json')]" },
 
                 "parameters": {
+                    "commonSettings":      { "value": "[parameters('commonSettings')]"      },
                     "availabilitySetName": { "value": "[parameters('availabilitySetName')]" }
                 }
             }
@@ -78,27 +60,21 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
-            "dependsOn": [
-                "Microsoft.Resources/deployments/web-lb",
-                "Microsoft.Resources/deployments/web-sn",
-                "Microsoft.Resources/deployments/web-as"        ],
+            "dependsOn": [ "Microsoft.Resources/deployments/web-lb", "Microsoft.Resources/deployments/web-as"        ],
 
-            "copy": {
-                "name": "vmcopy",
-                "count": "[parameters('instanceCount')]"
-            },
+            "copy": { "name": "vmcopy", "count": "[parameters('instanceCount')]" },
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').templatePath,'nTier-known-vmloop-lb-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/nTier-known-vmloop-lb-azuredeploy.json')]" },
 
                 "parameters": {
-                    "commonSettings":         { "value": "[parameters('commonSettings')]" },
-                        "virtualNetworkName": { "value": "[parameters(    'virtualNetworkName')]" },
-                                "subnetName": { "value": "[parameters(            'subnetName')]" },
-                       "availabilitySetName": { "value": "[parameters(   'availabilitySetName')]" },
-                          "loadBalancerName": { "value": "[parameters(      'loadBalancerName')]" },
-                    "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]" },
+                    "commonSettings":         { "value": "[parameters('commonSettings')]"                                 },
+                        "virtualNetworkName": { "value": "[parameters('virtualNetworkParameters').virtualNetworkName]"    },
+                                "subnetName": { "value": "[parameters('virtualNetworkParameters').webSubnetName]"         },
+                       "availabilitySetName": { "value": "[parameters(   'availabilitySetName')]"                         },
+                          "loadBalancerName": { "value": "[parameters(      'loadBalancerName')]"                         },
+                    "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]"                         },
                                  "thisIndex": { "value": "[                                                copyIndex() ]" },
                                     "vmName": { "value": "[concat(parameters( 'vmName'),                   copyIndex())]" },
                                    "nicName": { "value": "[concat(parameters('nicName'),                   copyIndex())]" },

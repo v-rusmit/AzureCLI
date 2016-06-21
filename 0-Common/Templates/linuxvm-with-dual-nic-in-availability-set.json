@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     
     "parameters": {
-        "apiVersion"            : { "type": "string", "defaultValue":"2016-02-01",     "metadata": { "description": "Common API"                                                             } },
+        "commonSettings":         { "type": "object",                                  "metadata": { "description": "Common API values"                                                      } },
                         "vmName": { "type": "string",                                  "metadata": { "description": "Name of the Virtual Machine."                                           } },
         "diskStorageAccountName": { "type": "string",                                  "metadata": { "description": "Name of the storage account for disks of Virtual Machine."              } },
         "diagStorageAccountName": { "type": "string",                                  "metadata": { "description": "Name of the storage account for diagnostics of many Virtual Machines."  } },

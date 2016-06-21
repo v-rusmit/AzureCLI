@@ -3,10 +3,10 @@
     "contentVersion": "1.0.0.0",
     
     "parameters": {
-        "apiVersion"        : { "type": "string", "defaultValue":"2016-02-01",  "metadata": { "description": "Common API"                                                                                            } },
-                   "nicName": { "type": "string",                               "metadata": { "description": "Name of the simulated Network interface card."  } },
-        "virtualNetworkName": { "type": "string",                               "metadata": { "description": "Name of the Virtual Network."                   } },
-                "subnetName": { "type": "string",                               "metadata": { "description": "Name of the subnet."                            } }
+        "commonSettings":     { "type": "object",   "metadata": { "description": "Common API values"                              } },
+                   "nicName": { "type": "string",   "metadata": { "description": "Name of the simulated Network interface card."  } },
+        "virtualNetworkName": { "type": "string",   "metadata": { "description": "Name of the Virtual Network."                   } },
+                "subnetName": { "type": "string",   "metadata": { "description": "Name of the subnet."                            } }
     },
 
     "variables": {  },

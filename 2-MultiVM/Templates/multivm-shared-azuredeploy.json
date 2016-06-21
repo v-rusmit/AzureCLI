@@ -21,9 +21,10 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'virtual-network.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/virtual-network.json')]" },
  
                 "parameters": {
+                    "commonSettings":     { "value": "[parameters('commonSettings')]"      },
                     "virtualNetworkName": { "value": "[parameters( 'virtualNetworkName')]" },
                             "subnetName": { "value": "[parameters(         'subnetName')]" },
                           "addressRange": { "value": "[parameters('virtualNetworkRange')]" },

@@ -28,8 +28,12 @@
     <None Include="Deployment.targets">
       <Visible>False</Visible>
     </None>
-    <None Include="DSC\dscWeb.zip" />
+    <None Include="DSC\InstallWebComponents.ps1" />
+    <None Include="DSC\test1.ps1" />
+    <None Include="DSC\test2.ps1" />
     <None Include="Templates\availability-set.json" />
+    <None Include="Templates\azuredeploy.json" />
+    <None Include="Templates\azuredeploy.parameters.json" />
     <None Include="Templates\load-balancer-with-private-ip.json" />
     <None Include="Templates\load-balancer-with-public-ip.json" />
     <None Include="Templates\nic-inside-load-balancer.json" />
@@ -46,6 +50,9 @@
     <None Include="Templates\vnet-add-new-subnet-with-nsg.json" />
     <None Include="Templates\vnet-add-new-subnet.json" />
     <None Include="Templates\vnet-empty.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Scripts\" />
   </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />
 </Project>

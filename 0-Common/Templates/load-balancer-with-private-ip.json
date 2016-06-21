@@ -1,12 +1,13 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
+
     "parameters": {
-        "apiVersion":         { "type": "string", "defaultValue":"2016-02-01", "metadata": { "description": "Common API"                            } },
-          "loadBalancerName": { "type": "string",                              "metadata": { "description": "This is the name of the load balancer"             }    },
-          "privateIPAddress": { "type": "string",                              "metadata": { "description": "This is the actual private IP Address"             }    },
-        "virtualNetworkName": { "type": "string",                              "metadata": { "description": "Name of the Virtual Network."                      }    },
-                "subnetName": { "type": "string",                              "metadata": { "description": "Name of the subnet."                               }    }
+        "commonSettings":     { "type": "object", "metadata": { "description": "Common API values"                     } },
+          "loadBalancerName": { "type": "string", "metadata": { "description": "This is the name of the load balancer" } },
+          "privateIPAddress": { "type": "string", "metadata": { "description": "This is the actual private IP Address" } },
+        "virtualNetworkName": { "type": "string", "metadata": { "description": "Name of the Virtual Network."          } },
+                "subnetName": { "type": "string", "metadata": { "description": "Name of the subnet."                   } }
   },
 
     "variables": {

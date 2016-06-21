@@ -3,8 +3,8 @@
     "contentVersion": "1.0.0.0",
 
     "parameters": {
-        "apiVersion": { "type": "string", "defaultValue":"2016-02-01",     "metadata": { "description": "Common API"                   } },
-        "vmName":     { "type": "string",                                  "metadata": { "description": "Name of the Virtual Machine." } }
+        "commonSettings": { "type": "object",                      "metadata": { "description": "Common API values"            } },
+        "vmName":         { "type": "string",                      "metadata": { "description": "Name of the Virtual Machine." } }
     },
 
     "resources": [
@@ -18,8 +18,11 @@
                 "publisher": "Microsoft.Powershell",
                 "type": "DSC",
                 "typeHandlerVersion": "2.18",
-                "settings": { "configuration": {"url": "https://azureclisa.blob.core.windows.net/dsc/dscWeb.zip", "script": "InstallWebComponents.ps1", "function": "DemoIIS" } },
-                "protectedSettings": null
+
+                "settings": {
+                    "configuration": { "url": "[concat(parameters('commonSettings').commonLocation,'/dsccommon.zip')]", "script": "InstallWebComponents.ps1", "function": "DemoIIS" },
+                    "protectedSettings": null
+                }
             }
         }
     ]

@@ -25,9 +25,10 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'availability-set.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/availability-set.json')]" },
 
                 "parameters": {
+                    "commonSettings":      { "value": "[parameters('commonSettings')]"      },
                     "availabilitySetName": { "value": "[parameters('availabilitySetName')]" }
                 }
             }
@@ -42,9 +43,10 @@
      
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'vnet-add-new-subnet.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/vnet-add-new-subnet.json')]" },
 
                 "parameters": {
+                    "commonSettings":         { "value": "[parameters('commonSettings')]"      },
                           "existingVNETName": { "value": "[parameters( 'virtualNetworkName')]" },
                              "newSubnetName": { "value": "[parameters(         'subnetName')]" },
                     "newSubnetAddressPrefix": { "value": "[parameters(        'subnetRange')]" }
@@ -71,7 +73,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').templatePath,'vdc-known-vmloop-nolb-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/vdc-known-vmloop-nolb-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":         { "value": "[parameters('commonSettings')]"         },

@@ -3,8 +3,8 @@
     "contentVersion": "1.0.0.0",
 
     "parameters": {
-        "apiVersion"         : { "type": "string", "defaultValue":"2016-02-01",  "metadata": { "description": "Common API"                                                                                            } },
-        "publicIPAddressName": { "type": "string",                                                                     "metadata": { "description": "Name of Public IP Address" } },
+        "commonSettings":      { "type": "object",                                                                     "metadata": { "description": "Common API values"           } },
+        "publicIPAddressName": { "type": "string",                                                                     "metadata": { "description": "Name of Public IP Address"   } },
         "publicIPAddressType": { "type": "string", "defaultValue": "Dynamic",  "allowedValues": ["Static", "Dynamic"], "metadata": { "description": "Type of Address "            } }
     },
 

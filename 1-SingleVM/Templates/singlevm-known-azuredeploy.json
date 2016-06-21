@@ -24,8 +24,10 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'storage-account.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/storage-account.json')]" },
+
                 "parameters": {
+                    "commonSettings":     { "value": "[parameters('commonSettings')]"         },
                     "storageAccountName": { "value": "[parameters('diskStorageAccountName')]" }
                 }
             }
@@ -40,8 +42,9 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'storage-account.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/storage-account.json')]" },
                 "parameters": {
+                    "commonSettings":     { "value": "[parameters('commonSettings')]"         },
                     "storageAccountName": { "value": "[parameters('diagStorageAccountName')]" }
                 }
             }
@@ -56,9 +59,10 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'public-ip.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/public-ip.json')]" },
 
                 "parameters": {
+                    "commonSettings":      { "value": "[parameters('commonSettings')]"      },
                     "publicIPAddressName": { "value": "[parameters('publicIPAddressName')]" }
                 }
             }
@@ -75,9 +79,10 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'nic-via-pip.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/nic-via-pip.json')]" },
 
                 "parameters": {
+                    "commonSettings":      { "value": "[parameters('commonSettings')]"      },
                     "publicIPAddressName": { "value": "[parameters('publicIPAddressName')]" },
                                 "nicName": { "value": "[parameters(            'nicName')]" },
                      "virtualNetworkName": { "value": "[parameters( 'virtualNetworkName')]" },
@@ -100,9 +105,10 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'vm-via-nic.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/vm-via-nic.json')]" },
 
                 "parameters": {
+                    "commonSettings":         { "value": "[parameters('commonSettings')]"         },
                                     "vmName": { "value": "[parameters(                'vmName')]" },
                     "diskStorageAccountName": { "value": "[parameters('diskStorageAccountName')]" },
                     "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]" },
@@ -122,10 +128,11 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'applyDSC-web.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/applyDSC-web.json')]" },
 
                 "parameters": {
-                    "vmName":     { "value": "[parameters('vmName')]"      }
+                    "commonSettings": { "value": "[parameters('commonSettings')]" },
+                    "vmName":         { "value": "[parameters('vmName')]"         }
                 }
             }
         }

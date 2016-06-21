@@ -3,28 +3,39 @@
     "contentVersion": "1.0.0.0",
     
     "parameters": {
-        "commonSettings":         { "type": "object",                               "metadata": { "description": "Common API values"                         } },
-            "virtualNetworkName": { "type": "string",                               "metadata": { "description": "Name of Virtual Network"                   } },
-           "virtualNetworkRange": { "type": "string", "defaultValue":"10.0.0.0/16", "metadata": { "description": "IP Range of Virtual Network"               } },
-        "diagStorageAccountName": { "type": "string",                               "metadata": { "description": "Name of storage account for diagnostics" } } },
-    
-    "variables": { },
+        "commonSettings":           { "type": "object",                       "metadata": { "description": "Common API values"                       } },
+        "virtualNetworkParameters": { "type": "object",                       "metadata": { "description": "Common VNET values"                      } },
+        "diagStorageAccountName":   { "type": "string",                       "metadata": { "description": "Name of storage account for diagnostics" } }
+    }, 
+
 
     "resources": [
-
         {
-            "name": "vnet",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
+            "name": "[parameters('virtualNetworkParameters').virtualNetworkName]",
+            "type": "Microsoft.Network/virtualNetworks",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2015-06-15",
 
             "properties": {
-                "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'vnet-empty.json')]" },
-
-                "parameters": {
-                    "virtualNetworkName": { "value": "[parameters('virtualNetworkName') ]"  },
-                         "addressPrefix": { "value": "[parameters('virtualNetworkRange') ]" }
-                }
+                "addressSpace": { "addressPrefixes": [ "[parameters('virtualNetworkParameters').virtualNetworkRange]" ] },
+                "subnets": [
+                    {
+                        "name": "[parameters('virtualNetworkParameters').webSubnetName]",
+                        "properties": { "addressPrefix": "[parameters('virtualNetworkParameters').webSubnetRange]" }
+                    },
+                    {
+                        "name": "[parameters('virtualNetworkParameters').bizSubnetName]",
+                        "properties": { "addressPrefix": "[parameters('virtualNetworkParameters').bizSubnetRange]" }
+                    },
+                    {
+                        "name": "[parameters('virtualNetworkParameters').sqlSubnetName]",
+                        "properties": { "addressPrefix": "[parameters('virtualNetworkParameters').sqlSubnetRange]" }
+                    },
+                    {
+                        "name": "[parameters('virtualNetworkParameters').mgmtSubnetName]",
+                        "properties": { "addressPrefix": "[parameters('virtualNetworkParameters').mgmtSubnetRange]" }
+                    }
+                ]
             }
         },
 
@@ -35,9 +46,10 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonTemplatePath,'storage-account.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/storage-account.json')]" },
 
                 "parameters": {
+                    "commonSettings":     { "value": "[parameters('commonSettings')]"         },
                     "storageAccountName": { "value": "[parameters('diagStorageAccountName')]" }
                 }
             }
