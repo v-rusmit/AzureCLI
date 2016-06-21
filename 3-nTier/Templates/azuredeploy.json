@@ -15,7 +15,6 @@
         "_artifactsLocationSasToken": { "type": "securestring",                                                                     "metadata": { "description": "Auto-generated token to access _artifactsLocation"}                                               }
     },
 
-
     "variables": {
 
         "commonSettings": {
@@ -25,33 +24,22 @@
             "commonLocation":            "[uri(parameters('_artifactsLocation'),'common-stageartifacts')]"
         },
 
-        "vnetAddressRange": "10.0.0.0/16",
-        "bizPrivateIPAddress": "10.0.1.250",
+        "virtualNetworkParameters": {
+            "virtualNetworkName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-vnet')]",    "virtualNetworkRange": "10.0.0.0/16",
+                 "webSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-web-subnet')]",  "webSubnetRange": "10.0.0.0/24",
+                 "bizSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-biz-subnet')]",  "bizSubnetRange": "10.0.1.0/24", "bizPrivateIPAddress": "10.0.1.250",
+                 "sqlSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-sql-subnet')]",  "sqlSubnetRange": "10.0.2.0/24",
+                "mgmtSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-mgmt-subnet')]", "mgmtSubnetRange": "10.0.3.0/24",
+            "adminAccessRange":   "[       parameters('adminAccessRange')]"
+        },
 
         "diagStorageAccountName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'diag'))]",
         "diskStorageAccountRoot": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'disk'))]",
         "appPublicIPAddressName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'pip' ))]",
          "jbPublicIPAddressName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'Jpip'))]",
 
-      "networkSecurityGroupName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-nsg')]",
-
-
-        "virtualNetworkParameters": {
-            "virtualNetworkName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-vnet')]",
-                 "webSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-web-subnet')]",
-                 "bizSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-biz-subnet')]",
-                 "sqlSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-sql-subnet')]",
-                "mgmtSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-mgmt-subnet')]",
-           "virtualNetworkRange": "10.0.0.0/16",
-                "webSubnetRange": "10.0.0.0/24",
-                "bizSubnetRange": "10.0.1.0/24",
-                "sqlSubnetRange": "10.0.2.0/24",
-               "mgmtSubnetRange": "10.0.3.0/24"
-        },
-
            "webLoadBalancerName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-web-lb')]",
            "bizLoadBalancerName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-biz-lb')]",
-
 
        "webAvailabilitySetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-web-as')]",
        "bizAvailabilitySetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-biz-as')]",
@@ -105,10 +93,8 @@
                     "virtualNetworkParameters": { "value": "[variables('virtualNetworkParameters')]" },
                     "diagStorageAccountName":   { "value": "[variables('diagStorageAccountName')]"   },
                     "diskStorageAccountRoot":   { "value": "[variables('diskStorageAccountRoot')]"   },
-                    "networkSecurityGroupName": { "value": "[variables('networkSecurityGroupName')]" },
 
                     "webPublicIPAddressName": { "value": "[variables( 'appPublicIPAddressName')]" },
-                       "bizPrivateIPAddress": { "value": "[variables('bizPrivateIPAddress')    ]" },
                      "jbPublicIPAddressName": { "value": "[variables(  'jbPublicIPAddressName')]" },
 
                        "webLoadBalancerName": { "value": "[variables(   'webLoadBalancerName')]"  },
@@ -130,8 +116,7 @@
 
                          "mgmtInstanceCount": { "value": "[parameters(     'mgmtInstanceCount')]" },
                                 "mgmtVmName": { "value": "[ variables(            'mgmtVmName')]" },
-                               "mgmtNicName": { "value": "[ variables(           'mgmtNicName')]" },
-                          "adminAccessRange": { "value": "[parameters(      'adminAccessRange')]" }
+                               "mgmtNicName": { "value": "[ variables(           'mgmtNicName')]" }
                 }
             }
         }

@@ -6,8 +6,9 @@
         "commonSettings":           { "type": "object",                       "metadata": { "description": "Common API values"                       } },
         "virtualNetworkParameters": { "type": "object",                       "metadata": { "description": "Common VNET values"                      } },
         "diagStorageAccountName":   { "type": "string",                       "metadata": { "description": "Name of storage account for diagnostics" } }
-    }, 
+    },
 
+    "variables": { "networkSecurityGroupName": "[concat(parameters('virtualNetworkParameters').virtualNetworkName,'-nsg')]" },
 
     "resources": [
         {
@@ -38,6 +39,65 @@
                 ]
             }
         },
+
+
+        {
+            "name": "[variables('networkSecurityGroupName')]",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2016-03-30",
+
+            "dependsOn": [ "[parameters('virtualNetworkParameters').virtualNetworkName]" ],
+
+            "properties": {
+                "securityRules": [
+                    {
+                        "name": "sqlInbound",
+                        "properties": {
+                            "description": "Allow Business Tier",
+                            "access": "Allow",
+                            "priority": 100,
+                            "direction": "Inbound",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "[parameters('virtualNetworkParameters').bizSubnetRange]",
+                            "destinationAddressPrefix": "[parameters('virtualNetworkParameters').sqlSubnetRange]"
+                        }
+                    },
+                    {
+                        "name": "RDPinternal",
+                        "properties": {
+                            "description": "Allow RDP from Management JumpBox",
+                            "access": "Allow",
+                            "priority": 200,
+                            "direction": "Inbound",
+                            "protocol": "Tcp",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "3389",
+                            "sourceAddressPrefix": "[parameters('virtualNetworkParameters').mgmtSubnetRange]",
+                            "destinationAddressPrefix": "*"
+                        }
+                    },
+                    {
+                        "name": "RDPexternal",
+                        "properties": {
+                            "description": "Allow RDP for admins only",
+                            "access": "Allow",
+                            "priority": 101,
+                            "direction": "Inbound",
+                            "protocol": "Tcp",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "3389",
+                            "sourceAddressPrefix": "[parameters('virtualNetworkParameters').adminAccessRange]",
+                            "destinationAddressPrefix": "*"
+                        }
+                    }
+                ]
+            }
+        },
+
+
 
         {
             "name": "sa",

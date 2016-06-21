@@ -7,10 +7,8 @@
         "virtualNetworkParameters": { "type": "object",                       "metadata": { "description": "Common VNET values"                     } },
         "diagStorageAccountName":   { "type": "string",                       "metadata": { "description": "Name of Storage Account for diagnostics"} },
         "diskStorageAccountRoot":   { "type": "string",                       "metadata": { "description": "Name of Storage Account for vhds"       } },
-      "networkSecurityGroupName":   { "type": "string",                       "metadata": { "description": "Name of Network Security Group"         } },
 
         "webPublicIPAddressName": { "type": "string",                               "metadata": { "description": "Name of Application Public IP Address"  } },
-           "bizPrivateIPAddress": { "type": "string",                               "metadata": { "description": "Actual    Biz Layer Public IP Address"  } },
          "jbPublicIPAddressName": { "type": "string",                               "metadata": { "description": "Name of Application Public IP Address"  } },
 
            "webLoadBalancerName": { "type": "string",                               "metadata": { "description": "Name of the web Load Balancer"          } },
@@ -32,8 +30,7 @@
 
              "mgmtInstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of Mgmt Instances to create"     } },
                     "mgmtVmName": { "type": "string",                               "metadata": { "description": "RootName of the VM's of the mgmt tier"  } },
-                   "mgmtNicName": { "type": "string",                               "metadata": { "description": "RootName of the NIC's of the mgmt tier" } },
-              "adminAccessRange": { "type": "string",                               "metadata": { "description": "Network subnet where Admins live"       } }
+                   "mgmtNicName": { "type": "string",                               "metadata": { "description": "RootName of the NIC's of the mgmt tier" } }
     },
 
 
@@ -118,7 +115,6 @@
                 "parameters": {
                     "commonSettings":           { "value": "[parameters('commonSettings')]"           },
                     "virtualNetworkParameters": { "value": "[parameters('virtualNetworkParameters')]" },
-                          "privateIPAddress":   { "value": "[parameters(   'bizPrivateIPAddress')]"   },
                           "loadBalancerName":   { "value": "[parameters(   'bizLoadBalancerName')]"   },
                        "availabilitySetName":   { "value": "[parameters('bizAvailabilitySetName')]"   },
                              "instanceCount":   { "value": "[parameters(      'bizInstanceCount')]"   },
@@ -184,65 +180,5 @@
 
 
 
-        {
-            "name": "[parameters('networkSecurityGroupName')]",
-            "type": "Microsoft.Network/networkSecurityGroups",
-            "location": "[resourceGroup().location]",
-            "apiVersion": "2016-03-30",
-
-            "dependsOn": [
-                "Microsoft.Resources/deployments/biztier",
-                "Microsoft.Resources/deployments/sqltier",
-                "Microsoft.Resources/deployments/mgmttier"
-            ],
-
-
-            "properties": {
-                "securityRules": [
-                    {
-                        "name": "sqlInbound",
-                        "properties": {
-                            "description": "Allow Business Tier",
-                            "access": "Allow",
-                            "priority": 100,
-                            "direction": "Inbound",
-                            "protocol": "*",
-                                 "sourcePortRange": "*",
-                            "destinationPortRange": "*",
-                                 "sourceAddressPrefix": "[parameters('virtualNetworkParameters').bizSubnetRange]",
-                            "destinationAddressPrefix": "[parameters('virtualNetworkParameters').sqlSubnetRange]"
-                        }
-                    },
-                    {
-                        "name": "RDPinternal",
-                        "properties": {
-                            "description": "Allow RDP from Management JumpBox",
-                            "access": "Allow",
-                            "priority": 200,
-                            "direction": "Inbound",
-                            "protocol": "Tcp",
-                            "sourcePortRange": "*",
-                            "destinationPortRange": "3389",
-                            "sourceAddressPrefix": "[parameters('virtualNetworkParameters').mgmtSubnetRange]",
-                            "destinationAddressPrefix": "*"
-                        }
-                    },
-                    {
-                        "name": "RDPexternal",
-                        "properties": {
-                            "description": "Allow RDP for admins only",
-                            "access": "Allow",
-                            "priority": 101,
-                            "direction": "Inbound",
-                            "protocol": "Tcp",
-                            "sourcePortRange": "*",
-                            "destinationPortRange": "3389",
-                            "sourceAddressPrefix": "[parameters('adminAccessRange')]",
-                            "destinationAddressPrefix": "*"
-                        }
-                    }
-                ]
-            }
-        } 
     ]
 }

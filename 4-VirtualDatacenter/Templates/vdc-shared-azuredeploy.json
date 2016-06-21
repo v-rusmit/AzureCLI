@@ -3,28 +3,122 @@
     "contentVersion": "1.0.0.0",
     
     "parameters": {
-        "commonSettings":         { "type": "object",                               "metadata": { "description": "Common API values"                      } },
-            "virtualNetworkName": { "type": "string",                               "metadata": { "description": "Name of Virtual Network"         } },
-           "virtualNetworkRange": { "type": "string", "defaultValue":"10.0.0.0/16", "metadata": { "description": "IP Range of Virtual Network"     } },
-        "diagStorageAccountName": { "type": "string",                               "metadata": { "description": "Name of storage account for diagnostics" } }    },
-    
- 
+        "commonSettings":           { "type": "object",      "metadata": { "description": "Common API values"                       } },
+        "virtualNetworkParameters": { "type": "object",      "metadata": { "description": "Common VNET values"                      } },
+        "diagStorageAccountName":   { "type": "string",      "metadata": { "description": "Name of storage account for diagnostics" } }
+    },
+
+    "variables": { "networkSecurityGroupName": "[concat(parameters('virtualNetworkParameters').virtualNetworkName,'-nsg')]" },
+
     "resources": [
 
         {
-            "name": "vnet",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
+            "name": "[parameters('virtualNetworkParameters').virtualNetworkName]",
+            "type": "Microsoft.Network/virtualNetworks",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2015-06-15",
 
             "properties": {
-                "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/vnet-empty.json')]" },
+                "addressSpace": { "addressPrefixes": [ "[parameters('virtualNetworkParameters').virtualNetworkRange]" ] },
+                "subnets": [
+                    {
+                        "name": "[parameters('virtualNetworkParameters').nvaPublicSubnetName]",
+                        "properties": { "addressPrefix": "[parameters('virtualNetworkParameters').dmzPublicSubnetRange]" }
+                    },
+                    {
+                        "name": "[parameters('virtualNetworkParameters').nvaPrivateSubnetName]",
+                        "properties": { "addressPrefix": "[parameters('virtualNetworkParameters').dmzPrivateSubnetRange]" }
+                    },
+                    {
+                        "name": "[parameters('virtualNetworkParameters').staSubnetName]",
+                        "properties": { "addressPrefix": "[parameters('virtualNetworkParameters').staSubnetRange]" }
+                    },
+                    {
+                        "name": "[parameters('virtualNetworkParameters').stbSubnetName]",
+                        "properties": { "addressPrefix": "[parameters('virtualNetworkParameters').stbSubnetRange]" }
+                    },
+                    {
+                        "name": "[parameters('virtualNetworkParameters').sqlSubnetName]",
+                        "properties": { "addressPrefix": "[parameters('virtualNetworkParameters').sqlSubnetRange]" }
+                    },
+                    {
+                        "name": "[parameters('virtualNetworkParameters').mgmtSubnetName]",
+                        "properties": { "addressPrefix": "[parameters('virtualNetworkParameters').mgmtSubnetRange]" }
+                    },
+                    {
+                        "name": "[parameters('virtualNetworkParameters').adSubnetName]",
+                        "properties": { "addressPrefix": "[parameters('virtualNetworkParameters').adSubnetRange]" }
+                    }
+                ]
+            }
+        },
 
-                "parameters": {
-                    "commonSettings":     { "value": "[parameters('commonSettings')]"       },
-                    "virtualNetworkName": { "value": "[parameters('virtualNetworkName') ]"  },
-                    "addressPrefix":      { "value": "[parameters('virtualNetworkRange') ]" }
-                }
+        {
+            "name": "[variables('networkSecurityGroupName')]",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2016-03-30",
+
+            "dependsOn": [ "[parameters('virtualNetworkParameters').virtualNetworkName]" ],
+
+            "properties": {
+                "securityRules": [
+                    {
+                        "name": "RDP",
+                        "properties": {
+                            "description": "Allow RDP for admins only",
+                            "priority": 100, "access": "Allow", "direction": "Inbound", "protocol": "Tcp",
+                            "sourceAddressPrefix": "[parameters('virtualNetworkParameters').adminAccessRange]",
+                            "sourcePortRange":  "*",
+                            "destinationAddressPrefix": "*",
+                            "destinationPortRange": "3389"
+                        }
+                    },
+                    {
+                        "name": "insideDMZ",
+                        "properties": {
+                            "description": "Allow full access from private side of DMZ",
+                            "priority": 110, "access": "Allow","direction": "Inbound", "protocol": "Tcp",
+                            "sourceAddressPrefix": "[parameters('virtualNetworkParameters').dmzPrivateSubnetRange]",
+                            "sourcePortRange": "*",
+                            "destinationAddressPrefix": "*",
+                            "destinationPortRange": "*"
+                        }
+                    },
+                    {
+                        "name": "Mgmt",
+                        "properties": {
+                            "description": "Allow full access from mgmt tier",
+                            "priority": 120, "access": "Allow", "direction": "Inbound", "protocol": "Tcp",
+                            "sourceAddressPrefix": "[parameters('virtualNetworkParameters').mgmtSubnetRange]",
+                            "sourcePortRange": "*",
+                            "destinationAddressPrefix": "*",
+                            "destinationPortRange": "*"
+                        }
+                    },
+                    {
+                        "name": "DMZ-A",
+                        "properties": {
+                            "description": "Allow full access from service tiers",
+                            "priority": 130, "access": "Allow", "direction": "Inbound", "protocol": "Tcp",
+                            "sourceAddressPrefix": "[parameters('virtualNetworkParameters').staSubnetRange]",
+                            "sourcePortRange": "*",
+                            "destinationAddressPrefix": "*",
+                            "destinationPortRange": "*"
+                        }
+                    },
+                    {
+                        "name": "DMZ-B",
+                        "properties": {
+                            "description": "Allow full access from service tiers",
+                            "priority": 140, "access": "Allow", "direction": "Inbound", "protocol": "Tcp",
+                            "sourceAddressPrefix": "[parameters('virtualNetworkParameters').stbSubnetRange]",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "destinationAddressPrefix": "*"
+                        }
+                    }
+                ]
             }
         },
 
@@ -40,7 +134,7 @@
                 "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/storage-account.json')]" },
 
                 "parameters": {
-                    "commonSettings":     { "value": "[parameters('commonSettings')]"         },
+                    "commonSettings": { "value": "[parameters('commonSettings')]" },
                     "storageAccountName": { "value": "[parameters('diagStorageAccountName')]" }
                 }
             }

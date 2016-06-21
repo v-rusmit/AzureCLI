@@ -5,7 +5,6 @@
     "parameters": {
         "commonSettings":           { "type": "object",                       "metadata": { "description": "Common API values"                      } },
         "virtualNetworkParameters": { "type": "object",                       "metadata": { "description": "Common VNET values"                     } },
-              "privateIPAddress":   { "type": "string",                         "metadata": { "description": "Actual Private IP Address"              } },
               "loadBalancerName":   { "type": "string",                         "metadata": { "description": "Name of the Load Balancer"              } },
            "availabilitySetName":   { "type": "string",                         "metadata": { "description": "Name of the Availability Set"           } },
                  "InstanceCount":   { "type": "int",    "defaultValue": 1,      "metadata": { "description": "Number of instances to create"          } },
@@ -31,7 +30,7 @@
                 "parameters": {
                     "commonSettings":     { "value": "[parameters('commonSettings')]"                                 },
                       "loadBalancerName": { "value": "[parameters(  'loadBalancerName')]"                             },
-                      "privateIPAddress": { "value": "[parameters(  'privateIPAddress')]"                             },
+                      "privateIPAddress": { "value": "[parameters('virtualNetworkParameters').bizPrivateIPAddress]"   },
                     "virtualNetworkName": { "value": "[parameters('virtualNetworkParameters').virtualNetworkName]"    },
                             "subnetName": { "value": "[parameters('virtualNetworkParameters').bizSubnetName]"         }
                 }

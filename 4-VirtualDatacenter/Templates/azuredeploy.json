@@ -25,27 +25,27 @@
             "artifactsLocationSasToken": "[    parameters('_artifactsLocationSasToken')]",
             "commonLocation":            "[uri(parameters('_artifactsLocation'),'common-stageartifacts')]"        },
 
-        "vnetAddressRange": "10.0.0.0/16",
+        "virtualNetworkParameters": {
+             "virtualNetworkName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-vnet')]",                  "virtualNetworkRange": "10.0.0.0/16",
+            "nvaPublicSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),   '-nva-public-subnet')]",  "dmzPublicSubnetRange": "10.0.1.0/25",  
+            "nvaPrivateSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-nva-private-subnet')]", "dmzPrivateSubnetRange": "10.0.1.128/25",  
+                  "staSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-sta-subnet')]",                "staSubnetRange": "10.0.2.0/24",     "staPrivateIPAddress": "10.0.2.250",
+                  "stbSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-stb-subnet')]",                "stbSubnetRange": "10.0.3.0/24",     "stbPrivateIPAddress": "10.0.3.250",
+                  "sqlSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-sql-subnet')]",                "sqlSubnetRange": "10.0.8.0/24",     "sqlPrivateIPAddress": "10.0.8.250",
+                 "mgmtSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-mgmt-subnet')]",               "mgmtSubnetRange": "10.0.4.0/24",
+                   "adSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),   '-ad-subnet')]",                 "adSubnetRange": "10.0.9.0/24",
+               "adminAccessRange": "[parameters('adminAccessRange')]" 
+        },
 
         "diagStorageAccountName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'diag'))]",
         "diskStorageAccountRoot": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'disk'))]",
         "appPublicIPAddressName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'pip' ))]",
          "jbPublicIPAddressName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'Jpip'))]",
 
-        "virtualNetworkName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-vnet')]",
-
         "nvaLoadBalancerName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-nva-lb')]",
         "staLoadBalancerName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-sta-lb')]",
         "stbLoadBalancerName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-stb-lb')]",
         "sqlLoadBalancerName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-sql-lb')]",
-
-          "nvaPublicSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),   '-nva-public-subnet')]",
-         "nvaPrivateSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-nva-private-subnet')]",
-                "staSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),          '-sta-subnet')]",
-                "stbSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),          '-stb-subnet')]",
-                "sqlSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),          '-sql-subnet')]",
-               "mgmtSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),         '-mgmt-subnet')]",
-                 "adSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),           '-ad-subnet')]",
 
         "nvaAvailabilitySetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-nva-as')]",
         "staAvailabilitySetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-sta-as')]",
@@ -74,10 +74,9 @@
                 "templateLink": { "uri": "[concat(variables('commonSettings').artifactsLocation,'/vdc-shared-azuredeploy.json')]" },
 
                 "parameters": {
-                    "commonSettings":         { "value": "[variables('commonSettings')]"         },
-                        "virtualNetworkName": { "value": "[variables(    'virtualNetworkName')]" },
-                       "virtualNetworkRange": { "value": "[variables(      'vnetAddressRange')]" },
-                    "diagStorageAccountName": { "value": "[variables('diagStorageAccountName')]" }
+                    "commonSettings":           { "value": "[variables('commonSettings')]"           },
+                    "virtualNetworkParameters": { "value": "[variables('virtualNetworkParameters')]" },
+                    "diagStorageAccountName":   { "value": "[variables('diagStorageAccountName')]"   }
                 }
             }
         },
@@ -96,44 +95,36 @@
                 "templateLink": { "uri": "[concat(variables('commonSettings').artifactsLocation,'/vdc-known-azuredeploy.json')]" },
 
                 "parameters": {
-                    "commonSettings":         { "value": "[variables('commonSettings')]"          },
-                        "virtualNetworkName": { "value": "[variables(    'virtualNetworkName')]"  },
-                    "diagStorageAccountName": { "value": "[variables('diagStorageAccountName')]"  },
-                    "diskStorageAccountRoot": { "value": "[variables('diskStorageAccountRoot')]"  },
+                    "commonSettings":           { "value": "[variables('commonSettings')]"           },
+                    "virtualNetworkParameters": { "value": "[variables('virtualNetworkParameters')]" },
+                    "diagStorageAccountName":   { "value": "[variables('diagStorageAccountName')]"   },
+                    "diskStorageAccountRoot":   { "value": "[variables('diskStorageAccountRoot')]"   },
 
                     "nvaPublicIPAddressName": { "value": "[variables( 'appPublicIPAddressName')]" },
                      "jbPublicIPAddressName": { "value": "[variables(  'jbPublicIPAddressName')]" },
 
                        "nvaLoadBalancerName": { "value": "[variables(   'nvaLoadBalancerName')]"  },
-                       "nvaPublicSubnetName": { "value": "[variables(   'nvaPublicSubnetName')]"  },
-                      "nvaPrivateSubnetName": { "value": "[variables(  'nvaPrivateSubnetName')]"  },
                     "nvaAvailabilitySetName": { "value": "[variables('nvaAvailabilitySetName')]"  },
                           "nvaInstanceCount": { "value": "[parameters(     'nvaInstanceCount')]"  },
                                  "nvaVmName": { "value": "[variables(             'nvaVmName')]"  },
                     
                        "staLoadBalancerName": { "value": "[variables(   'staLoadBalancerName')]"  },
-                             "staSubnetName": { "value": "[variables(         'staSubnetName')]"  },
                     "staAvailabilitySetName": { "value": "[variables('staAvailabilitySetName')]"  },
                           "staInstanceCount": { "value": "[parameters(     'staInstanceCount')]"  },
                                  "staVmName": { "value": "[variables(             'staVmName')]"  },
 
                        "stbLoadBalancerName": { "value": "[variables(   'stbLoadBalancerName')]"  },
-                             "stbSubnetName": { "value": "[variables(         'stbSubnetName')]"  },
                     "stbAvailabilitySetName": { "value": "[variables('stbAvailabilitySetName')]"  },
                           "stbInstanceCount": { "value": "[parameters(     'stbInstanceCount')]"  },
                                  "stbVmName": { "value": "[variables(             'stbVmName')]"  },
 
                        "sqlLoadBalancerName": { "value": "[variables(    'sqlLoadBalancerName')]" },
-                             "sqlSubnetName": { "value": "[ variables(         'sqlSubnetName')]" },
                     "sqlAvailabilitySetName": { "value": "[ variables('sqlAvailabilitySetName')]" },
                           "sqlInstanceCount": { "value": "[parameters(      'sqlInstanceCount')]" },
                                  "sqlVmName": { "value": "[ variables(             'sqlVmName')]" },
 
-                            "mgmtSubnetName": { "value": "[ variables(        'mgmtSubnetName')]" },
                                 "mgmtVmName": { "value": "[ variables(            'mgmtVmName')]" },
-                          "adminAccessRange": { "value": "[parameters(      'adminAccessRange')]" },
 
-                              "adSubnetName": { "value": "[ variables(         'adSubnetName')]" },
                      "adAvailabilitySetName": { "value": "[ variables('adAvailabilitySetName')]" },
                            "adInstanceCount": { "value": "[parameters(      'adInstanceCount')]" },
                                   "adVmName": { "value": "[ variables(             'adVmName')]" }
