@@ -29,7 +29,7 @@
       <Visible>False</Visible>
     </None>
     <None Include="DSC\InstallWebComponents.ps1" />
-    <None Include="DSC\test1a.ps1" />
+    <None Include="DSC\test1b.ps1" />
     <None Include="DSC\test2.ps1" />
     <None Include="Templates\availability-set.json" />
     <None Include="Templates\azuredeploy.json" />
