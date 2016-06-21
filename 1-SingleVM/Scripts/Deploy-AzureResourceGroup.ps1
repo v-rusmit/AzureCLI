@@ -26,12 +26,44 @@ Param(
 Import-Module Azure -ErrorAction SilentlyContinue
 Add-Type -Assembly System.IO.Compression.FileSystem
 
+# Sign-in to your Azure Subscription 
+#Login-AzureRmAccount -ErrorAction Stop 
+
 
 try {
     [Microsoft.Azure.Common.Authentication.AzureSession]::ClientFactory.AddUserAgent("VSAzureTools-$UI$($host.name)".replace(" ","_"), "2.9")
 } catch { }
 
 Set-StrictMode -Version 3
+
+if ($StorageAccountName -eq $null) {
+    do { 
+        $StorageAccountName = [Guid]::NewGuid().ToString() 
+        $StorageAccountName = $StorageAccountName.Replace("-", "").Substring(0, 23) 
+        $isAvail = Get-AzureRmStorageAccountNameAvailability -Name $StorageAccountName | Select-Object -ExpandProperty NameAvailable 
+    } while (!$isAvail) 
+}
+
+try
+{
+    $website = Get-AzureWebsite -Name $websiteName -ErrorAction Stop;
+}
+Catch [System.ArgumentException]
+{
+    if ($_.Exception.Message -eq "Your Azure credentials have not been set up or have expired, please run Add-AzureAccount to set up your Azure credentials.")
+    {
+        Add-AzureAccount;
+
+        Write-Host "Azure account set, re-run script to continue."
+    }
+    else
+    {
+        Write-Host $_.Exception.Message;
+    }
+}
+
+
+
 
 $OptionalParameters = New-Object -TypeName Hashtable
 $TemplateFile           = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $TemplateFile))
