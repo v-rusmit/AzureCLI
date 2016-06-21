@@ -13,6 +13,8 @@ Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "3-nTier", "3-nTier\3-nTier.
 EndProject
 Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "4-VirtualDatacenter", "4-VirtualDatacenter\4-VirtualDatacenter.deployproj", "{4D6261FE-BCFC-436F-AB26-26E9D58C7C2C}"
 EndProject
+Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "5-HybridNetwork", "5-HybirdNetwork\5-HybridNetwork.deployproj", "{B1B5773E-98AB-48FA-AF9A-7C03076B6304}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{4D6261FE-BCFC-436F-AB26-26E9D58C7C2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D6261FE-BCFC-436F-AB26-26E9D58C7C2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D6261FE-BCFC-436F-AB26-26E9D58C7C2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1B5773E-98AB-48FA-AF9A-7C03076B6304}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1B5773E-98AB-48FA-AF9A-7C03076B6304}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1B5773E-98AB-48FA-AF9A-7C03076B6304}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1B5773E-98AB-48FA-AF9A-7C03076B6304}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
