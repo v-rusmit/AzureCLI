@@ -51,8 +51,5 @@
     <None Include="Templates\vnet-add-new-subnet.json" />
     <None Include="Templates\vnet-empty.json" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Scripts\" />
-  </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />
 </Project>
