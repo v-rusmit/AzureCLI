@@ -39,6 +39,7 @@
     <None Include="Templates\nic-inside-load-balancer.json" />
     <None Include="Templates\nic.json" />
     <None Include="Templates\nic-via-pip.json" />
+    <None Include="Templates\nva-barracuda-as.json" />
     <None Include="Templates\security-group-with-vnet.json" />
     <None Include="Templates\storage-account.json" />
     <None Include="Templates\public-ip.json" />
