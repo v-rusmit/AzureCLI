@@ -26,9 +26,8 @@ Param(
 Import-Module Azure -ErrorAction SilentlyContinue
 Add-Type -Assembly System.IO.Compression.FileSystem
 
-# Sign-in to your Azure Subscription 
-Login-AzureRmAccount -ErrorAction Stop 
-
+try  {Get-AzureRmResourceGroup >$null}
+catch{Login-AzureRmAccount -ErrorAction Stop }
 
 try {
     [Microsoft.Azure.Common.Authentication.AzureSession]::ClientFactory.AddUserAgent("VSAzureTools-$UI$($host.name)".replace(" ","_"), "2.9")
