@@ -4,8 +4,8 @@
 
 Param(
     [string] [Parameter(Mandatory=$true)] $ResourceGroupLocation,
-    [string] $ResourceGroupName,
-    [switch] $UploadArtifacts,
+    [string] [Parameter(Mandatory=$true)] $ResourceGroupName,
+    [switch] $UploadArtifacts = $true,
 
     [string] $StorageAccountName,
     [string] $StorageContainerName       = $ResourceGroupName.ToLowerInvariant() + '-stageartifacts',
@@ -26,12 +26,35 @@ Param(
 Import-Module Azure -ErrorAction SilentlyContinue
 Add-Type -Assembly System.IO.Compression.FileSystem
 
+# Sign-in to your Azure Subscription 
+Login-AzureRmAccount -ErrorAction Stop 
+
 
 try {
     [Microsoft.Azure.Common.Authentication.AzureSession]::ClientFactory.AddUserAgent("VSAzureTools-$UI$($host.name)".replace(" ","_"), "2.9")
 } catch { }
 
 Set-StrictMode -Version 3
+
+if ($StorageAccountName -eq "")     #if this storage account is specified, it is presumed to exist!
+{
+    do {  
+        $StorageAccountName = [Guid]::NewGuid().ToString() 
+        $StorageAccountName = $StorageAccountName.Replace("-", "").Substring(0, 23) 
+        $isAvail = Get-AzureRmStorageAccountNameAvailability -Name $StorageAccountName | Select-Object -ExpandProperty NameAvailable 
+    } while (!$isAvail) 
+
+    $ResourceGroupName_artifact = "ARMTemplateDemo"
+    Write-Host -BackgroundColor Magenta "Creating artifact storage $StorageAccountName in resource group ARMTemplateDemo"
+    New-AzureRmResourceGroup                                         -Name $ResourceGroupName_artifact -Location $ResourceGroupLocation -Verbose -Force -ErrorAction Stop
+    New-AzureRmStorageAccount -Name $StorageAccountName -ResourceGroupName $ResourceGroupName_artifact -Location $ResourceGroupLocation -Type Standard_LRS
+}
+else
+{
+    Write-Host -BackgroundColor Magenta "Using artifact storage $StorageAccountName"
+}
+
+
 
 $OptionalParameters = New-Object -TypeName Hashtable
 $TemplateFile           = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $TemplateFile))
