@@ -3,15 +3,6 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
                "appName": { "value": "hybridnetwork" },
-        "appEnvironment": { "value": "dev" },
-    "virtualNetworkName": { "value": "virtualnetwork" },
-           "subnet1Name": { "value": "applicationsubnet1" },
-           "subnet2Name": { "value": "applicationsubnet2" },
-     "gatewaySubnetName": { "value": "GatewaySubnet" },
-   "virtualNetworkRange": { "value": "10.11.0.0/16" },
-          "subnet1Range": { "value": "10.11.0.0/24" },
-          "subnet2Range": { "value": "10.11.1.0/24" },
-    "gatewaySubnetRange": { "value": "10.11.200.0/27" }
-
+        "appEnvironment": { "value": "dev" }
   }
 }
