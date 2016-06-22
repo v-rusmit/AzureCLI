@@ -3,16 +3,16 @@
     "contentVersion": "1.0.0.0",
     
     "parameters": {
-        "commonSettings":           { "type": "object",      "metadata": { "description": "Common API values"                       } },
-        "virtualNetworkParameters": { "type": "object",      "metadata": { "description": "Common VNET values"                      } },
-        "loadBalancerName":         { "type": "string",      "metadata": { "description": "This is the name of the load balancer"   } }
+        "commonSettings":           { "type": "object",      "metadata": { "description": "Common API values"   } },
+        "virtualNetworkParameters": { "type": "object",      "metadata": { "description": "Common VNET values"  } },
+          "loadBalancerParameters": { "type": "object",      "metadata": { "description": "Common LB values"    } }
         },
     
     "variables": { },
 
     "resources": [
         {
-            "name": "[parameters('loadBalancerName')]",
+            "name": "[parameters('loadBalancerParameters').loadBalancername]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
@@ -21,11 +21,11 @@
                 "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/load-balancer-with-private-ip.json')]" },
 
                 "parameters": {
-                    "commonSettings":     { "value": "[parameters('commonSettings')]"                                },
-                      "loadBalancerName": { "value": "[parameters(  'loadBalancerName')]"                            },
-                      "privateIPAddress": { "value": "[parameters('virtualNetworkParameters').publicIPAddressName]"  },
-                    "virtualNetworkName": { "value": "[parameters('virtualNetworkParameters').virtualNetworkName]"   },
-                            "subnetName": { "value": "[parameters( 'virtualNetworkParameters').subnet1Name]"         }
+                    "commonSettings":     { "value": "[parameters('commonSettings')]"                              },
+                      "loadBalancerName": { "value": "[parameters(  'loadBalancerParameters').loadBalancerName]"   },
+                      "privateIPAddress": { "value": "[parameters(  'loadBalancerParameters').loadBalancerIP]"     },
+                    "virtualNetworkName": { "value": "[parameters('virtualNetworkParameters').virtualNetworkName]" },
+                            "subnetName": { "value": "[parameters('virtualNetworkParameters').subnet1Name]"        }
                 }
             }
         }

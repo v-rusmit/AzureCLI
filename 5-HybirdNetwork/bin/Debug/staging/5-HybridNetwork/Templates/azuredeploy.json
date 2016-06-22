@@ -20,54 +20,56 @@
     
         "virtualNetworkParameters": {
             "publicIPAddressName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,   'pip' ))]",
+                 "connectionName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-con')]",            "connectionKey": "ImaSecret",
              "virtualNetworkName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-vnet')]",     "virtualNetworkRange": "10.20.0.0/16",
                     "subnet1Name": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-subnet1')]",         "subnet1Range": "10.20.5.0/24",  
                     "subnet2Name": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-subnet2')]",         "subnet2Range": "10.20.6.0/24",  
                    "gwSubnetName": "GatewaySubnet",                                                                         "gwSubnetRange": "10.20.255.224/27",
              "virtualGatewayName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-vg')]",    
                "localGatewayName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-lg')]",         "localGatewayRange": "10.10.0.0/16",
-               "localGatewayIP"  : "40.50.60.70"
+                                                                                                                        "localGatewayIP"   : "40.50.60.70"
         },
 
-        "loadBalancerName":    "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-nva-lb')]"
-  
-    
+        "loadBalancerParameters": {
+            "loadBalancerName":    "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-lb')]",
+            "loadBalancerIP":      "10.20.5.254"
+        }
     },
-
 
     "resources": [
         {
             "name": "shared",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2015-01-01",
+            "apiVersion": "[variables('commonSettings').resourceApiVersion]",
 
             "properties": {
                 "mode": "incremental",
                 "templateLink": { "uri": "[concat(variables('commonSettings').artifactsLocation,'/hybridnetwork-shared-azuredeploy.json')]" },
 
                 "parameters": {
-                    "commonSettings": { "value": "[variables('commonSettings')]"                     },
+                    "commonSettings":           { "value": "[variables('commonSettings')]"           },
                     "virtualNetworkParameters": { "value": "[variables('virtualNetworkParameters')]" }
                 }
             }
+        },
+
+
+
+        {
+            "name": "known",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('commonSettings').resourceApiVersion]",
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "[concat(variables('commonSettings').artifactsLocation,'/hybridnetwork-known-azuredeploy.json')]" },
+
+                "parameters": {
+                    "commonSettings":           { "value": "[variables('commonSettings')]"           },
+                    "virtualNetworkParameters": { "value": "[variables('virtualNetworkParameters')]" },
+                      "loadBalancerParameters": { "value": "[variables(  'loadBalancerParameters')]" }
+                }
+            }
         }
-
-        //{
-        //    "name": "known",
-        //    "type": "Microsoft.Resources/deployments",
-        //    "apiVersion": "2015-01-01",
-
-        //    "properties": {
-        //        "mode": "incremental",
-        //        "templateLink": { "uri": "[concat(variables('commonSettings').artifactsLocation,'/hybridnetwork-known-azuredeploy.json')]" },
-
-        //        "parameters": {
-        //            "commonSettings":           { "value": "[variables('commonSettings')]"           },
-        //            "virtualNetworkParameters": { "value": "[variables('virtualNetworkParameters')]" },
-        //            "publicIPAddressName":      { "value": "[variables('publicIPAddressName')]"      },
-        //            "loadBalancerName":         { "value": "[variables('loadBalancerName')]"         }
-        //        }
-        //    }
-        //}
     ]
 }
