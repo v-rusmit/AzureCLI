@@ -120,23 +120,25 @@
 
 
         {
-            "name": "vmdsc",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
+            "name": "[concat(parameters('vmName'),'/', 'AD')]",
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2015-06-15",
 
             "dependsOn": [ "Microsoft.Resources/deployments/vm" ],
 
-            "properties": {
-                "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/applyDSC-web.json')]" },
+            "tags": { "displayName": "ababab" },
 
-                "parameters": {
-                    "commonSettings": { "value": "[parameters('commonSettings')]" },
-                    "vmName":         { "value": "[parameters('vmName')]"         }
+            "properties": {
+                "publisher": "Microsoft.Compute",
+                "type": "CustomScriptExtension",
+                "typeHandlerVersion": "1.8",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "fileUris": [ "https://tempjson.blob.core.windows.net/common-stageartifacts/availability-set.json" ],
+                    "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File AD-Create.ps1 -domain Contoso -password P@ssw0rd1234"
                 }
             }
         }
-
-
     ]
 }

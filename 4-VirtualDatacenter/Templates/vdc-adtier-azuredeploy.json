@@ -56,6 +56,27 @@
                     "diskStorageAccountName": { "value": "[concat(parameters('diskStorageAccountRoot'), copyIndex())]" }
                 }
             }
+        },
+    
+    
+        {
+            "name": "AD1",
+            "type": "extensions",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2015-06-15",
+
+            "dependsOn": [ "[concat('Microsoft.Compute/virtualMachines/', concat(parameters( 'vmName'), 0))]" ],
+              "tags": { "displayName": "ababab" },
+              "properties": {
+                  "publisher": "Microsoft.Compute",
+                  "type": "CustomScriptExtension",
+                  "typeHandlerVersion": "1.4",
+                  "autoUpgradeMinorVersion": true,
+                    "settings": {
+                        "fileUris":        [ "https://tempjson.blob.core.windows.net/common-stageartifacts/" ],
+                    "   commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', 'AD-Create.ps1')]"
+                    }
+              }    
         }
     ]
 }
