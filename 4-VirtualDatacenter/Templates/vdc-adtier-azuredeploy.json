@@ -57,26 +57,28 @@
                 }
             }
         },
-    
-    
+
+
         {
-            "name": "AD1",
-            "type": "extensions",
+            "name": "[concat(parameters('vmName'),0,'/', 'AD')]",
+            "type": "Microsoft.Compute/virtualMachines/extensions",
             "location": "[resourceGroup().location]",
             "apiVersion": "2015-06-15",
 
-            "dependsOn": [ "[concat('Microsoft.Compute/virtualMachines/', concat(parameters( 'vmName'), 0))]" ],
-              "tags": { "displayName": "ababab" },
-              "properties": {
-                  "publisher": "Microsoft.Compute",
-                  "type": "CustomScriptExtension",
-                  "typeHandlerVersion": "1.4",
-                  "autoUpgradeMinorVersion": true,
-                    "settings": {
-                        "fileUris":        [ "https://tempjson.blob.core.windows.net/common-stageartifacts/" ],
-                    "   commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', 'AD-Create.ps1')]"
-                    }
-              }    
+            "dependsOn": [ "vmcopy" ],
+
+            "tags": { "displayName": "ababab" },
+
+            "properties": {
+                "publisher": "Microsoft.Compute",
+                "type": "CustomScriptExtension",
+                "typeHandlerVersion": "1.8",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "fileUris": [ "[concat(parameters('commonSettings').artifactsLocation,'/AD-Create.ps1')]" ],
+                    "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File AD-Create.ps1 -domain Contoso.com -password P@ssw0rd1234"
+                }
+            }
         }
     ]
 }
