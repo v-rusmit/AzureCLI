@@ -4,26 +4,32 @@
 
 
     "parameters": {
-        "appName":                    { "type": "string",       "defaultValue": "myapp",                                            "metadata": { "description": "Name of Application"                            } },
-        "appEnvironment":             { "type": "string",       "defaultValue": "dev",   "allowedValues": [ "dev", "qa", "prod" ],  "metadata": { "description": "Environment for Application"                    } },
-        "nvaInstanceCount":           { "type": "int",          "defaultValue": 2,                                                  "metadata": { "description": "Number of nva Tier Instances to create"         } },
-        "staInstanceCount":           { "type": "int",          "defaultValue": 3,                                                  "metadata": { "description": "Number of Business Layer Instances to create"   } },
-        "stbInstanceCount":           { "type": "int",          "defaultValue": 3,                                                  "metadata": { "description": "Number of Business Layer Instances to create"   } },
-        "sqlInstanceCount":           { "type": "int",          "defaultValue": 3,                                                  "metadata": { "description": "Number of SQL Instances to create"              } },
-         "adInstanceCount":           { "type": "int",          "defaultValue": 2,                                                  "metadata": { "description": "Number of Active Directory Instances to create" } },
-        "adminAccessRange":           { "type": "string",       "defaultValue": "216.21.164.178",                                   "metadata": { "description": "Network subnet where Admins live"               } },
-        "_artifactsLocation":         { "type": "string",                                                                           "metadata": { "description": "Auto-generated container in staging storage account to receive post-build staging folder upload"} },
-        "_artifactsLocationSasToken": { "type": "securestring",                                                                     "metadata": { "description": "Auto-generated token to access _artifactsLocation"}                                               }
+        "appName":                    { "type": "string",       "defaultValue": "myapp",                                            "metadata": { "description": "Name of Application"                                                                             } },
+        "appEnvironment":             { "type": "string",       "defaultValue": "dev",   "allowedValues": [ "dev", "qa", "prod" ],  "metadata": { "description": "Environment for Application"                                                                     } },
+        "nvaInstanceCount":           { "type": "int",          "defaultValue": 1,                                                  "metadata": { "description": "Number of nva Tier Instances to create"                                                          } },
+        "staInstanceCount":           { "type": "int",          "defaultValue": 1,                                                  "metadata": { "description": "Number of Business Layer Instances to create"                                                    } },
+        "stbInstanceCount":           { "type": "int",          "defaultValue": 1,                                                  "metadata": { "description": "Number of Business Layer Instances to create"                                                    } },
+        "sqlInstanceCount":           { "type": "int",          "defaultValue": 1,                                                  "metadata": { "description": "Number of SQL Instances to create"                                                               } },
+         "adInstanceCount":           { "type": "int",          "defaultValue": 2,                                                  "metadata": { "description": "Number of Active Directory Instances to create"                                                  } },
+        "adminAccessRange":           { "type": "string",       "defaultValue": "216.21.164.178",                                   "metadata": { "description": "Network subnet where Admins live"                                                                } },
+        "_artifactsLocation":         { "type": "string",                                                                           "metadata": { "description": "Auto-generated container in staging storage account to receive post-build staging folder upload" } },
+        "_artifactsLocationSasToken": { "type": "securestring",                                                                     "metadata": { "description": "Auto-generated token to access _artifactsLocation"                                               } },
+        "username":                   { "type": "string",       "defaultValue": "demoUser",                                         "metadata": { "description": "Username for the Virtual Machine."                                                               } },
+        "password":                   { "type": "securestring", "defaultValue": "P@ssw0rd1234",                                     "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } },
+        "domain":                     { "type": "string",       "defaultValue": "Contoso.com",                                      "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } }
     },
-
 
     "variables": {
 
         "commonSettings": {
             "resourceApiVersion": "2016-02-01",       // all tempaltes in this hierarchical project use this value for  "type": "Microsoft.Resources/deployments",
-            "artifactsLocation":         "[    parameters('_artifactsLocation')        ]",
+            "artifactsLocation":         "[    parameters('_artifactsLocation') ]",
             "artifactsLocationSasToken": "[    parameters('_artifactsLocationSasToken')]",
-            "commonLocation":            "[uri(parameters('_artifactsLocation'),'common-stageartifacts')]"        },
+            "commonLocation":            "[uri(parameters('_artifactsLocation'),'common-stageartifacts')]",
+            "defaultUsername":           "[    parameters('username') ]",
+            "defaultPassword":           "[    parameters('password') ]",
+            "domain":                    "[    parameters('domain')   ]"
+        },
 
         "virtualNetworkParameters": {
              "virtualNetworkName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-vnet')]",                  "virtualNetworkRange": "10.0.0.0/16",

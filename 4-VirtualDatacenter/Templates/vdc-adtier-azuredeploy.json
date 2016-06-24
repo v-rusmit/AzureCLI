@@ -77,7 +77,7 @@
                 "autoUpgradeMinorVersion": true,
                 "settings": {
                     "fileUris": [ "[concat(parameters('commonSettings').commonLocation,'/AD-Create.ps1')]" ],
-                    "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File AD-Create.ps1 -domain Contoso.com -password P@ssw0rd1234"
+                    "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File AD-Create.ps1 -domain ',parameters('commonSettings').domain,' -password ',parameters('commonSettings').defaultPassword)]"
                 }
             }
         },
@@ -101,7 +101,7 @@
                 "autoUpgradeMinorVersion": true,
                 "settings": {
                     "fileUris": [ "[concat(parameters('commonSettings').commonLocation,'/AD-Join.ps1')]" ],
-                    "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File AD-Join.ps1 -domain Contoso.com -username demouse -password P@ssw0rd1234"
+                    "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File AD-Join.ps1 -domain ',parameters('commonSettings').domain,' -username ',parameters('commonSettings').defaultUsername,' -password ',parameters('commonSettings').defaultPassword)]"
                 }
             }
         }
