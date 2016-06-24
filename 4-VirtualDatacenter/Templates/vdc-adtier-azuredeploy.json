@@ -59,6 +59,7 @@
         },
 
 
+
         {
             "name": "[concat(parameters('vmName'),0,'/', 'AD')]",
             "type": "Microsoft.Compute/virtualMachines/extensions",
@@ -75,10 +76,38 @@
                 "typeHandlerVersion": "1.8",
                 "autoUpgradeMinorVersion": true,
                 "settings": {
-                    "fileUris": [ "[concat(parameters('commonSettings').artifactsLocation,'/AD-Create.ps1')]" ],
+                    "fileUris": [ "[concat(parameters('commonSettings').commonLocation,'/AD-Create.ps1')]" ],
                     "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File AD-Create.ps1 -domain Contoso.com -password P@ssw0rd1234"
                 }
             }
+        },
+
+    
+    
+        {
+            "name": "[concat(parameters('vmName'),1,'/', 'AD')]",
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2015-06-15",
+
+            "dependsOn": [ "vmcopy", "[resourceId('Microsoft.Compute/virtualMachines/extensions',concat(parameters('vmName'),0),'AD')]" ],
+
+            "tags": { "displayName": "ababab" },
+
+            "properties": {
+                "publisher": "Microsoft.Compute",
+                "type": "CustomScriptExtension",
+                "typeHandlerVersion": "1.8",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "fileUris": [ "[concat(parameters('commonSettings').commonLocation,'/AD-Join.ps1')]" ],
+                    "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File AD-Join.ps1 -domain Contoso.com -username demouse -password P@ssw0rd1234"
+                }
+            }
         }
+    
+    
+    
+    
     ]
 }
