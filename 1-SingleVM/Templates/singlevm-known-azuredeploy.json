@@ -115,26 +115,6 @@
                                    "nicName": { "value": "[parameters(               'nicName')]" }
                 }
             }
-        },
-
-
-
-        {
-            "name": "vmdsc",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
-
-            "dependsOn": [ "Microsoft.Resources/deployments/vm" ],
-
-            "properties": {
-                "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/applyDSC-web.json')]" },
-
-                "parameters": {
-                    "commonSettings": { "value": "[parameters('commonSettings')]" },
-                    "vmName":         { "value": "[parameters('vmName')]"         }
-                }
-            }
         }
     ]
 }
