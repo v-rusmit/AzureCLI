@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     
     "parameters": {
-        "virtualMachines_WAF1_name":          { "type": "string",       "defaultValue": "WAF10",           "metadata": { "description": "Azure WAF1 Server Name"                                 } },
+        "virtualMachines_WAF1_name":          { "type": "string",       "defaultValue": "WAF1",           "metadata": { "description": "Azure WAF1 Server Name"                                 } },
         "virtualMachines_WAF1_adminPassword": { "type": "securestring", "defaultValue": null,             "metadata": { "description": "Admin Password for WAF Web Console"                     } },
         "networkInterfaces_waf1215_name":     { "type": "string",       "defaultValue": "waf1215",        "metadata": { "description": "Network Interface Card for WAF1"                        } },
         "publicIPAddresses_WAF1_name":        { "type": "string",       "defaultValue": "WAF1",           "metadata": { "description": "Azure Public IP for WAF1"                               } },
