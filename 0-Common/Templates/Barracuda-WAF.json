@@ -13,9 +13,11 @@
         "networkInterfaces_waf2465_name":     { "type": "string",       "defaultValue": "waf2465",        "metadata": { "description": "Network Interface Card for WAF2"                        } },
         "publicIPAddresses_WAF2_name":        { "type": "string",       "defaultValue": "WAF2",           "metadata": { "description": "Azure Public IP for WAF2"                               } },
         
+        
         "virtualNetworks_NVA_name":           { "type": "string",       "defaultValue": "WAFVnet",        "metadata": { "description": "Azure Virtual Network Name"                             } },
         "availabilitySets_NVA_AS_name":       { "type": "string",       "defaultValue": "NVA-AS",         "metadata": { "description": "Azure Availablity Set Name"                             } },
-        "storageAccounts_aaronlvdc1361_name": { "type": "string",       "defaultValue": "aaronlvdc1361",  "metadata": { "description": "WAF Storage Account Name. Must be all lower case"       } } 
+        "storageAccounts_aaronlvdc1361_name": { "type": "string",       "defaultValue": "aaronlvdc1361",  "metadata": { "description": "WAF Storage Account Name. Must be all lower case"       } },
+        "resouceLocation":                    { "type": "string",       "defaultValue": "centralus",      "metadata": {"description": "Azure resource location"                                 } } 
      },
   
     "variables": {  
@@ -28,7 +30,7 @@
             "type": "Microsoft.Compute/availabilitySets",
             "name": "[parameters('availabilitySets_NVA_AS_name')]",
             "apiVersion": "2015-06-15",
-            "location": "centralus",
+            "location": "[parameters('resouceLocation')]",
       
             "properties": {
                 "platformUpdateDomainCount": 5,
@@ -40,49 +42,49 @@
             "type": "Microsoft.Compute/virtualMachines",
             "name": "[parameters('virtualMachines_WAF1_name')]",
             "apiVersion": "2015-06-15",
-            "location": "centralus",
+            "location": "[parameters('resouceLocation')]",
             "plan": {
-               "name": "hourly",
-               "product": "waf",
-               "publisher": "barracudanetworks"
+                "name": "hourly",
+                "product": "waf",
+                "publisher": "barracudanetworks"
       },
             "properties": {
-            "availabilitySet": {
+                "availabilitySet": {
                 "id": "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySets_NVA_AS_name'))]"
       },
             "hardwareProfile": {
-               "vmSize": "Standard_A2"
+                "vmSize": "Standard_A2"
         },
             "storageProfile": {
-               "imageReference": {
-               "publisher": "barracudanetworks",
-               "offer": "waf",
-               "sku": "hourly",
-               "version": "latest"
+                "imageReference": {
+                "publisher": "barracudanetworks",
+                "offer": "waf",
+                "sku": "hourly",
+                "version": "latest"
           },
             "osDisk": {
-               "name": "[parameters('virtualMachines_WAF1_name')]",
-               "createOption": "FromImage",
-               "vhd": {
-               "uri": "[concat('https', '://', parameters('storageAccounts_aaronlvdc1361_name'), '.blob.core.windows.net', concat('/vhds/', parameters('virtualMachines_WAF1_name'),'201652382930.vhd'))]"
+                "name": "[parameters('virtualMachines_WAF1_name')]",
+                "createOption": "FromImage",
+                "vhd": {
+                "uri": "[concat('https', '://', parameters('storageAccounts_aaronlvdc1361_name'), '.blob.core.windows.net', concat('/vhds/', parameters('virtualMachines_WAF1_name'),'201652382930.vhd'))]"
             },
-               "caching": "ReadWrite"
+                "caching": "ReadWrite"
           },
-               "dataDisks": [ ]
+                "dataDisks": [ ]
         },
             "osProfile": {
-               "computerName": "[parameters('virtualMachines_WAF1_name')]",
-               "adminUsername": "trogdor",
-               "linuxConfiguration": {
-               "disablePasswordAuthentication": false
+                "computerName": "[parameters('virtualMachines_WAF1_name')]",
+                "adminUsername": "wafadmin",
+                "linuxConfiguration": {
+                "disablePasswordAuthentication": false
           },
             "secrets": [ ],
-            "adminPassword": "[parameters('virtualMachines_WAF1_adminPassword')]"
+                "adminPassword": "[parameters('virtualMachines_WAF1_adminPassword')]"
         },
-           "networkProfile": {
-           "networkInterfaces": [
+            "networkProfile": {
+            "networkInterfaces": [
             {
-           "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_waf1215_name'))]"
+                "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_waf1215_name'))]"
             }
           ]
         }
@@ -98,41 +100,41 @@
             "type": "Microsoft.Compute/virtualMachines",
             "name": "[parameters('virtualMachines_WAF2_name')]",
             "apiVersion": "2015-06-15",
-            "location": "centralus",
+            "location": "[parameters('resouceLocation')]",
             "plan": {
-            "name": "hourly",
-            "product": "waf",
-            "publisher": "barracudanetworks"
+                "name": "hourly",
+                "product": "waf",
+                "publisher": "barracudanetworks"
       },
-           "properties": {
-               "availabilitySet": {
-               "id": "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySets_NVA_AS_name'))]"
+            "properties": {
+                "availabilitySet": {
+                "id": "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySets_NVA_AS_name'))]"
         },
             "hardwareProfile": {
-            "vmSize": "Standard_A2"
+                "vmSize": "Standard_A2"
         },
             "storageProfile": {
-            "imageReference": {
-            "publisher": "barracudanetworks",
-            "offer": "waf",
-            "sku": "hourly",
-            "version": "latest"
+                "imageReference": {
+                "publisher": "barracudanetworks",
+                "offer": "waf",
+                "sku": "hourly",
+                "version": "latest"
           },
             "osDisk": {
-            "name": "[parameters('virtualMachines_WAF2_name')]",
-            "createOption": "FromImage",
-            "vhd": {
-              "uri": "[concat('https', '://', parameters('storageAccounts_aaronlvdc1361_name'), '.blob.core.windows.net', concat('/vhds/', parameters('virtualMachines_WAF2_name'),'201652391648.vhd'))]"
+                "name": "[parameters('virtualMachines_WAF2_name')]",
+                "createOption": "FromImage",
+                "vhd": {
+                "uri": "[concat('https', '://', parameters('storageAccounts_aaronlvdc1361_name'), '.blob.core.windows.net', concat('/vhds/', parameters('virtualMachines_WAF2_name'),'201652391648.vhd'))]"
             },
             "caching": "ReadWrite"
           },
-          "dataDisks": [ ]
+            "dataDisks": [ ]
         },
             "osProfile": {
-            "computerName": "[parameters('virtualMachines_WAF2_name')]",
-            "adminUsername": "trogdor",
-            "linuxConfiguration": {
-            "disablePasswordAuthentication": false
+                "computerName": "[parameters('virtualMachines_WAF2_name')]",
+                "adminUsername": "wafadmin",
+                "linuxConfiguration": {
+                "disablePasswordAuthentication": false
           },
             "secrets": [ ],
             "adminPassword": "[parameters('virtualMachines_WAF2_adminPassword')]"
@@ -140,163 +142,167 @@
             "networkProfile": {
             "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_waf2465_name'))]"
+                "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_waf2465_name'))]"
             }
           ]
         }
       },
-      "dependsOn": [
-        "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySets_NVA_AS_name'))]",
-        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_aaronlvdc1361_name'))]",
-        "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_waf2465_name'))]"
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySets_NVA_AS_name'))]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_aaronlvdc1361_name'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_waf2465_name'))]"
       ]
     },
     {
-      "comments": "Generalized from resource: '/subscriptions/d520400f-6874-43f2-9ed9-3850af521c18/resourceGroups/AaronLVDC/providers/Microsoft.Network/networkInterfaces/waf1215'.",
-      "type": "Microsoft.Network/networkInterfaces",
-      "name": "[parameters('networkInterfaces_waf1215_name')]",
-      "apiVersion": "2016-03-30",
-      "location": "centralus",
-      "properties": {
-        "ipConfigurations": [
+            "comments": "Generalized from resource: '/subscriptions/d520400f-6874-43f2-9ed9-3850af521c18/resourceGroups/AaronLVDC/providers/Microsoft.Network/networkInterfaces/waf1215'.",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[parameters('networkInterfaces_waf1215_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "[parameters('resouceLocation')]",
+            "properties": {
+            "ipConfigurations": [
           {
             "name": "ipconfig1",
             "properties": {
-              "privateIPAddress": "10.4.1.4",
-              "privateIPAllocationMethod": "Dynamic",
-              "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_WAF1_name'))]"
+                "privateIPAddress": "10.4.1.4",
+                "privateIPAllocationMethod": "Dynamic",
+                "publicIPAddress": {
+                    "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_WAF1_name'))]"
               },
-              "subnet": {
-                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_NVA_name')), '/subnets/FrontEnd')]"
+                "subnet": {
+                    "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_NVA_name')), '/subnets/FrontEnd')]"
               }
             }
           }
         ],
-        "dnsSettings": {
-          "dnsServers": [ ]
+                "dnsSettings": {
+                    "dnsServers": [ ]
         },
-        "enableIPForwarding": false
+                "enableIPForwarding": false
       },
-      "dependsOn": [
-        "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_WAF1_name'))]",
-        "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_NVA_name'))]"
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_WAF1_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_NVA_name'))]"
       ]
     },
     {
-      "comments": "Generalized from resource: '/subscriptions/d520400f-6874-43f2-9ed9-3850af521c18/resourceGroups/AaronLVDC/providers/Microsoft.Network/networkInterfaces/waf2465'.",
-      "type": "Microsoft.Network/networkInterfaces",
-      "name": "[parameters('networkInterfaces_waf2465_name')]",
-      "apiVersion": "2016-03-30",
-      "location": "centralus",
-      "properties": {
-        "ipConfigurations": [
-          {
-            "name": "ipconfig1",
+            "comments": "Generalized from resource: '/subscriptions/d520400f-6874-43f2-9ed9-3850af521c18/resourceGroups/AaronLVDC/providers/Microsoft.Network/networkInterfaces/waf2465'.",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[parameters('networkInterfaces_waf2465_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "[parameters('resouceLocation')]",
             "properties": {
-              "privateIPAddress": "10.4.1.5",
-              "privateIPAllocationMethod": "Dynamic",
-              "publicIPAddress": {
+                "ipConfigurations": [
+          {
+                "name": "ipconfig1",
+            "properties": {
+                "privateIPAddress": "10.4.1.5",
+                "privateIPAllocationMethod": "Dynamic",
+                "publicIPAddress": {
                 "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_WAF2_name'))]"
               },
-              "subnet": {
-                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_NVA_name')), '/subnets/FrontEnd')]"
+                "subnet": {
+                    "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_NVA_name')), '/subnets/FrontEnd')]"
               }
             }
           }
         ],
-        "dnsSettings": {
-          "dnsServers": [ ]
+                "dnsSettings": {
+                "dnsServers": [ ]
         },
-        "enableIPForwarding": false
+                "enableIPForwarding": false
       },
-      "dependsOn": [
-        "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_WAF2_name'))]",
-        "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_NVA_name'))]"
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_WAF2_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_NVA_name'))]"
       ]
     },
     {
-      "comments": "Generalized from resource: '/subscriptions/d520400f-6874-43f2-9ed9-3850af521c18/resourceGroups/AaronLVDC/providers/Microsoft.Network/publicIPAddresses/WAF1'.",
-      "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[parameters('publicIPAddresses_WAF1_name')]",
-      "apiVersion": "2016-03-30",
-      "location": "centralus",
-      "properties": {
-        "publicIPAllocationMethod": "Dynamic",
-        "idleTimeoutInMinutes": 4,
-        "dnsSettings": {
-          "domainNameLabel": "petstore"
+            "comments": "Generalized from resource: '/subscriptions/d520400f-6874-43f2-9ed9-3850af521c18/resourceGroups/AaronLVDC/providers/Microsoft.Network/publicIPAddresses/WAF1'.",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[parameters('publicIPAddresses_WAF1_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "[parameters('resouceLocation')]",
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4,
+                "dnsSettings": {
+                "domainNameLabel": "petstore"
         }
       },
-      "dependsOn": [ ]
+            "dependsOn": [ ]
     },
     {
-      "comments": "Generalized from resource: '/subscriptions/d520400f-6874-43f2-9ed9-3850af521c18/resourceGroups/AaronLVDC/providers/Microsoft.Network/publicIPAddresses/WAF2'.",
-      "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[parameters('publicIPAddresses_WAF2_name')]",
-      "apiVersion": "2016-03-30",
-      "location": "centralus",
-      "properties": {
-        "publicIPAllocationMethod": "Dynamic",
-        "idleTimeoutInMinutes": 4
+            "comments": "Generalized from resource: '/subscriptions/d520400f-6874-43f2-9ed9-3850af521c18/resourceGroups/AaronLVDC/providers/Microsoft.Network/publicIPAddresses/WAF2'.",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[parameters('publicIPAddresses_WAF2_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "[parameters('resouceLocation')]",
+      
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4
       },
-      "dependsOn": [ ]
+                "dependsOn": [ ]
     },
     {
-      "comments": "Generalized from resource: '/subscriptions/d520400f-6874-43f2-9ed9-3850af521c18/resourceGroups/AaronLVDC/providers/Microsoft.Network/virtualNetworks/NVA'.",
-      "type": "Microsoft.Network/virtualNetworks",
-      "name": "[parameters('virtualNetworks_NVA_name')]",
-      "apiVersion": "2016-03-30",
-      "location": "centralus",
-      "properties": {
-        "addressSpace": {
-          "addressPrefixes": [
-            "10.4.0.0/16"
+            "comments": "Generalized from resource: '/subscriptions/d520400f-6874-43f2-9ed9-3850af521c18/resourceGroups/AaronLVDC/providers/Microsoft.Network/virtualNetworks/NVA'.",
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "[parameters('virtualNetworks_NVA_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "[parameters('resouceLocation')]",
+           
+            "properties": {
+                "addressSpace": {
+                "addressPrefixes": [
+                "10.4.0.0/16"
           ]
         },
-        "subnets": [
+                "subnets": [
           {
-            "name": "FrontEnd",
+                "name": "FrontEnd",
+            
             "properties": {
-              "addressPrefix": "10.4.1.0/24"
+                "addressPrefix": "10.4.1.0/24"
             }
           },
           {
             "name": "BackEnd",
+            
             "properties": {
-              "addressPrefix": "10.4.2.0/24"
+                "addressPrefix": "10.4.2.0/24"
             }
           },
           {
             "name": "AppServiceA",
             "properties": {
-              "addressPrefix": "10.4.3.0/24"
+                "addressPrefix": "10.4.3.0/24"
             }
           },
           {
             "name": "AppServiceB",
             "properties": {
-              "addressPrefix": "10.4.4.0/24"
+                "addressPrefix": "10.4.4.0/24"
             }
           }
         ]
       },
-      "dependsOn": [ ]
+            "dependsOn": [ ]
     },
     {
-      "comments": "Generalized from resource: '/subscriptions/d520400f-6874-43f2-9ed9-3850af521c18/resourceGroups/aaronlvdc/providers/Microsoft.Storage/storageAccounts/aaronlvdc1361'.",
-      "type": "Microsoft.Storage/storageAccounts",
-      "sku": {
-        "name": "Standard_LRS",
-        "tier": "Standard"
+            "comments": "Generalized from resource: '/subscriptions/d520400f-6874-43f2-9ed9-3850af521c18/resourceGroups/aaronlvdc/providers/Microsoft.Storage/storageAccounts/aaronlvdc1361'.",
+            "type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+            "name": "Standard_LRS",
+            "tier": "Standard"
       },
-      "kind": "Storage",
-      "name": "[parameters('storageAccounts_aaronlvdc1361_name')]",
-      "apiVersion": "2016-01-01",
-      "location": "centralus",
-      "tags": { },
-      "properties": { },
-      "dependsOn": [ ]
+            "kind": "Storage",
+            "name": "[parameters('storageAccounts_aaronlvdc1361_name')]",
+            "apiVersion": "2016-01-01",
+            "location": "[parameters('resouceLocation')]",
+            "tags": { },
+           "properties": { },
+           "dependsOn": [ ]
     }
   ]
 }
