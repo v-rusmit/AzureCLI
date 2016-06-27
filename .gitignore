@@ -4,8 +4,8 @@
 # Then edited by Kevin
 ################################################################################
 
-/1-SingleVM/bin
-/2-MultiVM/bin
-/3-nTier/bin
-/4-VirtualDatacenter/bin
-/5-HybirdNetwork/bin
+/1-SingleVM/bin/*
+/2-MultiVM/bin/*
+/3-nTier/bin/*
+/4-VirtualDatacenter/bin/*
+/5-HybirdNetwork/bin/*

@@ -115,30 +115,6 @@
                                    "nicName": { "value": "[parameters(               'nicName')]" }
                 }
             }
-        },
-
-
-
-        {
-            "name": "[concat(parameters('vmName'),'/', 'AD')]",
-            "type": "Microsoft.Compute/virtualMachines/extensions",
-            "location": "[resourceGroup().location]",
-            "apiVersion": "2015-06-15",
-
-            "dependsOn": [ "Microsoft.Resources/deployments/vm" ],
-
-            "tags": { "displayName": "ababab" },
-
-            "properties": {
-                "publisher": "Microsoft.Compute",
-                "type": "CustomScriptExtension",
-                "typeHandlerVersion": "1.8",
-                "autoUpgradeMinorVersion": true,
-                "settings": {
-                    "fileUris": [ "https://tempjson.blob.core.windows.net/common-stageartifacts/availability-set.json" ],
-                    "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File AD-Create.ps1 -domain Contoso -password P@ssw0rd1234"
-                }
-            }
         }
     ]
 }

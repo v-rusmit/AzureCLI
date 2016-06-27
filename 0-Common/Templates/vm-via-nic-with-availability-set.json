@@ -3,14 +3,12 @@
     "contentVersion": "1.0.0.0",
 
     "parameters": {
-        "commonSettings":         { "type": "object",                                  "metadata": { "description": "Common API values"                                                      } },
-                        "vmName": { "type": "string",                                  "metadata": { "description": "Name of the Virtual Machine."                                           } },
-        "diskStorageAccountName": { "type": "string",                                  "metadata": { "description": "Name of the storage account for disks of Virtual Machine."              } },
-        "diagStorageAccountName": { "type": "string",                                  "metadata": { "description": "Name of the storage account for diagnostics of many Virtual Machines."  } },
-                       "nicName": { "type": "string",                                  "metadata": { "description": "Name of the simulated Network interface card."                          } },
-           "availabilitySetName": { "type": "string",                                  "metadata": { "description": "Name of the Availability set."                                          } },
-                 "adminUsername": { "type": "string",  "defaultValue": "demoUser",     "metadata": { "description": "Username for the Virtual Machine."                                      } },
-                 "adminPassword": { "type": "string",  "defaultValue": "P@ssw0rd1234", "metadata": { "description": "Passw0rd for the Virtual Machine."                                      } },
+        "commonSettings":         { "type": "object",                                       "metadata": { "description": "Common API values"                                                      } },
+                        "vmName": { "type": "string",                                       "metadata": { "description": "Name of the Virtual Machine."                                           } },
+        "diskStorageAccountName": { "type": "string",                                       "metadata": { "description": "Name of the storage account for disks of Virtual Machine."              } },
+        "diagStorageAccountName": { "type": "string",                                       "metadata": { "description": "Name of the storage account for diagnostics of many Virtual Machines."  } },
+                       "nicName": { "type": "string",                                       "metadata": { "description": "Name of the simulated Network interface card."                          } },
+           "availabilitySetName": { "type": "string",                                       "metadata": { "description": "Name of the Availability set."                                          } },
 
         "windowsOSVersion": {
             "type": "string",
@@ -45,8 +43,8 @@
 
                 "osProfile": {
                     "computerName": "[replace(parameters('vmName'),'-','')]",
-                    "adminUsername": "[parameters('adminUsername')]",
-                    "adminPassword": "[parameters('adminPassword')]"
+                    "adminUsername": "[parameters('commonSettings').defaultUsername]",
+                    "adminPassword": "[parameters('commonSettings').defaultPassword]"
                 },
 
                 "storageProfile": {
