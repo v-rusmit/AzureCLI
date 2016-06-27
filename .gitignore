@@ -9,3 +9,6 @@
 /3-nTier/bin/*
 /4-VirtualDatacenter/bin/*
 /5-HybirdNetwork/bin/*
+
+# User-Specific Files
+*.suo
