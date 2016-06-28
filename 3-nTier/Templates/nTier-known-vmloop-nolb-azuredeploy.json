@@ -65,7 +65,7 @@
             
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/vm-via-nic-with-availability-set.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/sqlvm-via-nic-with-availability-set.json')]" },
 
                 "parameters": {
                     "commonSettings":         { "value": "[parameters('commonSettings')]"         },

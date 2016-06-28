@@ -46,6 +46,7 @@
     <None Include="Templates\virtual-network.json" />
     <None Include="Templates\linuxvm-with-dual-nic-in-availability-set.json" />
     <None Include="Templates\applyDSC-web.json" />
+    <None Include="Templates\sqlvm-via-nic-with-availability-set.json" />
     <None Include="Templates\vm-via-nic-with-availability-set.json" />
     <None Include="Templates\vm-via-nic.json" />
     <None Include="Templates\vnet-add-new-subnet-with-nsg.json" />
