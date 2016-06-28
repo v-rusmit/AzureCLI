@@ -14,30 +14,18 @@
         "publicIPAddresses_WAF2_name":        { "type": "string",       "defaultValue": "WAF2",           "metadata": { "description": "Azure Public IP for WAF2"                               } },
         
         
-        "virtualNetworks_NVA_name":           { "type": "string",       "defaultValue": "WAFVnet",        "metadata": { "description": "Azure Virtual Network Name"                             } },
-        "availabilitySets_NVA_AS_name":       { "type": "string",       "defaultValue": "NVA-AS",         "metadata": { "description": "Azure Availablity Set Name"                             } },
         "storageAccounts_aaronlvdc1361_name": { "type": "string",       "defaultValue": "aaronlvdc1361",  "metadata": { "description": "WAF Storage Account Name. Must be all lower case"       } },
         "resouceLocation":                    { "type": "string",       "defaultValue": "centralus",      "metadata": {"description": "Azure resource location"                                 } } 
      },
   
+
     "variables": {  
      },
     
     "resources": [
     
     {
-            "comments": "Generalized from resource: '/subscriptions/d520400f-6874-43f2-9ed9-3850af521c18/resourceGroups/AaronLVDC/providers/Microsoft.Compute/availabilitySets/NVA-AS'.",
-            "type": "Microsoft.Compute/availabilitySets",
-            "name": "[parameters('availabilitySets_NVA_AS_name')]",
-            "apiVersion": "2015-06-15",
-            "location": "[parameters('resouceLocation')]",
-      
-            "properties": {
-                "platformUpdateDomainCount": 5,
-                "platformFaultDomainCount": 3     },
-                "dependsOn": [ ]
-    },
-    {
+          
             "comments": "Generalized from resource: '/subscriptions/d520400f-6874-43f2-9ed9-3850af521c18/resourceGroups/AaronLVDC/providers/Microsoft.Compute/virtualMachines/WAF1'.",
             "type": "Microsoft.Compute/virtualMachines",
             "name": "[parameters('virtualMachines_WAF1_name')]",
