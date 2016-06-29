@@ -1,5 +1,5 @@
 ----------------
-# Overview - Running a Windows VM on Azure
+# Running a Windows VM on Azure
 
 ## Description
 
@@ -24,3 +24,5 @@ Prescriptive  guidance plus considerations for availability, manageability, and 
 * Sample Solution
 * PowerShell
 * CLI
+
+[![Deploy to Azure](../images/azurebtn.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fazure-quickstart-templates%2Fmaster%2F201-vm-sql-full-autopatching%2Fazuredeploy.json)

@@ -1,5 +1,5 @@
 
-# OVERVIEW - Hybrid Network VPN
+# Hybrid Network VPN
 
 ## Description
 Extends an on-premises network onto Azure using a site-to-site virtual private network (VPN). The traffic flows between the on-premises network and an Azure Virtual Network (VNet) through an IPSec VPN tunnel. This architecture is suitable for hybrid applications with the following characteristics:
@@ -27,3 +27,5 @@ Prescriptive  guidance plus considerations for availability, manageability, and 
 ## Deployment
 PowerShell
 CLI
+
+[![Deploy to Azure](../images/azurebtn.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fazure-quickstart-templates%2Fmaster%2F201-vm-sql-full-autopatching%2Fazuredeploy.json)

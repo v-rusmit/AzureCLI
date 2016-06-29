@@ -1,8 +1,8 @@
-# Overview - Running VMs for an N-tier architecture on Azure
+# Running VMs for an N-tier architecture on Azure
 
 ## Description
 This configuration runs virtual machines (VMs) for an application with a N-tier architecture.
-There are variations of N-tier architectures. For the most part, the differences shouldn't matter for the purposes of these recommendations. A typical 3-tier web app is assumed here:
+There are variations of N-tier architectures. A typical 3-tier web app is assumed here:
 * Web tier. Handles incoming HTTP requests. Responses are returned through this tier.
 * Business tier. Implements business processes and other functional logic for the system.
 * Data tier. Provides persistent data storage.
@@ -26,3 +26,5 @@ Prescriptive  guidance plus considerations for availability, manageability, and 
 * Sample solution
 * PowerShell
 * CLI
+
+[![Deploy to Azure](../images/azurebtn.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fazure-quickstart-templates%2Fmaster%2F201-vm-sql-full-autopatching%2Fazuredeploy.json)
