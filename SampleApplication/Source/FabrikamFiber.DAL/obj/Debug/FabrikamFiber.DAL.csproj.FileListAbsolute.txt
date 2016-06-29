@@ -1,0 +1,20 @@
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.DAL\bin\Debug\FabrikamFiber.DAL.dll
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.DAL\bin\Debug\FabrikamFiber.DAL.pdb
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.DAL\bin\Debug\EntityFramework.dll
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.DAL\obj\Debug\FabrikamFiber.DAL.csprojResolveAssemblyReference.cache
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.DAL\obj\Debug\FabrikamFiber.DAL.dll
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.DAL\obj\Debug\FabrikamFiber.DAL.pdb
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.DAL\bin\Debug\Newtonsoft.Json.dll
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.DAL\bin\Debug\System.Net.Http.Formatting.dll
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.DAL\bin\Debug\Newtonsoft.Json.xml
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.DAL\bin\Debug\System.Net.Http.Formatting.xml
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.DAL\bin\Debug\FabrikamFiber.DAL.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.DAL\bin\Debug\FabrikamFiber.DAL.pdb
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.DAL\bin\Debug\EntityFramework.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.DAL\bin\Debug\Newtonsoft.Json.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.DAL\bin\Debug\System.Net.Http.Formatting.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.DAL\bin\Debug\Newtonsoft.Json.xml
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.DAL\bin\Debug\System.Net.Http.Formatting.xml
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.DAL\obj\Debug\FabrikamFiber.DAL.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.DAL\obj\Debug\FabrikamFiber.DAL.pdb
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.DAL\obj\Debug\FabrikamFiber.DAL.csprojResolveAssemblyReference.cache
