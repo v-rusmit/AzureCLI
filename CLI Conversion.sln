@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "1-SingleVM", "1-SingleVM\1-SingleVM.deployproj", "{DCE197D3-5BF5-4AEC-A7B2-7CC74E762B23}"
 EndProject
@@ -14,6 +14,11 @@ EndProject
 Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "4-VirtualDatacenter", "4-VirtualDatacenter\4-VirtualDatacenter.deployproj", "{4D6261FE-BCFC-436F-AB26-26E9D58C7C2C}"
 EndProject
 Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "5-HybridNetwork", "5-HybirdNetwork\5-HybridNetwork.deployproj", "{B1B5773E-98AB-48FA-AF9A-7C03076B6304}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4CF46576-0A18-4F36-A5BC-64CE867B362E}"
+	ProjectSection(SolutionItems) = preProject
+		SampleApplication\Source\FabrikamFiber.CallCenter.sln = SampleApplication\Source\FabrikamFiber.CallCenter.sln
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
