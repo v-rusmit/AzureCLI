@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0">
+  <Operation Name="Rename Refactor" Key="f6e85f57-ce5b-4a1b-94b3-0d97d78ef757" ChangeDateTime="06/17/2016 20:51:02" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+    <Property Name="ElementName" Value="[dbo].[FK_ScheduleItem_ToTable]" />
+    <Property Name="ElementType" Value="SqlForeignKeyConstraint" />
+    <Property Name="ParentElementName" Value="[dbo].[ScheduleItem]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[FK_ScheduleItem_ServiceTicket]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="d5086424-61a0-48c9-b89e-deca4a34f18d" ChangeDateTime="06/17/2016 20:55:11" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+    <Property Name="ElementName" Value="[dbo].[ServiceTicket].[Desc]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ServiceTicket]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Description" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="90f822a0-956a-4de7-9f07-0e594a3c2866" ChangeDateTime="06/17/2016 20:55:42" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+    <Property Name="ElementName" Value="[dbo].[ServiceTicket].[Description]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ServiceTicket]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Title" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="31e02f8d-8248-4ce5-b63f-3c224599f79c" ChangeDateTime="06/17/2016 20:56:54" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+    <Property Name="ElementName" Value="[dbo].[ServiceTicket].[CreatedBy]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ServiceTicket]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CreatedById" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="35545f1a-0182-4936-ad50-3ee64718e1e8" ChangeDateTime="06/17/2016 20:59:53" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+    <Property Name="ElementName" Value="[dbo].[FK_ServiceTicket_Employee]" />
+    <Property Name="ElementType" Value="SqlForeignKeyConstraint" />
+    <Property Name="ParentElementName" Value="[dbo].[ServiceTicket]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[FK_ServiceTicket_CBEmployee]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="47bc07fd-fb3c-4ecf-90ad-288d8e7ff4af" ChangeDateTime="06/17/2016 21:00:00" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+    <Property Name="ElementName" Value="[dbo].[FK_ServiceTicket_Employee]" />
+    <Property Name="ElementType" Value="SqlForeignKeyConstraint" />
+    <Property Name="ParentElementName" Value="[dbo].[ServiceTicket]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[FK_ServiceTicket_ATEmployee]" />
+  </Operation>
+</Operations>

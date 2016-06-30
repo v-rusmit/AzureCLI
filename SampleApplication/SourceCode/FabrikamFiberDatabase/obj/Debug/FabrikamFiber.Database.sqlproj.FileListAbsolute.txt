@@ -1,0 +1,18 @@
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiberDatabase\bin\Debug\FabrikamFiber.Database.dacpac
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiberDatabase\bin\Debug\FabrikamFiberDatabase.dll
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiberDatabase\bin\Debug\FabrikamFiberDatabase.pdb
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiberDatabase\obj\Debug\FabrikamFiberDatabase.dll
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiberDatabase\obj\Debug\FabrikamFiberDatabase.pdb
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiberDatabase\obj\Debug\Model.xml
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiberDatabase\obj\Debug\refactor.xml
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiberDatabase\obj\Debug\postdeploy.sql
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiberDatabase\obj\Debug\predeploy.sql
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiberDatabase\bin\Debug\FabrikamFiber.Database.dacpac
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiberDatabase\bin\Debug\FabrikamFiberDatabase.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiberDatabase\bin\Debug\FabrikamFiberDatabase.pdb
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiberDatabase\obj\Debug\FabrikamFiberDatabase.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiberDatabase\obj\Debug\FabrikamFiberDatabase.pdb
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiberDatabase\obj\Debug\Model.xml
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiberDatabase\obj\Debug\refactor.xml
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiberDatabase\obj\Debug\postdeploy.sql
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiberDatabase\obj\Debug\predeploy.sql

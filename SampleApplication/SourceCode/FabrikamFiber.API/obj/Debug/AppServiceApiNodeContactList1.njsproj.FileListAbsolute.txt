@@ -1,0 +1,2 @@
+D:\Users\tjensen\Documents\CLI Conversion Project\app-service-api-node-contact-list-master\bin\Microsoft.NodejsTools.WebRole.dll
+D:\Users\tjensen\Documents\CLI Conversion Project\app-service-api-node-contact-list-master\obj\Debug\AppServiceApiNodeContactList1.njsprojResolveAssemblyReference.cache

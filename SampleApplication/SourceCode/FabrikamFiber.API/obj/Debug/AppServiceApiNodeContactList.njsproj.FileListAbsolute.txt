@@ -1,0 +1,1 @@
+D:\Users\tjensen\Documents\CLI Conversion Project\app-service-api-node-contact-list-master\bin\Microsoft.NodejsTools.WebRole.dll

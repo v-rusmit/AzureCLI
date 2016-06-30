@@ -1,0 +1,26 @@
+@model FabrikamFiber.DAL.Models.Employee
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h1>Edit</h1>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Employee</legend>
+
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.Address.Id)
+		@Html.Partial("_CreateOrEdit", Model)
+
+        <p>
+            <input type="submit" value="Save" class="glossyBox"/>
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

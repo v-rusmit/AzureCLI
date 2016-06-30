@@ -1,0 +1,44 @@
+@model FabrikamFiber.DAL.Models.Customer
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h1>Details</h1>
+
+<fieldset>
+    <legend>Customer</legend>
+
+    <div class="display-label">First Name</div>
+    <div class="display-field">@Model.FirstName</div>
+
+    <div class="display-label">Last Name</div>
+    <div class="display-field">@Model.LastName</div>
+
+    <div class="display-label">Address</div>
+    <div class="display-field">@Html.DisplayTextFor(_ => Model.Address.Street).ToString()</div>
+
+    <div class="display-label">Phone</div>
+    <div class="display-field">
+        @foreach (var phone in Model.Phone)
+        {
+            @Html.DisplayTextFor(_ => phone.Number).ToString()
+            <br />
+        }
+    </div>
+
+    <div class="display-label">Requested Tickets</div>
+    <div class="display-field">
+        @foreach (var ticket in Model.RequestedTickets)
+        {
+            @Html.DisplayTextFor(_ => ticket.Description).ToString()
+            <br />
+        }
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+

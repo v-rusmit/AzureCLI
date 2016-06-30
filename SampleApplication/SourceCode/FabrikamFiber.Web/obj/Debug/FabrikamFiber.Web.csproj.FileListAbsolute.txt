@@ -1,0 +1,86 @@
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\Deploy\deploy.bat
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\FabrikamFiber.Web.dll.config
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\FabrikamFiber.Web.dll
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\FabrikamFiber.Web.pdb
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\EntityFramework.dll
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\FabrikamFiber.DAL.dll
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\Microsoft.Web.Infrastructure.dll
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\Ninject.dll
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\Ninject.Web.Mvc.dll
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\System.Web.Helpers.dll
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\System.Web.Mvc.dll
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\System.Web.Razor.dll
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\System.Web.WebPages.Deployment.dll
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\System.Web.WebPages.dll
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\System.Web.WebPages.Razor.dll
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\WebActivator.dll
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\FabrikamFiber.DAL.pdb
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\System.Web.Helpers.xml
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\System.Web.Mvc.xml
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\System.Web.Razor.xml
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\System.Web.WebPages.xml
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\System.Web.WebPages.Deployment.xml
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\System.Web.WebPages.Razor.xml
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.Web\obj\Debug\FabrikamFiber.Web.csprojResolveAssemblyReference.cache
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.Web\obj\Debug\FabrikamFiber.Web.dll
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.Web\obj\Debug\FabrikamFiber.Web.pdb
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\System.Net.Http.Formatting.dll
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\Newtonsoft.Json.dll
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\System.Net.Http.Formatting.xml
+D:\Users\tjensen\Documents\CLI Conversion Project\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\Newtonsoft.Json.xml
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\Deploy\deploy.bat
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\FabrikamFiber.Web.dll.config
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\FabrikamFiber.Web.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\FabrikamFiber.Web.pdb
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\EntityFramework.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\FabrikamFiber.DAL.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\Microsoft.Web.Infrastructure.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\Ninject.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\Ninject.Web.Mvc.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\System.Web.Helpers.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\System.Web.Mvc.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\System.Web.Razor.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\System.Web.WebPages.Deployment.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\System.Web.WebPages.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\System.Web.WebPages.Razor.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\WebActivator.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\System.Net.Http.Formatting.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\Newtonsoft.Json.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\FabrikamFiber.DAL.pdb
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\System.Web.Helpers.xml
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\System.Web.Mvc.xml
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\System.Web.Razor.xml
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\System.Web.WebPages.xml
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\System.Web.WebPages.Deployment.xml
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\System.Web.WebPages.Razor.xml
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\System.Net.Http.Formatting.xml
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.Web\bin\Newtonsoft.Json.xml
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.Web\obj\Debug\FabrikamFiber.Web.csprojResolveAssemblyReference.cache
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.Web\obj\Debug\FabrikamFiber.Web.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.Web\obj\Debug\FabrikamFiber.Web.pdb
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\SampleApplication\SourceCode\FabrikamFiber.Web\bin\Deploy\deploy.bat
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\SampleApplication\SourceCode\FabrikamFiber.Web\bin\FabrikamFiber.Web.dll.config
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\SampleApplication\SourceCode\FabrikamFiber.Web\bin\FabrikamFiber.Web.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\SampleApplication\SourceCode\FabrikamFiber.Web\bin\FabrikamFiber.Web.pdb
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\SampleApplication\SourceCode\FabrikamFiber.Web\bin\FabrikamFiber.DAL.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\SampleApplication\SourceCode\FabrikamFiber.Web\bin\Microsoft.Web.Infrastructure.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\SampleApplication\SourceCode\FabrikamFiber.Web\bin\System.Web.Helpers.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\SampleApplication\SourceCode\FabrikamFiber.Web\bin\System.Web.Mvc.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\SampleApplication\SourceCode\FabrikamFiber.Web\bin\System.Web.Razor.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\SampleApplication\SourceCode\FabrikamFiber.Web\bin\System.Web.WebPages.Deployment.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\SampleApplication\SourceCode\FabrikamFiber.Web\bin\System.Web.WebPages.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\SampleApplication\SourceCode\FabrikamFiber.Web\bin\System.Web.WebPages.Razor.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\SampleApplication\SourceCode\FabrikamFiber.Web\bin\System.Net.Http.Formatting.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\SampleApplication\SourceCode\FabrikamFiber.Web\bin\Newtonsoft.Json.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\SampleApplication\SourceCode\FabrikamFiber.Web\bin\FabrikamFiber.DAL.pdb
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\SampleApplication\SourceCode\FabrikamFiber.Web\bin\System.Web.Helpers.xml
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\SampleApplication\SourceCode\FabrikamFiber.Web\bin\System.Web.Mvc.xml
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\SampleApplication\SourceCode\FabrikamFiber.Web\bin\System.Web.Razor.xml
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\SampleApplication\SourceCode\FabrikamFiber.Web\bin\System.Web.WebPages.xml
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\SampleApplication\SourceCode\FabrikamFiber.Web\bin\System.Web.WebPages.Deployment.xml
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\SampleApplication\SourceCode\FabrikamFiber.Web\bin\System.Web.WebPages.Razor.xml
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\SampleApplication\SourceCode\FabrikamFiber.Web\bin\System.Net.Http.Formatting.xml
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\SampleApplication\SourceCode\FabrikamFiber.Web\bin\Newtonsoft.Json.xml
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\SampleApplication\SourceCode\FabrikamFiber.Web\obj\Debug\FabrikamFiber.Web.csprojResolveAssemblyReference.cache
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\SampleApplication\SourceCode\FabrikamFiber.Web\obj\Debug\FabrikamFiber.Web.dll
+D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\SampleApplication\SourceCode\FabrikamFiber.Web\obj\Debug\FabrikamFiber.Web.pdb
