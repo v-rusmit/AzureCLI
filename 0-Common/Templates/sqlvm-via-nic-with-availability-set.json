@@ -9,7 +9,6 @@
         "diagStorageAccountName": { "type": "string",                                       "metadata": { "description": "Name of the storage account for diagnostics of many Virtual Machines."  } },
                        "nicName": { "type": "string",                                       "metadata": { "description": "Name of the simulated Network interface card."                          } },
            "availabilitySetName": { "type": "string",                                       "metadata": { "description": "Name of the Availability set."                                          } }
-
     },
 
     "variables": {
@@ -18,7 +17,7 @@
               "OSDiskName": "osdisk",
         "publicIPAddressType": "Dynamic",
         "vmStorageAccountContainerName": "vhds",
-        "vmSize": "Standard_D1"
+        "vmSize": "Standard_D2"
     },
 
         

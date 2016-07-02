@@ -1,0 +1,43 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+
+    "parameters": {
+        "commonSettings": { "type": "object",  "metadata": { "description": "Common API values"                       } },
+        "vmName":         { "type": "string",  "metadata": { "description": "Name of the Virtual Machine."            } },
+        "scriptName":     { "type": "string",  "metadata": { "description": "Name of the DSC script (ps1 file)."      } },
+        "configName":     { "type": "string",  "metadata": { "description": "Name of the DSC script (Configuraiton)." } }
+    },
+
+    "resources": [
+        {
+            "name": "[concat(parameters('vmName'),'/', 'DSC')]",
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2015-06-15",
+
+            "properties": {
+                "publisher": "Microsoft.Powershell",
+                "type": "DSC",
+                "typeHandlerVersion": "2.18",
+
+                "settings": {
+                    "configuration": {
+                        "url":      "[concat(parameters('commonSettings').commonLocation,'/dsccommon.zip')]",
+                        "script":   "[parameters('scriptName')]",
+                        "function": "[parameters('configName')]"
+                    },
+                    "configurationArguments": {
+                        "AppName": "Sample App"
+                    },
+                    "protectedSettings": {
+                        "UserAccount": {
+                            "UserName": "[parameters('commonSettings').defaultUsername]",
+                            "Password": "[parameters('commonSettings').defaultPassword]"
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

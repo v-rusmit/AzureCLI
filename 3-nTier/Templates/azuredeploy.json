@@ -49,15 +49,10 @@
        "bizAvailabilitySetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-biz-as')]",
        "sqlAvailabilitySetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-sql-as')]",
 
-                    "webVmName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-web-vm')]",
-                    "bizVmName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-biz-vm')]",
-                    "sqlVmName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-sql-vm')]",
-                   "mgmtVmName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-mgmt-vm')]",
-
-                   "webNicName": "[concat(variables('webVmName'),  '-nic')]",
-                   "bizNicName": "[concat(variables('bizVmName'),  '-nic')]",
-                   "sqlNicName": "[concat(variables('sqlVmName'),  '-nic')]",
-                  "mgmtNicName": "[concat(variables('mgmtVmName'), '-nic')]"
+                "webVmNameRoot": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-web-vm')]",
+                "bizVmNameRoot": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-biz-vm')]",
+                "sqlVmNameRoot": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-sql-vm')]",
+               "mgmtVmName":     "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-mgmt-vm')]"
     },
 
     "resources": [
@@ -101,27 +96,23 @@
                     "webPublicIPAddressName": { "value": "[variables( 'appPublicIPAddressName')]" },
                      "jbPublicIPAddressName": { "value": "[variables(  'jbPublicIPAddressName')]" },
 
-                       "webLoadBalancerName": { "value": "[variables(   'webLoadBalancerName')]"  },
-                    "webAvailabilitySetName": { "value": "[variables('webAvailabilitySetName')]"  },
-                          "webInstanceCount": { "value": "[parameters(     'webInstanceCount')]"  },
-                                 "webVmName": { "value": "[variables(             'webVmName')]"  },
-                                "webNicName": { "value": "[variables(            'webNicName')]"  },
+                       "webLoadBalancerName": { "value": "[ variables(   'webLoadBalancerName')]" },
+                    "webAvailabilitySetName": { "value": "[ variables('webAvailabilitySetName')]" },
+                          "webInstanceCount": { "value": "[parameters(      'webInstanceCount')]" },
+                             "webVmNameRoot": { "value": "[ variables(         'webVmNameRoot')]" },
                     
-                       "bizLoadBalancerName": { "value": "[variables(   'bizLoadBalancerName')]"  },
-                    "bizAvailabilitySetName": { "value": "[variables('bizAvailabilitySetName')]"  },
-                          "bizInstanceCount": { "value": "[parameters(     'bizInstanceCount')]"  },
-                                 "bizVmName": { "value": "[variables(             'bizVmName')]"  },
-                                "bizNicName": { "value": "[variables(            'bizNicName')]"  },
+                       "bizLoadBalancerName": { "value": "[ variables(   'bizLoadBalancerName')]" },
+                    "bizAvailabilitySetName": { "value": "[ variables('bizAvailabilitySetName')]" },
+                          "bizInstanceCount": { "value": "[parameters(      'bizInstanceCount')]" },
+                             "bizVmNameRoot": { "value": "[ variables(         'bizVmNameRoot')]" },
 
                     "sqlAvailabilitySetName": { "value": "[ variables('sqlAvailabilitySetName')]" },
                           "sqlInstanceCount": { "value": "[parameters(      'sqlInstanceCount')]" },
-                                 "sqlVmName": { "value": "[ variables(             'sqlVmName')]" },
-                                "sqlNicName": { "value": "[ variables(            'sqlNicName')]" },
+                             "sqlVmNameRoot": { "value": "[ variables(         'sqlVmNameRoot')]" },
 
                          "mgmtInstanceCount": { "value": "[parameters(     'mgmtInstanceCount')]" },
                                 "mgmtVmName": { "value": "[ variables(            'mgmtVmName')]" },
-                               "mgmtNicName": { "value": "[ variables(           'mgmtNicName')]" }
-                }
+               }
             }
         }
     ]

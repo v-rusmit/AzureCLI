@@ -10,9 +10,12 @@
         "diskStorageAccountName": { "type": "string",   "metadata": { "description": "Name of storage account for VHD's"                 } },
         "diagStorageAccountName": { "type": "string",   "metadata": { "description": "Name of storage account for diagnostics"           } },
                      "thisIndex": { "type": "int",      "metadata": { "description": "Index Number (of a loop)"                          } },
-                       "nicName": { "type": "string",   "metadata": { "description": "Name of the simulated Network interface card."     } },
-                        "vmName": { "type": "string",   "metadata": { "description": "Name of the virtual machine."                      } }
+                        "vmName": { "type": "string",   "metadata": { "description": "Name of the virtual machine."                      } },
+                 "dscScriptName": { "type": "string",   "metadata": { "description": "Name of the DSC script to apply to VM."            } },
+                 "dscConfigName": { "type": "string",   "metadata": { "description": "Name of the DSC config inside the script."         } }
     },
+
+    "variables": { "nicName":  "[concat(parameters('vmName'),'-nic')]" },
     
     "resources": [
          
@@ -34,7 +37,7 @@
 
 
         {
-            "name": "[parameters('nicName')]",
+            "name": "[variables('nicName')]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
    
@@ -44,7 +47,7 @@
 
                 "parameters": {
                     "commonSettings":     { "value": "[parameters('commonSettings')]"     },
-                               "nicName": { "value": "[parameters(           'nicName')]" },
+                               "nicName": { "value": "[ variables(           'nicName')]" },
                     "virtualNetworkName": { "value": "[parameters('virtualNetworkName')]" },
                             "subnetName": { "value": "[parameters(        'subnetName')]" }
                 }
@@ -54,13 +57,13 @@
 
 
         {
-            "name": "[parameters('vmName')]",
+            "name": "[concat('Build-',parameters('vmName'))]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
             "dependsOn": [
                 "[concat('Microsoft.Resources/deployments/', parameters('diskStorageAccountName'))]",
-                "[concat('Microsoft.Resources/deployments/', parameters('nicName'))]"
+                "[concat('Microsoft.Resources/deployments/',  variables('nicName'))]"
             ],
             
             "properties": {
@@ -72,10 +75,32 @@
                                     "vmName": { "value": "[parameters(                'vmName')]" },
                     "diskStorageAccountName": { "value": "[parameters('diskStorageAccountName')]" },
                     "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]" },        
-                                   "nicName": { "value": "[parameters(               'nicName')]" },
+                                   "nicName": { "value": "[ variables(               'nicName')]" },
                        "availabilitySetName": { "value": "[parameters(   'availabilitySetName')]" }
                 }
             }
-        }
+        },
+
+
+
+        {
+            "name": "[concat('DSC-',parameters('vmName'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
+
+            "dependsOn": [ "[concat('Microsoft.Resources/deployments/', 'Build-', parameters('vmName'))]" ],
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/applyDSC.json')]" },
+
+                "parameters": {
+                    "commonSettings": { "value": "[parameters('commonSettings')]" },
+                    "vmName":         { "value": "[parameters('vmName'        )]" },
+                    "scriptName":     { "value": "[parameters('dscScriptName' )]" },
+                    "configName":     { "value": "[parameters('dscConfigName' )]" }
+                }
+            }
+        }    
     ]
 }
