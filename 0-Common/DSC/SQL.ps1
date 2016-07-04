@@ -15,7 +15,7 @@ Configuration DemoSQL
 
     LocalConfigurationManager
     {
-        RebootNodeIfNeeded = $true
+        RebootNodeIfNeeded = $false
     }
 
 	xRemoteFile GetBacpac
