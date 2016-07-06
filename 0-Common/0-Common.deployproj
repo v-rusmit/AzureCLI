@@ -303,6 +303,8 @@
     <None Include="SampleApp\FabrikamFiber.API.zip" />
     <None Include="SampleApp\FabrikamFiber.bacpac" />
     <None Include="SampleApp\FabrikamFiber.Web.zip" />
+    <None Include="SampleApp\iisnode-full-v0.2.21-x64.msi" />
+    <None Include="SampleApp\rewrite_amd64.msi" />
     <None Include="Templates\availability-set.json" />
     <None Include="Templates\azuredeploy.json" />
     <None Include="Templates\azuredeploy.parameters.json" />
