@@ -25,6 +25,13 @@ Configuration DemoSQL
 		DestinationPath = $stagingFolder + '\' + $bacpac
 	}         
 
+	xDatabaseLogin AccessViaIis
+	{
+		Ensure           = "Present"
+		SqlServer        = "localhost"
+		LoginName        = "NT AUTHORITY\NETWORK SERVICE"
+		SqlAuthType      = 'Windows'
+	} 
 
 	xDatabase LoadDB
 	{

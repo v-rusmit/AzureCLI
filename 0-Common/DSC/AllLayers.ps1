@@ -77,6 +77,14 @@ Configuration DemoAllComponents
 			DependsOn   = "[xRemoteFile]WebContent2"
 		}         
 
+		xDatabaseLogin AccessViaIis
+		{
+			Ensure           = "Present"
+			SqlServer        = "localhost"
+			LoginName        = "NT AUTHORITY\NETWORK SERVICE"
+			SqlAuthType      = 'Windows'
+		} 
+		
 		xDatabase LoadDB
 		{
 			Ensure           = "Present"
