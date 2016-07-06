@@ -6,17 +6,16 @@
     "parameters": {
         "appName":                    { "type": "string",       "defaultValue": "myapp",                                            "metadata": { "description": "Name of Application"                                                                             } },
         "appEnvironment":             { "type": "string",       "defaultValue": "dev",   "allowedValues": [ "dev", "qa", "prod" ],  "metadata": { "description": "Environment for Application"                                                                     } },
-        "nvaInstanceCount":           { "type": "int",          "defaultValue": 1,                                                  "metadata": { "description": "Number of nva Tier Instances to create"                                                          } },
-        "staInstanceCount":           { "type": "int",          "defaultValue": 1,                                                  "metadata": { "description": "Number of Business Layer Instances to create"                                                    } },
-        "stbInstanceCount":           { "type": "int",          "defaultValue": 1,                                                  "metadata": { "description": "Number of Business Layer Instances to create"                                                    } },
-        "sqlInstanceCount":           { "type": "int",          "defaultValue": 1,                                                  "metadata": { "description": "Number of SQL Instances to create"                                                               } },
-         "adInstanceCount":           { "type": "int",          "defaultValue": 2,                                                  "metadata": { "description": "Number of Active Directory Instances to create"                                                  } },
+        "nvaInstanceCount":           { "type": "int",          "defaultValue": 2,                                                  "metadata": { "description": "Number of nva Tier Instances to create"                                                          } },
+        "staInstanceCount":           { "type": "int",          "defaultValue": 3,                                                  "metadata": { "description": "Number of Business Layer Instances to create"                                                    } },
+        "stbInstanceCount":           { "type": "int",          "defaultValue": 3,                                                  "metadata": { "description": "Number of Business Layer Instances to create"                                                    } },
+        "sqlInstanceCount":           { "type": "int",          "defaultValue": 3,                                                  "metadata": { "description": "Number of SQL Instances to create"                                                               } },
         "adminAccessRange":           { "type": "string",       "defaultValue": "216.21.164.178",                                   "metadata": { "description": "Network subnet where Admins live"                                                                } },
         "_artifactsLocation":         { "type": "string",                                                                           "metadata": { "description": "Auto-generated container in staging storage account to receive post-build staging folder upload" } },
         "_artifactsLocationSasToken": { "type": "securestring",                                                                     "metadata": { "description": "Auto-generated token to access _artifactsLocation"                                               } },
         "username":                   { "type": "string",       "defaultValue": "demoUser",                                         "metadata": { "description": "Username for the Virtual Machine."                                                               } },
         "password":                   { "type": "securestring", "defaultValue": "P@ssw0rd1234",                                     "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } },
-        "domain":                     { "type": "string",       "defaultValue": "Contoso.com",                                      "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } }
+        "domain":                     { "type": "string",       "defaultValue": "DomainOrDie.biz",                                  "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } }
     },
 
     "variables": {
@@ -33,8 +32,8 @@
 
         "virtualNetworkParameters": {
              "virtualNetworkName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-vnet')]",                  "virtualNetworkRange": "10.0.0.0/16",
-            "nvaPublicSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),   '-nva-public-subnet')]",  "dmzPublicSubnetRange": "10.0.1.0/25",  
-            "nvaPrivateSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-nva-private-subnet')]", "dmzPrivateSubnetRange": "10.0.1.128/25",  
+            "nvaPublicSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-nva-public-subnet')]",   "dmzPublicSubnetRange": "10.0.1.0/25",  
+           "nvaPrivateSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-nva-private-subnet')]", "dmzPrivateSubnetRange": "10.0.1.128/25",  
                   "staSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-sta-subnet')]",                "staSubnetRange": "10.0.2.0/24",     "staPrivateIPAddress": "10.0.2.250",
                   "stbSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-stb-subnet')]",                "stbSubnetRange": "10.0.3.0/24",     "stbPrivateIPAddress": "10.0.3.250",
                   "sqlSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-sql-subnet')]",                "sqlSubnetRange": "10.0.8.0/24",     "sqlPrivateIPAddress": "10.0.8.250",
@@ -132,7 +131,6 @@
                                 "mgmtVmName": { "value": "[ variables(            'mgmtVmName')]" },
 
                      "adAvailabilitySetName": { "value": "[ variables('adAvailabilitySetName')]" },
-                           "adInstanceCount": { "value": "[parameters(      'adInstanceCount')]" },
                                   "adVmName": { "value": "[ variables(             'adVmName')]" }
                 }
             }

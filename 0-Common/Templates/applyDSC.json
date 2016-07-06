@@ -21,21 +21,26 @@
                 "type": "DSC",
                 "typeHandlerVersion": "2.18",
 
-                "settings": {
-                    "configuration": {
-                        "url":      "[concat(parameters('commonSettings').commonLocation,'/dsccommon.zip')]",
-                        "script":   "[parameters('scriptName')]",
-                        "function": "[parameters('configName')]"
-                    },
-                    "configurationArguments": {
-                        "AppName": "Sample App"
-                    },
-                    "protectedSettings": {
-                        "UserAccount": {
-                            "UserName": "[parameters('commonSettings').defaultUsername]",
-                            "Password": "[parameters('commonSettings').defaultPassword]"
-                        }
-                    }
+				"settings": {
+					"wmfVersion": "latest",
+					"configuration": {
+						"url": "[concat(parameters('commonSettings').commonLocation,'/dsccommon.zip')]",
+						"script": "[parameters('scriptName')]",
+						"function": "[parameters('configName')]"
+					},
+					"configurationArguments": {
+						"Domain":  "[parameters('commonSettings').domain]",
+						"AppName": "Sample App"
+					},
+					"configurationData": {"url": "[concat(parameters('commonSettings').commonLocation,'/config.psd1')]" }
+				},
+                "protectedSettings": {
+					"configurationArguments": {
+						"UserAccount": {
+							"UserName": "[parameters('commonSettings').defaultUsername]",
+							"Password": "[parameters('commonSettings').defaultPassword]"
+						}
+					}
                 }
             }
         }

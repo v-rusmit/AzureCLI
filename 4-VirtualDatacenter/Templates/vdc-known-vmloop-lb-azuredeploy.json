@@ -3,15 +3,17 @@
     "contentVersion": "1.0.0.0",
 
     "parameters": {
-        "commonSettings":         { "type": "object",                               "metadata": { "description": "Common API values"                                    } },
-              "virtualNetworkName": { "type": "string",                                "metadata": { "description": "Name of Virtual Network"                           } },
-                      "subnetName": { "type": "string",                                "metadata": { "description": "Name of first/only subnet"                         } },
-             "availabilitySetName": { "type": "string"                                                                                                                    },
-                "loadBalancerName": { "type": "string",                                "metadata": { "description": "This is the name of the load balancer"             } },
-          "diskStorageAccountName": { "type": "string",                                "metadata": { "description": "Name of storage account for VHD's"                 } },
-          "diagStorageAccountName": { "type": "string",                                "metadata": { "description": "Name of storage account for diagnostics"           } },
-                       "thisIndex": { "type": "int",                                   "metadata": { "description": "Index Number (of a loop)"                          } },
-                          "vmName": { "type": "string",                                "metadata": { "description": "Name of the virtual machine."                      } }
+        "commonSettings":         { "type": "object",    "metadata": { "description": "Common API values"                                 } },
+              "virtualNetworkName": { "type": "string",  "metadata": { "description": "Name of Virtual Network"                           } },
+                      "subnetName": { "type": "string",  "metadata": { "description": "Name of first/only subnet"                         } },
+             "availabilitySetName": { "type": "string"                                                                                      },
+                "loadBalancerName": { "type": "string",  "metadata": { "description": "This is the name of the load balancer"             } },
+          "diskStorageAccountName": { "type": "string",  "metadata": { "description": "Name of storage account for VHD's"                 } },
+          "diagStorageAccountName": { "type": "string",  "metadata": { "description": "Name of storage account for diagnostics"           } },
+                       "thisIndex": { "type": "int",     "metadata": { "description": "Index Number (of a loop)"                          } },
+                          "vmName": { "type": "string",  "metadata": { "description": "Name of the virtual machine."                      } },
+                  "dscScriptName": { "type": "string",   "metadata": { "description": "Name of the DSC script to apply to VM."            } },
+                  "dscConfigName": { "type": "string",   "metadata": { "description": "Name of the DSC config inside the script."         } }
     },
 
     "variables": { "nicName": "[concat(parameters('vmName'), '-nic0')]" },
@@ -93,12 +95,14 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/applyDSC-web.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/applyDSC.json')]" },
 
                 "parameters": {
-                    "commonSettings": { "value": "[parameters('commonSettings')]"  },
-                    "vmName":         { "value": "[parameters('vmName')]"          }
-                }
+                    "commonSettings": { "value": "[parameters('commonSettings')]" },
+                    "vmName":         { "value": "[parameters('vmName')]"         },
+                    "scriptName":     { "value": "[parameters('dscScriptName' )]" },
+                    "configName":     { "value": "[parameters('dscConfigName' )]" }
+                 }
             }
         }    
     ]

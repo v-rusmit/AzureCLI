@@ -81,7 +81,9 @@
                     "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]"                      },
                                  "thisIndex": { "value": "[                                             copyIndex() ]" },
                                     "vmName": { "value": "[concat(parameters( 'vmName'),                copyIndex())]" },
-                    "diskStorageAccountName": { "value": "[concat(parameters('diskStorageAccountRoot'), copyIndex())]" }
+                    "diskStorageAccountName": { "value": "[concat(parameters('diskStorageAccountRoot'), copyIndex())]" },
+                             "dscScriptName": { "value": "IIS-WEB-BIZ.ps1"                                             },
+                             "dscConfigName": { "value": "DemoIIS"                                                     }
                 }
             }
         }
