@@ -2,7 +2,8 @@ configuration DemoAD2
 {
 	param
 	(
-        [string[]]     $AppName,
+       	[Parameter(Mandatory=$true)] [ValidateNotNullorEmpty()]       [string] $domain,
+                                                                      [string] $AppName,
 		[Parameter(Mandatory=$true)] [ValidateNotNullorEmpty()] [PSCredential] $UserAccount
     )
 

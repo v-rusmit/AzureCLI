@@ -2,8 +2,9 @@ Configuration DemoAllComponents
 {
 	param
 	(
-        [string[]]     $AppName,
-		[PSCredential] $UserAccount
+       	[Parameter(Mandatory=$true)] [ValidateNotNullorEmpty()]       [string] $domain,
+                                                                      [string] $AppName,
+		[Parameter(Mandatory=$true)] [ValidateNotNullorEmpty()] [PSCredential] $UserAccount
     )
 	
 	Import-DscResource -Module xPSDesiredStateConfiguration

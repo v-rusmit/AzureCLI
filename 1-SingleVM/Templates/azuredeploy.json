@@ -8,7 +8,8 @@
         "_artifactsLocation":         { "type": "string",                                                                     "metadata": { "description": "Auto-generated container in staging storage account to receive post-build staging folder upload" } },
         "_artifactsLocationSasToken": { "type": "securestring",                                                               "metadata": { "description": "Auto-generated token to access _artifactsLocation"                                               } },
         "username":                   { "type": "string",       "defaultValue": "demoUser",                                   "metadata": { "description": "Username for the Virtual Machine."                                                               } },
-        "password":                   { "type": "securestring", "defaultValue": "P@ssw0rd1234",                               "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } }
+        "password":                   { "type": "securestring", "defaultValue": "P@ssw0rd1234",                               "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } },
+        "domain":                     { "type": "string",       "defaultValue": "DomainOrDie.biz",                            "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } }
     },
   
     "variables": {
@@ -19,7 +20,8 @@
             "artifactsLocationSasToken": "[    parameters('_artifactsLocationSasToken')]",
             "commonLocation":            "[uri(parameters('_artifactsLocation'),'common-stageartifacts')]",
             "defaultUsername":           "[    parameters('username')        ]",
-            "defaultPassword":           "[    parameters('password')        ]"
+            "defaultPassword":           "[    parameters('password')        ]",
+            "domain":                    "[    parameters('domain')   ]"
         },
 
           "diskStorageAccountName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'disk'))]",
