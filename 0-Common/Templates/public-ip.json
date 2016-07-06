@@ -18,8 +18,11 @@
         "location": "[resourceGroup().location]",
       "apiVersion": "2015-06-15",
 
-      "properties": { "publicIPAllocationMethod": "[parameters('publicIPAddressType')]" },
-     "dnsSettings": { "domainNameLabel":          "[parameters('dnsLabelPrefix')]"      }
-    } 
+      "properties": { "publicIPAllocationMethod": "[parameters('publicIPAddressType')]" ,
+                      "dnsSettings": { "domainNameLabel": "[parameters('dnsLabelPrefix')]" }
+        }
+    }
   ]
 }
+
+
