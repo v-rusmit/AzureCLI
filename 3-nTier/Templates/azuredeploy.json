@@ -39,6 +39,7 @@
 
         "diagStorageAccountName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'diag'))]",
         "diskStorageAccountRoot": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'disk'))]",
+                "dnsLabelPrefix": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'dns'))]",
         "appPublicIPAddressName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'pip' ))]",
          "jbPublicIPAddressName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'Jpip'))]",
 
@@ -100,6 +101,7 @@
 
                     "webPublicIPAddressName": { "value": "[variables( 'appPublicIPAddressName')]" },
                      "jbPublicIPAddressName": { "value": "[variables(  'jbPublicIPAddressName')]" },
+                            "dnsLabelPrefix": { "value": "[variables(         'dnsLabelPrefix')]" },
 
                        "webLoadBalancerName": { "value": "[variables(   'webLoadBalancerName')]"  },
                     "webAvailabilitySetName": { "value": "[variables('webAvailabilitySetName')]"  },

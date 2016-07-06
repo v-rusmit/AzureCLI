@@ -3,13 +3,14 @@
     "contentVersion": "1.0.0.0",
     
     "parameters": {
-        "commonSettings":           { "type": "object",                       "metadata": { "description": "Common API values"                      } },
-        "virtualNetworkParameters": { "type": "object",                       "metadata": { "description": "Common VNET values"                     } },
-        "diagStorageAccountName":   { "type": "string",                       "metadata": { "description": "Name of Storage Account for diagnostics"} },
-        "diskStorageAccountRoot":   { "type": "string",                       "metadata": { "description": "Name of Storage Account for vhds"       } },
+        "commonSettings":         { "type": "object",                               "metadata": { "description": "Common API values"                      } },
+      "virtualNetworkParameters": { "type": "object",                               "metadata": { "description": "Common VNET values"                     } },
+        "diagStorageAccountName": { "type": "string",                               "metadata": { "description": "Name of Storage Account for diagnostics"} },
+        "diskStorageAccountRoot": { "type": "string",                               "metadata": { "description": "Name of Storage Account for vhds"       } },
 
         "webPublicIPAddressName": { "type": "string",                               "metadata": { "description": "Name of Application Public IP Address"  } },
          "jbPublicIPAddressName": { "type": "string",                               "metadata": { "description": "Name of Application Public IP Address"  } },
+                "dnsLabelPrefix": { "type": "string",                               "metadata": { "description": "Name of DNS lable for myapp"            } },
 
            "webLoadBalancerName": { "type": "string",                               "metadata": { "description": "Name of the web Load Balancer"          } },
         "webAvailabilitySetName": { "type": "string",                               "metadata": { "description": "Name of the web Availability Set"       } },
@@ -47,7 +48,8 @@
 
                 "parameters": {
                     "commonSettings":      { "value": "[parameters('commonSettings')]"         },
-                    "publicIPAddressName": { "value": "[parameters('webPublicIPAddressName')]" }
+                    "publicIPAddressName": { "value": "[parameters('webPublicIPAddressName')]" },
+                    "dnsLabelPrefix":      { "value": "[parameters('dnsLabelPrefix')]" }
                 }
             }
         },
