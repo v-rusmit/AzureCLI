@@ -5,6 +5,7 @@
     "parameters": {
         "commonSettings":      { "type": "object",                              "metadata": { "description": "Common API values"                     } },
            "loadBalancerName": { "type": "string",                              "metadata": { "description": "This is the name of the load balancer" } },
+           "dnsLabelPrefix":   { "type": "string",                              "metadata": { "description": "DNS label for Sample App"              } },
         "publicIPAddressName": { "type": "string",                              "metadata": { "description": "This is the name of the IP Address"    } }
     },
 
@@ -36,10 +37,12 @@
 
                 "parameters": {
                     "commonSettings":      { "value": "[parameters('commonSettings')]"      },
-                    "publicIPAddressName": { "value": "[parameters('publicIPAddressName')]" }
+                    "publicIPAddressName": { "value": "[parameters('publicIPAddressName')]" },
+                     "dnsLabelPrefix":     { "value": "[parameters('dnsLabelPrefix')]"      } 
+                
                 }
-            }
-        },
+                }
+             },
 
 
         {
@@ -88,6 +91,6 @@
                     }
                 ]
             }
-        }
+        },
     ]
 }
