@@ -16,6 +16,8 @@ Configuration DemoAllComponents
 		$webzip1 = "FabrikamFiber.Web.zip"
 		$webzip2 = "FabrikamFiber.API.zip"
 		$bacpac  = "FabrikamFiber.bacpac"
+		$iisnode = "iisnode-full-v0.2.21-x64.msi"
+		$urlrewrite = "rewrite_amd64.msi"
 
 		$stagingFolder  = "C:\Packages"
 		$wwwrootFolder  = "C:\inetpub\wwwroot"
@@ -27,6 +29,18 @@ Configuration DemoAllComponents
 		LocalConfigurationManager
 		{
 			RebootNodeIfNeeded = $true
+		}
+		
+		xRemoteFile IISNodeInstaller
+		{
+			URI 		= $storacct + $iisnode
+			DestinationPath	= $stagingFolder + '\' + $iisnode
+		}
+		
+		xRemoteFile URLReWriteInstaller
+		{
+			URI 		= $storacct + $urlrewrite
+			DestinationPath	= $stagingFolder + '\' + $urlrewrite
 		}
 		
 		xRemoteFile WebContent1
