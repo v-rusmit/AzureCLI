@@ -33,15 +33,35 @@ Configuration DemoAllComponents
 		
 		xRemoteFile IISNodeInstaller
 		{
-			URI 		= $storacct + $iisnode
+			URI 		    = $storacct + $iisnode
 			DestinationPath	= $stagingFolder + '\' + $iisnode
 		}
+
+		Package IISNodeInstaller
+        {
+            Ensure     = "Present"
+            Name       = "iisnode for iis 7.x (x64) full"
+            Path       = $stagingFolder + '\' + $iisnode
+            ProductId  = "6C6CF372-FF11-4E05-B343-6586B3BC41E2"
+			Arguments  = "/passive"
+			ReturnCode = 1603
+			DependsOn  = "[xRemoteFile]IISNodeInstaller"
+        }
 		
 		xRemoteFile URLReWriteInstaller
 		{
-			URI 		= $storacct + $urlrewrite
+			URI 		    = $storacct + $urlrewrite
 			DestinationPath	= $stagingFolder + '\' + $urlrewrite
 		}
+
+		#Package URLReWriteInstaller
+  #      {
+  #          Ensure = 'Present'
+  #          Name   = 'IIS URL Rewrite Module 2'
+  #          Path   = $stagingFolder + '\' + $urlrewrite
+  #          ProductId = "08F0318A-D113-4CF0-993E-50F191D397AD"
+		#	DependsOn = "[xRemoteFile]URLReWriteInstaller"
+  #      }
 		
 		xRemoteFile WebContent1
 		{  
@@ -77,12 +97,13 @@ Configuration DemoAllComponents
 			DependsOn   = "[xRemoteFile]WebContent2"
 		}         
 
-		xDatabaseLogin AccessViaIis
+		xDatabaseLogin AppCredw4DB
 		{
 			Ensure           = "Present"
-			SqlServer        = "localhost"
-			LoginName        = "NT AUTHORITY\NETWORK SERVICE"
+			LoginName        = "sqlbat"
+			LoginPassword    = "Sw!mmingP00l"
 			SqlAuthType      = 'Windows'
+			SqlServer        = "localhost"
 		} 
 		
 		xDatabase LoadDB
@@ -118,7 +139,7 @@ Configuration DemoAllComponents
 			Ensure          = "Present"
 			Name            = "Sample Application2" 
 			State           = "Started"
-			PhysicalPath    = $wwwrootFolder + '\' + $webzip2.TrimEnd('.zip')
+			PhysicalPath    = $wwwrootFolder + '\' + 'API'  #$webzip2.TrimEnd('.zip')
 			BindingInfo  = MSFT_xWebBindingInformation 
 				{
 					Protocol = 'HTTP'

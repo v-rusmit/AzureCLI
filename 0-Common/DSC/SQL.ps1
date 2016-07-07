@@ -25,12 +25,13 @@ Configuration DemoSQL
 		DestinationPath = $stagingFolder + '\' + $bacpac
 	}         
 
-	xDatabaseLogin AccessViaIis
+	xDatabaseLogin AppCredw4DB
 	{
 		Ensure           = "Present"
-		SqlServer        = "localhost"
-		LoginName        = "NT AUTHORITY\NETWORK SERVICE"
+		LoginName        = "sqlbat"
+		LoginPassword    = "Sw!mmingP00l"
 		SqlAuthType      = 'Windows'
+		SqlServer        = "localhost"
 	} 
 
 	xDatabase LoadDB
