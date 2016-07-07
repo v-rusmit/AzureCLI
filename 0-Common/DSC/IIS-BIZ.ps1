@@ -54,7 +54,7 @@ Configuration DemoIIS
 		Ensure          = "Present"
 		Name            = "Sample Application2" 
 		State           = "Started"
-		PhysicalPath    = $wwwrootFolder + '\' + 'API'  #$webzip2.TrimEnd('.zip')
+		PhysicalPath    = $wwwrootFolder + '\' + $webzip2.TrimEnd('.zip')
 		BindingInfo  = MSFT_xWebBindingInformation 
 			{
 				Protocol = 'HTTP'
