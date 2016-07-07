@@ -4,7 +4,7 @@
     
     "parameters": {
         "commonSettings":           { "type": "object",                       "metadata": { "description": "Common API values"                      } },
-        "virtualNetworkParameters": { "type": "object",                       "metadata": { "description": "Common VNET values"                     } },
+      "virtualNetworkParameters":   { "type": "object",                       "metadata": { "description": "Common VNET values"                     } },
            "publicIPAddressName":   { "type": "string",                       "metadata": { "description": "Name of Application Public IP Address"  } },
               "loadBalancerName":   { "type": "string",                       "metadata": { "description": "Name of the Load Balancer"              } },
            "availabilitySetName":   { "type": "string",                       "metadata": { "description": "Name of the Availability Set"           } },

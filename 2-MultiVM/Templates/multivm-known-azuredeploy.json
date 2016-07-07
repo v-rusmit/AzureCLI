@@ -11,7 +11,6 @@
            "publicIPAddressName": { "type": "string",                      "metadata": { "description": "This is the name of the IP Address"                } },
         "diskStorageAccountName": { "type": "string",                      "metadata": { "description": "Name of storage account for VHD's"                 } },
         "diagStorageAccountName": { "type": "string",                      "metadata": { "description": "Name of storage account for diagnostics"           } },
-                "dnsLabelPrefix": { "type": "string",                      "metadata": { "description": "Name of DNS lable for myapp"                       } },        
                  "instanceCount": { "type": "int",    "defaultValue": 2,   "metadata": { "description": "Number of Instances to create"                     } },
                    "nicNameRoot": { "type": "string",                      "metadata": { "description": "Rootname of the simulated Network interface card." } },
                     "vmNameRoot": { "type": "string",                      "metadata": { "description": "Rootname of the virtual machine."                  } }
@@ -49,8 +48,8 @@
               "parameters": {
                 "commonSettings": { "value": "[parameters('commonSettings')]" },
                 "loadBalancerName": { "value": "[parameters(   'loadBalancerName')]" },
-                "publicIPAddressName": { "value": "[parameters('publicIPAddressName')]" },
-                "dnsLabelPrefix": { "value": "[parameters('dnsLabelPrefix')]" }
+                "publicIPAddressName": { "value": "[parameters('publicIPAddressName')]" }
+                
               }
             }
         },

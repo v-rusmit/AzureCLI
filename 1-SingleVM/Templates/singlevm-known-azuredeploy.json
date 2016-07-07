@@ -6,7 +6,6 @@
                   "commonSettings": { "type": "object", "metadata": { "description": "Common API values"                       } },
           "diskStorageAccountName": { "type": "string", "metadata": { "description": "Name of storage account for VHD's"       } },
           "diagStorageAccountName": { "type": "string", "metadata": { "description": "Name of storage account for diagnostics" } },
-                  "dnsLabelPrefix": { "type": "string", "metadata": { "description": "Name of DNS lable for myapp"             } },
              "publicIPAddressName": { "type": "string", "metadata": { "description": "Name of public IP Address for VM"        } },
                       "subnetName": { "type": "string", "metadata": { "description": "Name of subnet for VM's"                 } },
               "virtualNetworkName": { "type": "string", "metadata": { "description": "Name of virtual network"                 } },
@@ -64,8 +63,8 @@
 
                 "parameters": {
                     "commonSettings":      { "value": "[parameters('commonSettings')]"      },
-                    "publicIPAddressName": { "value": "[parameters('publicIPAddressName')]" },
-                    "dnsLabelPrefix":      { "value": "[parameters('dnsLabelPrefix')]"      }
+                    "publicIPAddressName": { "value": "[parameters('publicIPAddressName')]" }
+                  
                 }
             }
         },

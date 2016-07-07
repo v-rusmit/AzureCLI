@@ -4,7 +4,6 @@
 
     "parameters": {
         "commonSettings":      { "type": "object",                                                                     "metadata": { "description": "Common API values"           } },
-        "dnsLabelPrefix":      { "type": "string",                                                                     "metadata": { "description": "DNS label for Sample App"    } },
         "publicIPAddressName": { "type": "string",                                                                     "metadata": { "description": "Name of Public IP Address"   } },
         "publicIPAddressType": { "type": "string", "defaultValue": "Dynamic",  "allowedValues": ["Static", "Dynamic"], "metadata": { "description": "Type of Address "            } }
     },
@@ -18,10 +17,10 @@
         "location": "[resourceGroup().location]",
       "apiVersion": "2015-06-15",
 
-      "properties": { "publicIPAllocationMethod": "[parameters('publicIPAddressType')]" ,
-                      "dnsSettings": { "domainNameLabel": "[parameters('dnsLabelPrefix')]" }
+      "properties": { "publicIPAllocationMethod": "[parameters('publicIPAddressType')]" }
+                      
         }
-    }
+    
   ]
 }
 

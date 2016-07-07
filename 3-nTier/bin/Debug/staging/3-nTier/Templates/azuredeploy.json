@@ -100,7 +100,7 @@
 
                     "webPublicIPAddressName": { "value": "[variables( 'appPublicIPAddressName')]" },
                      "jbPublicIPAddressName": { "value": "[variables(  'jbPublicIPAddressName')]" },
-
+                         
                        "webLoadBalancerName": { "value": "[variables(   'webLoadBalancerName')]"  },
                     "webAvailabilitySetName": { "value": "[variables('webAvailabilitySetName')]"  },
                           "webInstanceCount": { "value": "[parameters(     'webInstanceCount')]"  },

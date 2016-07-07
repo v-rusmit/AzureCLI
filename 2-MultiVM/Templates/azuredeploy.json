@@ -26,7 +26,6 @@
 
         "diskStorageAccountName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'disk'))]",
         "diagStorageAccountName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'diag'))]",
-                "dnsLabelPrefix": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'dns'))]",   
            "publicIPAddressName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'pip' ))]",
            "availabilitySetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-as')]",
               "loadBalancerName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-lb')]",
@@ -77,7 +76,6 @@
                        "publicIPAddressName": { "value": "[ variables(     'publicIPAddressName')]" },
                     "diskStorageAccountName": { "value": "[ variables(  'diskStorageAccountName')]" },
                     "diagStorageAccountName": { "value": "[ variables(  'diagStorageAccountName')]" },
-                            "dnsLabelPrefix": { "value": "[ variables(          'dnsLabelPrefix')]" },        
                              "instanceCount": { "value": "[parameters(           'instanceCount')]" },
                                 "vmNameRoot": { "value": "[ variables(              'vmNameRoot')]" },
                                "nicNameRoot": { "value": "[ variables(             'nicNameRoot')]" }

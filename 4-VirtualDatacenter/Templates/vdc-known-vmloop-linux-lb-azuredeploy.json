@@ -95,7 +95,7 @@
             
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/linuxvm-with-dual-nic-in-availability-set.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/barracudavm-waf.json')]" },
 
                 "parameters": {
                     "commonSettings":         { "value": "[parameters('commonSettings')]"         },

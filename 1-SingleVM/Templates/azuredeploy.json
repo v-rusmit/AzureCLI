@@ -24,7 +24,6 @@
 
           "diskStorageAccountName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'disk'))]",
           "diagStorageAccountName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'diag'))]",
-                  "dnsLabelPrefix": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'dns'))]",
              "publicIPAddressName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'pip' ))]",
         "networkSecurityGroupName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-nsg')]",
                       "subnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-subnet')]",
@@ -70,7 +69,6 @@
                               "commonSettings": { "value": "[variables('commonSettings')]"         },
                       "diskStorageAccountName": { "value": "[variables('diskStorageAccountName')]" },
                       "diagStorageAccountName": { "value": "[variables('diagStorageAccountName')]" },
-                              "dnsLabelPrefix": { "value": "[variables(        'dnsLabelPrefix')]" }, 
                          "publicIPAddressName": { "value": "[variables(   'publicIPAddressName')]" },
                                   "subnetName": { "value": "[variables(            'subnetName')]" },
                           "virtualNetworkName": { "value": "[variables(    'virtualNetworkName')]" },

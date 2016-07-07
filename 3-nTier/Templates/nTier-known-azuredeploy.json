@@ -10,8 +10,7 @@
 
         "webPublicIPAddressName": { "type": "string",                               "metadata": { "description": "Name of Application Public IP Address"  } },
          "jbPublicIPAddressName": { "type": "string",                               "metadata": { "description": "Name of Application Public IP Address"  } },
-                "dnsLabelPrefix": { "type": "string",                               "metadata": { "description": "Name of DNS lable for myapp"            } },
-
+             
            "webLoadBalancerName": { "type": "string",                               "metadata": { "description": "Name of the web Load Balancer"          } },
         "webAvailabilitySetName": { "type": "string",                               "metadata": { "description": "Name of the web Availability Set"       } },
               "webInstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of Web Tier Instances to create" } },
@@ -48,8 +47,7 @@
 
                 "parameters": {
                     "commonSettings":      { "value": "[parameters('commonSettings')]"         },
-                    "publicIPAddressName": { "value": "[parameters('webPublicIPAddressName')]" },
-                    "dnsLabelPrefix":      { "value": "[parameters('dnsLabelPrefix')]" }
+                    "publicIPAddressName": { "value": "[parameters('webPublicIPAddressName')]" }
                 }
             }
         },
