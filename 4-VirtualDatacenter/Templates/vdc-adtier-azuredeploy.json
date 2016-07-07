@@ -43,37 +43,39 @@
 					{
 						"name": "ipconfig1",
 						"properties": {
-							"privateIPAllocationMethod": "Dynamic",
+							//"privateIPAllocationMethod": "Dynamic",
+							"privateIPAllocationMethod": "Static",
+							"privateIPAddress": "10.0.9.200",
 							"subnet": { "id": "[  concat(resourceId('Microsoft.Network/virtualNetworks',  parameters('virtualNetworkParameters').virtualNetworkName),'/subnets/',parameters('virtualNetworkParameters').adSubnetName)]" }
 						}
 					}
-				]
+				],
+				"dnsSettings": {"dnsServers": [ ] }
 			}
 		},
 
 
-		//{
-		//	"name": "[concat(parameters('vmName'),2,'-nic0')]",
-		//	"type": "Microsoft.Network/networkInterfaces",
-		//	"location": "[resourceGroup().location]",
-		//	"apiVersion": "2016-03-30",
+		{
+			"name": "[concat(parameters('vmName'),2,'-nic0')]",
+			"type": "Microsoft.Network/networkInterfaces",
+			"location": "[resourceGroup().location]",
+			"apiVersion": "2016-03-30",
 
-		//	"properties": {
-		//		"ipConfigurations": [
-		//			{
-		//				"name": "ipconfig1",
-		//				"properties": {
-		//					"privateIPAllocationMethod": "Dynamic",
-		//					//"privateIPAllocationMethod": "Static",
-		//					//"privateIPAddress": "10.0.9.201",
-		//					"subnet": { "id": "[  concat(resourceId('Microsoft.Network/virtualNetworks',  parameters('virtualNetworkParameters').virtualNetworkName),'/subnets/',parameters('virtualNetworkParameters').adSubnetName)]" }
-		//				}
-		//			}
-		//		],
-		//		//"dnsSettings": { "dnsServers": [ "10.0.9.200" ] },
-		//		"dnsSettings": { "dnsServers": [ "[reference(resourceId('Microsoft.Network/networkInterfaces/',concat(parameters('vmName'),1,'-nic0'))).ipConfigurations[0].properties.privateIPAddress]" ] }
-		//	}
-		//},
+			"properties": {
+				"ipConfigurations": [
+					{
+						"name": "ipconfig1",
+						"properties": {
+							//"privateIPAllocationMethod": "Dynamic",
+							"privateIPAllocationMethod": "Static",
+							"privateIPAddress": "10.0.9.201",
+							"subnet": { "id": "[  concat(resourceId('Microsoft.Network/virtualNetworks',  parameters('virtualNetworkParameters').virtualNetworkName),'/subnets/',parameters('virtualNetworkParameters').adSubnetName)]" }
+						}
+					}
+				],
+				"dnsSettings": { "dnsServers": [ "[reference(resourceId('Microsoft.Network/networkInterfaces/',concat(parameters('vmName'),1,'-nic0'))).ipConfigurations[0].properties.privateIPAddress]" ] }
+			}
+		},
 
 
 
@@ -93,21 +95,23 @@
             }
         },
 
-        //{
-        //    "name": "ADsa2",
-        //    "type": "Microsoft.Resources/deployments",
-        //    "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
-        //    "properties": {
-        //        "mode": "incremental",
-        //        "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/storage-account.json')]" },
 
-        //        "parameters": {
-        //            "commonSettings":     { "value": "[       parameters('commonSettings')            ]" },
-		//			"storageAccountName": { "value": "[concat(parameters('diskStorageAccountRoot'),2) ]" }
-        //        }
-        //    }
-        //},
+        {
+            "name": "ADsa2",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/storage-account.json')]" },
+
+                "parameters": {
+                    "commonSettings":     { "value": "[       parameters('commonSettings')            ]" },
+					"storageAccountName": { "value": "[concat(parameters('diskStorageAccountRoot'),2) ]" }
+                }
+            }
+        },
 
 
 
@@ -139,31 +143,31 @@
 
 
 
-        //{
-        //    "name": "ADvm2",
-        //    "type": "Microsoft.Resources/deployments",
-        //    "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
+        {
+            "name": "ADvm2",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
-		//	"dependsOn": [
-		//		"Microsoft.Resources/deployments/AS",
-		//		"[concat('Microsoft.Network/networkInterfaces/', parameters('vmName'), 1,'-nic0')]",
-		//		"Microsoft.Resources/deployments/ADsa1"
-		//	],
+			"dependsOn": [
+				"Microsoft.Resources/deployments/AS",
+				"[concat('Microsoft.Network/networkInterfaces/', parameters('vmName'), 1,'-nic0')]",
+				"Microsoft.Resources/deployments/ADsa1"
+			],
             
-        //    "properties": {
-        //        "mode": "incremental",
-        //        "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/vm-via-nic-with-availability-set.json')]" },
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/vm-via-nic-with-availability-set.json')]" },
 
-        //        "parameters": {
-        //            "commonSettings":         { "value": "[       parameters('commonSettings')                   ]" },
-        //                            "vmName": { "value": "[concat(parameters('vmName'),                2)        ]" },
-		//			"diskStorageAccountName": { "value": "[concat(parameters('diskStorageAccountRoot'),2)        ]" },
-        //            "diagStorageAccountName": { "value": "[       parameters('diagStorageAccountName')           ]" },        
-        //                           "nicName": { "value": "[concat(parameters('vmName'),                2,'-nic0')]" },
-        //               "availabilitySetName": { "value": "[       parameters('availabilitySetName')]"               }
-        //        }
-        //    }
-        //},
+                "parameters": {
+                    "commonSettings":         { "value": "[       parameters('commonSettings')                   ]" },
+                                    "vmName": { "value": "[concat(parameters('vmName'),                2)        ]" },
+					"diskStorageAccountName": { "value": "[concat(parameters('diskStorageAccountRoot'),2)        ]" },
+                    "diagStorageAccountName": { "value": "[       parameters('diagStorageAccountName')           ]" },        
+                                   "nicName": { "value": "[concat(parameters('vmName'),                2,'-nic0')]" },
+                       "availabilitySetName": { "value": "[       parameters('availabilitySetName')]"               }
+                }
+            }
+        },
 
 
 
