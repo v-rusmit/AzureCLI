@@ -1,5 +1,9 @@
 # Virtual Data Center
 
+## Overview
+A set of proven practices for running a reliable N-tier architecture on Windows virtual machines (VMs) in Microsoft Azure. Builds on Running VMs for an N-tier architecture on Azure.   Additional components are included that can increase the reliability of the application:
+•A network virtual appliance for greater network security.
+•SQL Server AlwaysOn Availability Groups for high availability in the data tier
 
 ## Prescriptive Guidance
 Prescriptive  guidance plus considerations for availability, manageability, and security is available [here](https://azure.microsoft.com/en-us/documentation/articles/guidance-hybrid-network-vpn/#troubleshooting).
