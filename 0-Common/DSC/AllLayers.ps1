@@ -47,6 +47,7 @@ Configuration DemoAllComponents
 			Arguments  = "/passive"
 			ReturnCode = 1603
 			DependsOn  = "[xRemoteFile]IISNodeInstaller"
+			LogPath = $stagingFolder + "\install.log"
         }
 		
 		xRemoteFile URLReWriteInstaller
