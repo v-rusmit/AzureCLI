@@ -20,7 +20,8 @@ Param(
     [string] $TemplatesFolderCommon = '..\..\0-Common\Templates',
 
     [string] $DSCSourceFolder       = '..\DSC',
-    [string] $DSCSourceFolderCommon = '..\..\0-Common\DSC'
+    [string] $DSCSourceFolderCommon = '..\..\0-Common\DSC',
+    [string] $AppSourceFolderCommon = '..\..\0-Common\SampleApp'
 )
 
 Import-Module Azure -ErrorAction SilentlyContinue
@@ -65,6 +66,7 @@ if ($UploadArtifacts) {
     $ArtifactStagingDirectory = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $ArtifactStagingDirectory))
     $DSCSourceFolder          = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $DSCSourceFolder))
     $DSCSourceFolderCommon    = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $DSCSourceFolderCommon))
+    $AppSourceFolderCommon    = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $AppSourceFolderCommon))
     $TemplatesFolder          = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $TemplatesFolder))
     $TemplatesFolderCommon    = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $TemplatesFolderCommon))
 
@@ -121,6 +123,13 @@ if ($UploadArtifacts) {
         Set-AzureStorageBlobContent -File $SourcePath -Blob $BlobName -Container $StorageContainerNameCommon -Context $StorageAccountContext -Force >$null
     }
 
+	# Copy application files from the COMMON PROJECT to the storage account container
+    $ArtifactFilePaths = Get-ChildItem $AppSourceFolderCommon -Recurse -File | ForEach-Object -Process {$_.FullName} 
+    foreach ($SourcePath in $ArtifactFilePaths) {
+	    Write-Host -BackgroundColor DarkCyan $SourcePath
+	    $BlobName = $SourcePath.Substring($AppSourceFolderCommon.length + 1) 
+        Set-AzureStorageBlobContent -File $SourcePath -Blob $BlobName -Container $StorageContainerNameCommon -Context $StorageAccountContext -Force >$null
+    }
 
 	# Create DSC configuration archive from THIS PROJECT
     if (Test-Path $DSCSourceFolder) {

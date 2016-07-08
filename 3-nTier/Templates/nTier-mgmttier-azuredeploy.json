@@ -9,11 +9,13 @@
                    "InstanceCount": { "type": "int",    "defaultValue": 1,    "metadata": { "description": "Number of instances to create"          } },
           "diagStorageAccountName": { "type": "string",                       "metadata": { "description": "Name of Storage Account for diagnostics"} },
           "diskStorageAccountRoot": { "type": "string",                       "metadata": { "description": "Name of Storage Account for vhds"       } },
-                          "vmName": { "type": "string",                       "metadata": { "description": "Name of the VM's"                       } },
-                         "nicName": { "type": "string",                       "metadata": { "description": "Name of the NIC"                        } }
+                          "vmName": { "type": "string",                       "metadata": { "description": "Name of the VM's"                       } }
     },
 
-    "variables": { "diskStorageAccountName": "[concat(parameters('diskStorageAccountRoot'),'m')]" },
+    "variables": {
+                       "nicName": "[concat(parameters(                'vmName'),'-nic')]",
+        "diskStorageAccountName": "[concat(parameters('diskStorageAccountRoot'),'m')]"
+    },
 
     "resources": [
         {
@@ -28,7 +30,7 @@
                 "parameters": {
                     "commonSettings":      { "value": "[parameters('commonSettings')]"                              },
                     "publicIPAddressName": { "value": "[parameters('publicIPAddressName')]"                         },
-                                "nicName": { "value": "[parameters(            'nicName')]"                         },
+                                "nicName": { "value": "[ variables(            'nicName')]"                         },
                      "virtualNetworkName": { "value": "[parameters('virtualNetworkParameters').virtualNetworkName]" },
                              "subnetName": { "value": "[parameters('virtualNetworkParameters').mgmtSubnetName]"     }
                 }
@@ -71,7 +73,7 @@
                                     "vmName": { "value": "[parameters(                'vmName')]" },
                     "diskStorageAccountName": { "value": "[ variables('diskStorageAccountName')]" },
                     "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]" },
-                                   "nicName": { "value": "[parameters(               'nicName')]" }
+                                   "nicName": { "value": "[ variables(               'nicName')]" }
                 }
             }
         }

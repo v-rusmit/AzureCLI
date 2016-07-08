@@ -14,23 +14,19 @@
            "webLoadBalancerName": { "type": "string",                               "metadata": { "description": "Name of the web Load Balancer"          } },
         "webAvailabilitySetName": { "type": "string",                               "metadata": { "description": "Name of the web Availability Set"       } },
               "webInstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of Web Tier Instances to create" } },
-                     "webVmName": { "type": "string",                               "metadata": { "description": "RootName of the VM's of the web tier"   } },
-                    "webNicName": { "type": "string",                               "metadata": { "description": "RootName of the NIC's of the web tier"  } },
+                 "webVmNameRoot": { "type": "string",                               "metadata": { "description": "RootName of the VM's of the web tier"   } },
 
            "bizLoadBalancerName": { "type": "string",                               "metadata": { "description": "Name of the biz Load Balancer"          } },
         "bizAvailabilitySetName": { "type": "string",                               "metadata": { "description": "Name of the biz Availability Set"       } },
               "bizInstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of Biz Layer Instances to create"} },
-                     "bizVmName": { "type": "string",                               "metadata": { "description": "RootName of the VM's of the biz tier"   } },
-                    "bizNicName": { "type": "string",                               "metadata": { "description": "RootName of the NIC's of the biz tier"  } },
+                 "bizVmNameRoot": { "type": "string",                               "metadata": { "description": "RootName of the VM's of the biz tier"   } },
     
         "sqlAvailabilitySetName": { "type": "string",                               "metadata": { "description": "Name of the data Availability Set"      } },
               "sqlinstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of SQL Instances to create"      } },
-                     "sqlVmName": { "type": "string",                               "metadata": { "description": "RootName of the VM's of the sql tier"   } },
-                    "sqlNicName": { "type": "string",                               "metadata": { "description": "RootName of the NIC's of the sql tier"  } },
+                 "sqlVmNameRoot": { "type": "string",                               "metadata": { "description": "RootName of the VM's of the sql tier"   } },
 
              "mgmtInstanceCount": { "type": "int",    "defaultValue": 1,            "metadata": { "description": "Number of Mgmt Instances to create"     } },
                     "mgmtVmName": { "type": "string",                               "metadata": { "description": "RootName of the VM's of the mgmt tier"  } },
-                   "mgmtNicName": { "type": "string",                               "metadata": { "description": "RootName of the NIC's of the mgmt tier" } }
     },
 
 
@@ -93,8 +89,7 @@
                              "instanceCount":   { "value": "[parameters(      'webInstanceCount')]"   },
                     "diagStorageAccountName":   { "value": "[parameters('diagStorageAccountName')]"   },
                     "diskStorageAccountRoot":   { "value": "[parameters('diskStorageAccountRoot')]"   },
-                                    "vmName":   { "value": "[parameters(             'webVmName')]"   },
-                                   "nicName":   { "value": "[parameters(            'webNicName')]"   }
+                                "vmNameRoot":   { "value": "[parameters(         'webVmNameRoot')]"   }
                 }
             }
         },
@@ -120,8 +115,7 @@
                              "instanceCount":   { "value": "[parameters(      'bizInstanceCount')]"   },
                     "diagStorageAccountName":   { "value": "[parameters('diagStorageAccountName')]"   },
                     "diskStorageAccountRoot":   { "value": "[parameters('diskStorageAccountRoot')]"   },
-                                    "vmName":   { "value": "[parameters(             'bizVmName')]"   },
-                                   "nicName":   { "value": "[parameters(            'bizNicName')]"   }
+                                "vmNameRoot":   { "value": "[parameters(         'bizVmNameRoot')]"   }
                 }
             }
         },
@@ -146,8 +140,7 @@
                              "instanceCount":   { "value": "[parameters(      'sqlInstanceCount')]"   },
                     "diagStorageAccountName":   { "value": "[parameters('diagStorageAccountName')]"   },
                     "diskStorageAccountRoot":   { "value": "[parameters('diskStorageAccountRoot')]"   },
-                                    "vmName":   { "value": "[parameters(             'sqlVmName')]"   },
-                                   "nicName":   { "value": "[parameters(            'sqlNicName')]"   }
+                                "vmNameRoot":   { "value": "[parameters(         'sqlVmNameRoot')]"   }
                 }
             }
         },
@@ -172,11 +165,10 @@
                              "instanceCount":   { "value": "[parameters(     'mgmtInstanceCount')]"   },
                     "diagStorageAccountName":   { "value": "[parameters('diagStorageAccountName')]"   },
                     "diskStorageAccountRoot":   { "value": "[parameters('diskStorageAccountRoot')]"   },
-                                    "vmName":   { "value": "[parameters(            'mgmtVmName')]"   },
-                                   "nicName":   { "value": "[parameters(           'mgmtNicName')]"   }
+                                    "vmName":   { "value": "[parameters(            'mgmtVmName')]"   }
                 }
             }
-        },
+        }
 
 
 

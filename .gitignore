@@ -4,6 +4,7 @@
 # Then edited by Kevin
 ################################################################################
 
+/0-Common/bin/*
 /1-SingleVM/bin/*
 /2-MultiVM/bin/*
 /3-nTier/bin/*

@@ -11,11 +11,8 @@
                  "InstanceCount":   { "type": "int",    "defaultValue": 1,    "metadata": { "description": "Number of instances to create"          } },
         "diagStorageAccountName":   { "type": "string",                       "metadata": { "description": "Name of Storage Account for diagnostics"} },
         "diskStorageAccountRoot":   { "type": "string",                       "metadata": { "description": "Name of Storage Account for vhds"       } },
-                        "vmName":   { "type": "string",                       "metadata": { "description": "RootName of the VM's"                   } },
-                       "nicName":   { "type": "string",                       "metadata": { "description": "RootName of the NIC's"                  } }
+                    "vmNameRoot":   { "type": "string",                       "metadata": { "description": "RootName of the VM's"                   } }
     },
-
-    "variables": { },
 
     "resources": [
 
@@ -76,9 +73,10 @@
                           "loadBalancerName": { "value": "[parameters(      'loadBalancerName')]"                         },
                     "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]"                         },
                                  "thisIndex": { "value": "[                                                copyIndex() ]" },
-                                    "vmName": { "value": "[concat(parameters( 'vmName'),                   copyIndex())]" },
-                                   "nicName": { "value": "[concat(parameters('nicName'),                   copyIndex())]" },
-                    "diskStorageAccountName": { "value": "[concat(parameters('diskStorageAccountRoot'),'w',copyIndex())]" }
+                                    "vmName": { "value": "[concat(parameters('vmNameRoot'),                copyIndex())]" },
+                    "diskStorageAccountName": { "value": "[concat(parameters('diskStorageAccountRoot'),'w',copyIndex())]" },
+                             "dscScriptName": { "value": "IIS-WEB.ps1"                                                    },
+                             "dscConfigName": { "value": "DemoIIS"                                                        }
                 }
             }
         }

@@ -7,7 +7,8 @@
         "appEnvironment":   { "value": "qa"             },
         "adminAccessRange": { "value": "216.21.164.178" },
         "username":         { "value": "AzureAdmin"     },
-        "password":         { "value": "Sw!mmingP00l"   }
+        "password":         { "value": "Sw!mmingP00l"   },
+        "domain":           { "value": "Fabrikam.com"   }
     }
 }
 

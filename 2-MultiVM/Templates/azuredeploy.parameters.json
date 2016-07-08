@@ -6,7 +6,8 @@
         "appEnvironment": { "value": "qa" },
         "instanceCount":  { "value": 3 },
         "username":       { "value": "AzureAdmin" },
-        "password":       { "value": "Sw!mmingP00l" }
+        "password":       { "value": "Sw!mmingP00l" },
+        "domain":         { "value": "Fabrikam.com"   }
     }
 }
 

@@ -19,11 +19,12 @@ Param(
     [string] $TemplatesFolder       = '..\Templates',  
     [string] $TemplatesFolderCommon = '..\..\0-Common\Templates',
 
-    [string] $CSESourceFolder       = '..\CSE',
-    [string] $CSESourceFolderCommon = '..\..\0-Common\CSE',
+#   [string] $CSESourceFolder       = '..\CSE',
+#   [string] $CSESourceFolderCommon = '..\..\0-Common\CSE',
 
     [string] $DSCSourceFolder       = '..\DSC',
-    [string] $DSCSourceFolderCommon = '..\..\0-Common\DSC'
+    [string] $DSCSourceFolderCommon = '..\..\0-Common\DSC',
+    [string] $AppSourceFolderCommon = '..\..\0-Common\SampleApp'
 )
 
 Import-Module Azure -ErrorAction SilentlyContinue
@@ -66,10 +67,11 @@ if ($UploadArtifacts) {
 
     # Convert relative paths to absolute paths if needed
     $ArtifactStagingDirectory = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $ArtifactStagingDirectory))
-    $CSESourceFolder          = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $CSESourceFolder))
-    $CSESourceFolderCommon    = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $CSESourceFolderCommon))
+#   $CSESourceFolder          = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $CSESourceFolder))
+#   $CSESourceFolderCommon    = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $CSESourceFolderCommon))
     $DSCSourceFolder          = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $DSCSourceFolder))
     $DSCSourceFolderCommon    = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $DSCSourceFolderCommon))
+    $AppSourceFolderCommon    = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $AppSourceFolderCommon))
     $TemplatesFolder          = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $TemplatesFolder))
     $TemplatesFolderCommon    = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $TemplatesFolderCommon))
 
@@ -126,24 +128,32 @@ if ($UploadArtifacts) {
         Set-AzureStorageBlobContent -File $SourcePath -Blob $BlobName -Container $StorageContainerNameCommon -Context $StorageAccountContext -Force >$null
     }
 
-	# Copy CSE files from THIS PROJECT to the storage account container
-    if (Test-Path $CSESourceFolder) {
-		$ArtifactFilePaths = Get-ChildItem $CSESourceFolder -Recurse -File | ForEach-Object -Process {$_.FullName} 
-		foreach ($SourcePath in $ArtifactFilePaths) {
-			Write-Host -BackgroundColor DarkCyan $SourcePath
-			$BlobName = $SourcePath.Substring($CSESourceFolder.length + 1) 
-			Set-AzureStorageBlobContent -File $SourcePath -Blob $BlobName -Container $StorageContainerNameCommon -Context $StorageAccountContext -Force >$null
-		}
-    }
+#	# Copy CSE files from THIS PROJECT to the storage account container
+#   if (Test-Path $CSESourceFolder) {
+#		$ArtifactFilePaths = Get-ChildItem $CSESourceFolder -Recurse -File | ForEach-Object -Process {$_.FullName} 
+#		foreach ($SourcePath in $ArtifactFilePaths) {
+#			Write-Host -BackgroundColor DarkCyan $SourcePath
+#			$BlobName = $SourcePath.Substring($CSESourceFolder.length + 1) 
+#			Set-AzureStorageBlobContent -File $SourcePath -Blob $BlobName -Container $StorageContainerNameCommon -Context $StorageAccountContext -Force >$null
+#		}
+#   }
 
-	# Copy CSE files from the COMMON PROJECT to the storage account container
-    if (Test-Path $CSESourceFolderCommon) {
-		$ArtifactFilePaths = Get-ChildItem $CSESourceFolderCommon -Recurse -File | ForEach-Object -Process {$_.FullName} 
-		foreach ($SourcePath in $ArtifactFilePaths) {
-			Write-Host -BackgroundColor DarkCyan $SourcePath
-			$BlobName = $SourcePath.Substring($CSESourceFolderCommon.length + 1) 
-			Set-AzureStorageBlobContent -File $SourcePath -Blob $BlobName -Container $StorageContainerNameCommon -Context $StorageAccountContext -Force >$null
-		}
+#	# Copy CSE files from the COMMON PROJECT to the storage account container
+#   if (Test-Path $CSESourceFolderCommon) {
+#		$ArtifactFilePaths = Get-ChildItem $CSESourceFolderCommon -Recurse -File | ForEach-Object -Process {$_.FullName} 
+#		foreach ($SourcePath in $ArtifactFilePaths) {
+#			Write-Host -BackgroundColor DarkCyan $SourcePath
+#			$BlobName = $SourcePath.Substring($CSESourceFolderCommon.length + 1) 
+#			Set-AzureStorageBlobContent -File $SourcePath -Blob $BlobName -Container $StorageContainerNameCommon -Context $StorageAccountContext -Force >$null
+#		}
+#    }
+
+	# Copy application files from the COMMON PROJECT to the storage account container
+    $ArtifactFilePaths = Get-ChildItem $AppSourceFolderCommon -Recurse -File | ForEach-Object -Process {$_.FullName} 
+    foreach ($SourcePath in $ArtifactFilePaths) {
+	    Write-Host -BackgroundColor DarkCyan $SourcePath
+	    $BlobName = $SourcePath.Substring($AppSourceFolderCommon.length + 1) 
+        Set-AzureStorageBlobContent -File $SourcePath -Blob $BlobName -Container $StorageContainerNameCommon -Context $StorageAccountContext -Force >$null
     }
 
 	# Create DSC configuration archive from THIS PROJECT

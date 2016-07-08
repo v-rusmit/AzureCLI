@@ -6,6 +6,7 @@
         "appName":        { "value": "my1app"       },
         "appEnvironment": { "value": "prod"         },
         "username":       { "value": "AzureAdmin"   },
-        "password":       { "value": "Sw!mmingP00l" }
+        "password":       { "value": "Sw!mmingP00l" },
+        "domain":         { "value": "Fabrikam.com"   }
     }
 }
