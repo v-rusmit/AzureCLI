@@ -11,8 +11,7 @@ Prescriptive  guidance plus considerations for availability, manageability, and 
 
  ![GitHub Logo](../images/hybridNetwork.png)
  
- 
- ## Related Training ##
+## Related Training
  * [Azure Network Security Groups (NSGs)](https://azure.microsoft.com/en-us/documentation/articles/virtual-networks-nsg/)
  * [Adding reliability to an N-tier architecture on Azure](https://azure.microsoft.com/en-us/documentation/articles/guidance-compute-n-tier-vm/)
  * [Networking basics for building applications in Azure](link needed)
