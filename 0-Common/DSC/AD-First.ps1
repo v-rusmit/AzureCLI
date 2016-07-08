@@ -4,7 +4,8 @@ configuration DemoAD1
 	(
        	[Parameter(Mandatory=$true)] [ValidateNotNullorEmpty()]       [string] $domain,
                                                                       [string] $AppName,
-		[Parameter(Mandatory=$true)] [ValidateNotNullorEmpty()] [PSCredential] $UserAccount
+		[Parameter(Mandatory=$true)] [ValidateNotNullorEmpty()] [PSCredential] $LocalUserAccount,
+		[Parameter(Mandatory=$true)] [ValidateNotNullorEmpty()] [PSCredential] $DomainUserAccount
     )
 		
     Import-DscResource -ModuleName xActiveDirectory
@@ -18,24 +19,35 @@ configuration DemoAD1
 			DebugMode = "ForceModuleImport"
 		}
 
+		Log Msg1
+		{
+			Message=$LocalUserAccount
+		}
+
+		Log Msg1
+		{
+			Message=$DomainUserAccount
+		}
+
 		WindowsFeature ADDSInstall
 		{
 			Ensure = "Present"
 			Name = "AD-Domain-Services"
+			IncludeAllSubFeature = $true
 		}
 
 		xADDomain FirstDS
 		{
 			DomainName                    = $domain
-			DomainAdministratorCredential = $UserAccount
-			SafemodeAdministratorPassword = $UserAccount
+			DomainAdministratorCredential = $LocalUserAccount
+			SafemodeAdministratorPassword = $LocalUserAccount
     		DependsOn                     = "[WindowsFeature]ADDSInstall"
 		}
 
 		xWaitForADDomain DscForestWait
 		{
 		    DomainName           = $domain
-		    DomainUserCredential = $UserAccount
+		    DomainUserCredential = $DomainUserAccount
 		    RetryCount           = 20
 		    RetryIntervalSec     = 30
 		    DependsOn            = "[xADDomain]FirstDS"

@@ -330,8 +330,5 @@
     <None Include="Templates\vnet-add-new-subnet.json" />
     <None Include="Templates\vnet-empty.json" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DSC\xActiveDirectory\2.12.0.0\DSCResources\KingGeorge_xAD\" />
-  </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />
 </Project>

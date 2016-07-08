@@ -4,15 +4,10 @@ configuration DemoAD2
 	(
        	[Parameter(Mandatory=$true)] [ValidateNotNullorEmpty()]       [string] $domain,
                                                                       [string] $AppName,
-		[Parameter(Mandatory=$true)] [ValidateNotNullorEmpty()] [PSCredential] $UserAccount
+		[Parameter(Mandatory=$true)] [ValidateNotNullorEmpty()] [PSCredential] $LocalUserAccount,
+		[Parameter(Mandatory=$true)] [ValidateNotNullorEmpty()] [PSCredential] $DomainUserAccount
     )
-
-	$domain = 'Fabrikam.com'
-
-	$secpasswd = ConvertTo-SecureString "Sw!mmingP00l"  -AsPlainText -Force
-	$domainCred =                New-Object System.Management.Automation.PSCredential ("Fabrikam\Administrator", $secpasswd)
-	$safemodeAdministratorCred = New-Object System.Management.Automation.PSCredential ("Fabrikam\Administrator", $secpasswd)
-
+	
     Import-DscResource -ModuleName xActiveDirectory
 
 	Node localhost
@@ -27,23 +22,15 @@ configuration DemoAD2
 		{
 			Ensure = "Present"
 			Name = "AD-Domain-Services"
-		}
-
-		xWaitForADDomain DscForestWait
-		{
-			DomainName = $domain
-			DomainUserCredential = $domaincred
-			RetryCount = 20
-			RetryIntervalSec = 30
-			DependsOn = "[WindowsFeature]ADDSInstall"
+			IncludeAllSubFeature = $true
 		}
 
 		xADDomainController SecondDC
 		{
-			DomainName = $domain
-			DomainAdministratorCredential = $domaincred
-			SafemodeAdministratorPassword = $safemodeAdministratorCred
-			DependsOn = "[xWaitForADDomain]DscForestWait"
+			DomainName                    = $domain.TrimEnd('.com')
+			DomainAdministratorCredential = $DomainUserAccount
+			SafemodeAdministratorPassword = $DomainUserAccount
+			DependsOn                     = "[WindowsFeature]ADDSInstall"
 		}
     }
 }

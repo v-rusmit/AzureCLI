@@ -31,32 +31,32 @@ function Get-TargetResource
 
     try
     {
-        Write-Verbose -Message "Resolving '$($DomainName)' ..."
+        Write-Information -Message "Resolving '$($DomainName)' ..."
         $domain = Get-ADDomain -Identity $DomainName -Credential $DomainAdministratorCredential
         if ($domain -ne $null)
         {
-            Write-Verbose -Message "Domain '$($DomainName)' is present. Looking for DCs ..."
+            Write-Information -Message "Domain '$($DomainName)' is present. Looking for DCs ..."
             try
             {
                 $dc = Get-ADDomainController -Identity $env:COMPUTERNAME -Credential $DomainAdministratorCredential
-                Write-Verbose -Message "Found domain controller '$($dc.Name)' in domain '$($dc.Domain)'."
+                Write-Information -Message "Found domain controller '$($dc.Name)' in domain '$($dc.Domain)'."
                 if ($dc.Domain -eq $DomainName)
                 {
-                    Write-Verbose -Message "Current node '$($dc.Name)' is already a domain controller for domain '$($dc.Domain)'."
+                    Write-Information -Message "Current node '$($dc.Name)' is already a domain controller for domain '$($dc.Domain)'."
                     $returnValue.Ensure = $true
                 }
             }
             catch
             {
-                if ($error[0]) {Write-Verbose $error[0].Exception}
-                Write-Verbose -Message "Current node does not host a domain controller."
+                if ($error[0]) {Write-Information $error[0].Exception}
+                Write-Information -Message "Current node does not host a domain controller."
             }
         }
     }
     catch
     {
-        if ($error[0]) {Write-Verbose $error[0].Exception}
-        Write-Verbose -Message "Current node is not running AD WS, and hence is not a domain controller."
+        if ($error[0]) {Write-Information $error[0].Exception}
+        Write-Information -Message "Current node is not running AD WS, and hence is not a domain controller."
     }
     $returnValue
 }
@@ -84,7 +84,7 @@ function Set-TargetResource
     # Debug can pause Install-ADDSDomainController, so we remove it.
     $parameters = $PSBoundParameters.Remove("Debug");
 
-    Write-Verbose -Message "Checking if domain '$($DomainName)' is present ..."
+    Write-Information -Message "Checking if domain '$($DomainName)' is present ..."
     $domain = $null;
     try
     {
@@ -92,11 +92,11 @@ function Set-TargetResource
     }
     catch
     {
-        if ($error[0]) {Write-Verbose $error[0].Exception}
+        if ($error[0]) {Write-Information $error[0].Exception}
         throw (new-object -TypeName System.InvalidOperationException -ArgumentList "Domain '$($DomainName)' could not be found.")
     }
 
-    Write-Verbose -Message "Verified that domain '$($DomainName)' is present, continuing ..."
+    Write-Information -Message "Verified that domain '$($DomainName)' is present, continuing ..."
     $params = @{
         DomainName = $DomainName
         SafeModeAdministratorPassword = $SafemodeAdministratorPassword.Password
@@ -118,7 +118,7 @@ function Set-TargetResource
     }
 
     Install-ADDSDomainController @params
-    Write-Verbose -Message "Node is now a domain controller for '$($DomainName)'."
+    Write-Information -Message "Node is now a domain controller for '$($DomainName)'."
 
     # Signal to the LCM to reboot the node to compensate for the one we
     # suppressed from Install-ADDSDomainController
@@ -154,11 +154,16 @@ function Test-TargetResource
     }
     catch
     {
-        if ($error[0]) {Write-Verbose $error[0].Exception}
-        Write-Verbose -Message "Domain '$($DomainName)' is NOT present on the current node."
+        if ($error[0]) {Write-Information $error[0].Exception}
+        Write-Information -Message "Domain '$($DomainName)' is NOT present on the current node."
         $false
     }
 }
+
+
+## Import the common AD functions
+$adCommonFunctions = Join-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -ChildPath '\MSFT_xADCommon\MSFT_xADCommon.ps1';
+. $adCommonFunctions;
 
 
 Export-ModuleMember -Function *-TargetResource

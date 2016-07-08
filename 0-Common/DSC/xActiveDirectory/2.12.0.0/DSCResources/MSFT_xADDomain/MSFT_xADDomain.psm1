@@ -63,18 +63,18 @@ function Get-TargetResource
     {
         if ($isDomainMember) {
             ## We're already a domain member, so take the credentials out of the equation
-            Write-Verbose ($localizedData.QueryDomainADWithLocalCredentials -f $domainFQDN);
+            Write-Information ($localizedData.QueryDomainADWithLocalCredentials -f $domainFQDN);
             $domain = Get-ADDomain -Identity $domainFQDN -ErrorAction Stop;
         }
         else {
-            Write-Verbose ($localizedData.QueryDomainWithCredential -f $domainFQDN);
+            Write-Information ($localizedData.QueryDomainWithCredential -f $domainFQDN);
             $domain = Get-ADDomain -Identity $domainFQDN -Credential $DomainAdministratorCredential -ErrorAction Stop;
         }
 
         ## No need to check whether the node is actually a domain controller. If we don't throw an exception,
         ## the domain is already UP - and this resource shouldn't run. Domain controller functionality
         ## should be checked by the xADDomainController resource?
-        Write-Verbose ($localizedData.DomainFound -f $domain.DnsRoot);
+        Write-Information ($localizedData.DomainFound -f $domain.DnsRoot);
         
         $targetResource = @{
             DomainName = $domain.DnsRoot;
@@ -91,7 +91,7 @@ function Get-TargetResource
     }
     catch [Microsoft.ActiveDirectory.Management.ADServerDownException]
     {
-        Write-Verbose ($localizedData.DomainNotFound -f $domainFQDN)
+        Write-Information ($localizedData.DomainNotFound -f $domainFQDN)
         $domain = @{ };
     }
     catch [System.Security.Authentication.AuthenticationException]
@@ -149,7 +149,7 @@ function Test-TargetResource
     if ($domainFQDN -ne $targetResource.DomainName)
     {
         $message = $localizedData.ResourcePropertyValueIncorrect -f 'DomainName', $domainFQDN, $targetResource.DomainName;
-        Write-Verbose -Message $message;
+        Write-Information -Message $message;
         $isCompliant = $false;   
     }
     
@@ -162,7 +162,7 @@ function Test-TargetResource
             if ($targetResource.$propertyName -ne $propertyValue)
             {
                 $message = $localizedData.ResourcePropertyValueIncorrect -f $propertyName, $propertyValue, $targetResource.$propertyName;
-                Write-Verbose -Message $message;
+                Write-Information -Message $message;
                 $isCompliant = $false;        
             }
         }
@@ -170,12 +170,12 @@ function Test-TargetResource
         
     if ($isCompliant)
     {
-        Write-Verbose -Message ($localizedData.ResourceInDesiredState -f $domainFQDN);
+        Write-Information -Message ($localizedData.ResourceInDesiredState -f $domainFQDN);
         return $true;
     }
     else
     {
-        Write-Verbose -Message ($localizedData.ResourceNotInDesiredState -f $domainFQDN);
+        Write-Information -Message ($localizedData.ResourceNotInDesiredState -f $domainFQDN);
         return $false;
     }
 
@@ -244,7 +244,7 @@ function Set-TargetResource
     
     if ($PSBoundParameters.ContainsKey('ParentDomainName'))
     {
-        Write-Verbose -Message ($localizedData.CreatingChildDomain -f $DomainName, $ParentDomainName);
+        Write-Information -Message ($localizedData.CreatingChildDomain -f $DomainName, $ParentDomainName);
         $installADDSParams['Credential'] = $DomainAdministratorCredential
         $installADDSParams['NewDomainName'] = $DomainName
         $installADDSParams['ParentDomainName'] = $ParentDomainName
@@ -254,18 +254,18 @@ function Set-TargetResource
             $installADDSParams['NewDomainNetbiosName'] = $DomainNetBIOSName;
         }
         Install-ADDSDomain @installADDSParams;
-        Write-Verbose -Message ($localizedData.CreatedChildDomain);
+        Write-Information -Message ($localizedData.CreatedChildDomain);
     }
     else
     {
-        Write-Verbose -Message ($localizedData.CreatingForest -f $DomainName);
+        Write-Information -Message ($localizedData.CreatingForest -f $DomainName);
         $installADDSParams['DomainName'] = $DomainName;
         if ($PSBoundParameters.ContainsKey('DomainNetbiosName'))
         {
             $installADDSParams['DomainNetbiosName'] = $DomainNetBIOSName;
         }
         Install-ADDSForest @installADDSParams;
-        Write-Verbose -Message ($localizedData.CreatedForest); 
+        Write-Information -Message ($localizedData.CreatedForest); 
     }  
 
     # Signal to the LCM to reboot the node to compensate for the one we

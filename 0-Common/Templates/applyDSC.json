@@ -36,8 +36,13 @@
 				},
                 "protectedSettings": {
 					"configurationArguments": {
-						"UserAccount": {
+						"LocalUserAccount": {
 							"UserName": "[parameters('commonSettings').defaultUsername]",
+							"Password": "[parameters('commonSettings').defaultPassword]"
+						},
+						"DomainUserAccount": {
+//							"UserName": "[concat(parameters('commonSettings').defaultUsername),'@',parameters('commonSettings').domain]",
+							"UserName": "Fabrikam\\AzureAdmin",
 							"Password": "[parameters('commonSettings').defaultPassword]"
 						}
 					}
