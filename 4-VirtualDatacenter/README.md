@@ -17,7 +17,7 @@ Prescriptive  guidance plus considerations for availability, manageability, and 
  * [Networking basics for building applications in Azure](link needed)
  * [Microsoft Azure Fundamentals:  Configure an Availability Set](link needed)
 
- ## Tools
+## Tools
  * [Installing the Azure CLI](https://azure.microsoft.com/en-us/documentation/articles/xplat-cli-install/)
  * [Installing and configuring Azure PowerShell](https://azure.microsoft.com/en-us/documentation/articles/powershell-install-configure/)
 
