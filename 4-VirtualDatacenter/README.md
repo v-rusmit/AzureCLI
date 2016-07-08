@@ -6,13 +6,13 @@ A set of proven practices for running a reliable N-tier architecture on Windows 
 * A network virtual appliance for greater network security.
 * SQL Server AlwaysOn Availability Groups for high availability in the data tier
 
-## Prescriptive Guidance ##
+## Prescriptive Guidance
 Prescriptive  guidance plus considerations for availability, manageability, and security is available [here](https://azure.microsoft.com/en-us/documentation/articles/guidance-hybrid-network-vpn/#troubleshooting).
 
  ![GitHub Logo](../images/hybridNetwork.png)
  
  
- ## Related Training
+ ## Related Training ##
  * [Azure Network Security Groups (NSGs)](https://azure.microsoft.com/en-us/documentation/articles/virtual-networks-nsg/)
  * [Adding reliability to an N-tier architecture on Azure](https://azure.microsoft.com/en-us/documentation/articles/guidance-compute-n-tier-vm/)
  * [Networking basics for building applications in Azure](link needed)
