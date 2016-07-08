@@ -22,7 +22,11 @@ Prescriptive  guidance plus considerations for availability, manageability, and 
  * [Installing and configuring Azure PowerShell](https://azure.microsoft.com/en-us/documentation/articles/powershell-install-configure/)
 
 ## Deployment
-* [PowerShell](./Scripts/Deploy-AzureResourceGroup.ps1)
+* PowerShell
+```PowerShell
+New-AzureRmResourceGroupDeployment -Name <deployment-name> -ResourceGroupName <resource-group-name> -TemplateUri <template-uri>
+```
+
 * [CLI](./Scripts/CLIDeploy-VDC.bat)
 
 [![Deploy to Azure](../images/azurebtn.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fazure-quickstart-templates%2Fmaster%2F201-vm-sql-full-autopatching%2Fazuredeploy.json)
