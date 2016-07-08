@@ -4,7 +4,6 @@
 A set of proven practices for running a reliable N-tier architecture on Windows virtual machines (VMs) in Microsoft Azure. Builds on Running VMs for an N-tier architecture on Azure.   Additional components are included that can increase the reliability of the application:
 
 * A network virtual appliance for greater network security.
-
 * SQL Server AlwaysOn Availability Groups for high availability in the data tier
 
 ## Prescriptive Guidance
@@ -15,7 +14,7 @@ Prescriptive  guidance plus considerations for availability, manageability, and 
  ## Related Training
  * [Azure Network Security Groups (NSGs)](https://azure.microsoft.com/en-us/documentation/articles/virtual-networks-nsg/)
  * [Adding reliability to an N-tier architecture on Azure](https://azure.microsoft.com/en-us/documentation/articles/guidance-compute-n-tier-vm/)
- * [Networking basics for building applications in Azure](link needed)  
+ * [Networking basics for building applications in Azure](link needed)
  * [Microsoft Azure Fundamentals:  Configure an Availability Set](link needed)
 
  ## Tools
