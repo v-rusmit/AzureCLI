@@ -32,12 +32,14 @@ namespace FabrikamFiber.DAL.Data
     public class ServiceLogEntryRepository : IServiceLogEntryRepository
     {
 
+        private readonly Uri _baseAddress = new Uri("http://localhost:3000/api/");
+
         public IEnumerable<ServiceLogEntry> All
         {
             get
             {
                 var client = new HttpClient();
-                client.BaseAddress = new Uri("http://localhost:3000/api/");
+                client.BaseAddress = _baseAddress;
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 HttpResponseMessage response = client.GetAsync("serviceLogEntry/").Result;
@@ -67,7 +69,7 @@ namespace FabrikamFiber.DAL.Data
         public ServiceLogEntry Find(int id)
         {
             var client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:3000/api/");
+            client.BaseAddress = _baseAddress;
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             HttpResponseMessage response = client.GetAsync("serviceLogEntry/" + id).Result;
@@ -87,7 +89,7 @@ namespace FabrikamFiber.DAL.Data
             if (serviceLogEntry.Id == default(int))
             {
                 var client = new HttpClient();
-                client.BaseAddress = new Uri("http://localhost:3000/api/");
+                client.BaseAddress = _baseAddress;
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -104,7 +106,7 @@ namespace FabrikamFiber.DAL.Data
             else
             {
                 var client = new HttpClient();
-                client.BaseAddress = new Uri("http://localhost:3000/api/");
+                client.BaseAddress = _baseAddress;
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -115,15 +117,14 @@ namespace FabrikamFiber.DAL.Data
                 {
                     return;
                 }
-
-                //this.context.Entry(serviceLogEntry).State = EntityState.Modified;
+                
             }
         }
 
         public void Delete(int id)
         {
             var client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:3000/api/");
+            client.BaseAddress = _baseAddress;
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             HttpResponseMessage response = client.DeleteAsync("serviceLogEntry/" + id).Result;
@@ -132,9 +133,7 @@ namespace FabrikamFiber.DAL.Data
             {
                 return;
             }
-
-            //var serviceLogEntry = this.context.ServiceLogEntries.Find(id);
-            //this.context.ServiceLogEntries.Remove(serviceLogEntry);
+            
         }
 
         public void Save()

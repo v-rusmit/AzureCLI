@@ -1,0 +1,11 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    
+    "parameters": {
+        "appName":        { "value": "my1app"       },
+        "appEnvironment": { "value": "prod"         },
+        "username":       { "value": "AzureAdmin"   },
+        "password":       { "value": "Sw!mmingP00l" }
+    }
+}

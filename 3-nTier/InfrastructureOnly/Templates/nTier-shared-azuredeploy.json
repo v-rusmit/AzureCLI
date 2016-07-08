@@ -1,0 +1,118 @@
+﻿{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    
+    "parameters": {
+        "commonSettings":           { "type": "object",                       "metadata": { "description": "Common API values"                       } },
+        "virtualNetworkParameters": { "type": "object",                       "metadata": { "description": "Common VNET values"                      } },
+        "diagStorageAccountName":   { "type": "string",                       "metadata": { "description": "Name of storage account for diagnostics" } }
+    },
+
+    "variables": { "networkSecurityGroupName": "[concat(parameters('virtualNetworkParameters').virtualNetworkName,'-nsg')]" },
+
+    "resources": [
+        {
+            "name": "[parameters('virtualNetworkParameters').virtualNetworkName]",
+            "type": "Microsoft.Network/virtualNetworks",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2015-06-15",
+
+            "properties": {
+                "addressSpace": { "addressPrefixes": [ "[parameters('virtualNetworkParameters').virtualNetworkRange]" ] },
+                "subnets": [
+                    {
+                        "name": "[parameters('virtualNetworkParameters').webSubnetName]",
+                        "properties": { "addressPrefix": "[parameters('virtualNetworkParameters').webSubnetRange]" }
+                    },
+                    {
+                        "name": "[parameters('virtualNetworkParameters').bizSubnetName]",
+                        "properties": { "addressPrefix": "[parameters('virtualNetworkParameters').bizSubnetRange]" }
+                    },
+                    {
+                        "name": "[parameters('virtualNetworkParameters').sqlSubnetName]",
+                        "properties": { "addressPrefix": "[parameters('virtualNetworkParameters').sqlSubnetRange]" }
+                    },
+                    {
+                        "name": "[parameters('virtualNetworkParameters').mgmtSubnetName]",
+                        "properties": { "addressPrefix": "[parameters('virtualNetworkParameters').mgmtSubnetRange]" }
+                    }
+                ]
+            }
+        },
+
+
+        {
+            "name": "[variables('networkSecurityGroupName')]",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2016-03-30",
+
+            "dependsOn": [ "[parameters('virtualNetworkParameters').virtualNetworkName]" ],
+
+            "properties": {
+                "securityRules": [
+                    {
+                        "name": "sqlInbound",
+                        "properties": {
+                            "description": "Allow Business Tier",
+                            "access": "Allow",
+                            "priority": 100,
+                            "direction": "Inbound",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "[parameters('virtualNetworkParameters').bizSubnetRange]",
+                            "destinationAddressPrefix": "[parameters('virtualNetworkParameters').sqlSubnetRange]"
+                        }
+                    },
+                    {
+                        "name": "RDPinternal",
+                        "properties": {
+                            "description": "Allow RDP from Management JumpBox",
+                            "access": "Allow",
+                            "priority": 200,
+                            "direction": "Inbound",
+                            "protocol": "Tcp",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "3389",
+                            "sourceAddressPrefix": "[parameters('virtualNetworkParameters').mgmtSubnetRange]",
+                            "destinationAddressPrefix": "*"
+                        }
+                    },
+                    {
+                        "name": "RDPexternal",
+                        "properties": {
+                            "description": "Allow RDP for admins only",
+                            "access": "Allow",
+                            "priority": 101,
+                            "direction": "Inbound",
+                            "protocol": "Tcp",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "3389",
+                            "sourceAddressPrefix": "[parameters('virtualNetworkParameters').adminAccessRange]",
+                            "destinationAddressPrefix": "*"
+                        }
+                    }
+                ]
+            }
+        },
+
+
+
+        {
+            "name": "sa",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/storage-account.json')]" },
+
+                "parameters": {
+                    "commonSettings":     { "value": "[parameters('commonSettings')]"         },
+                    "storageAccountName": { "value": "[parameters('diagStorageAccountName')]" }
+                }
+            }
+        }
+    ]
+}

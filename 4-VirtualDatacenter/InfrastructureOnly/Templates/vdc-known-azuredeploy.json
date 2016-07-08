@@ -1,0 +1,230 @@
+﻿{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    
+    "parameters": {
+        "commonSettings":           { "type": "object",                         "metadata": { "description": "Common API values"                      } },
+        "virtualNetworkParameters": { "type": "object",                         "metadata": { "description": "Common VNET values"                     } },
+        "diagStorageAccountName":   { "type": "string",                         "metadata": { "description": "Name of Storage Account for diagnostics"} },
+        "diskStorageAccountRoot":   { "type": "string",                         "metadata": { "description": "Name of Storage Account for vhds"       } },
+
+        "nvaPublicIPAddressName":   { "type": "string",                         "metadata": { "description": "Name of Application Public IP Address"  } },
+         "jbPublicIPAddressName":   { "type": "string",                         "metadata": { "description": "Name of Application Public IP Address"  } },
+
+           "nvaLoadBalancerName":   { "type": "string",                         "metadata": { "description": "Name of the dmz Load Balancer"          } },
+        "nvaAvailabilitySetName":   { "type": "string",                         "metadata": { "description": "Name of the dmz Availability Set"       } },
+              "nvaInstanceCount":   { "type": "int",    "defaultValue": 1,      "metadata": { "description": "Number of dmz Tier Instances to create" } },
+                     "nvaVmName":   { "type": "string",                         "metadata": { "description": "RootName of the VM's of the dmz tier"   } },
+
+           "staLoadBalancerName":   { "type": "string",                         "metadata": { "description": "Name of the sta Load Balancer"          } },
+        "staAvailabilitySetName":   { "type": "string",                         "metadata": { "description": "Name of the sta Availability Set"       } },
+              "staInstanceCount":   { "type": "int",    "defaultValue": 1,      "metadata": { "description": "Number of sta Layer Instances to create"} },
+                     "staVmName":   { "type": "string",                         "metadata": { "description": "RootName of the VM's of the sta tier"   } },
+
+           "stbLoadBalancerName":   { "type": "string",                         "metadata": { "description": "Name of the stb Load Balancer"          } },
+        "stbAvailabilitySetName":   { "type": "string",                         "metadata": { "description": "Name of the stb Availability Set"       } },
+              "stbInstanceCount":   { "type": "int",    "defaultValue": 1,      "metadata": { "description": "Number of stb Layer Instbnces to create"} },
+                     "stbVmName":   { "type": "string",                         "metadata": { "description": "RootName of the VM's of the stb tier"   } },
+                        
+           "sqlLoadBalancerName":   { "type": "string",                         "metadata": { "description": "Name of the SQL Load Balancer"          } },
+        "sqlAvailabilitySetName":   { "type": "string",                         "metadata": { "description": "Name of the SQL Availability Set"       } },
+              "sqlinstanceCount":   { "type": "int",    "defaultValue": 1,      "metadata": { "description": "Number of SQL Instances to create"      } },
+                     "sqlVmName":   { "type": "string",                         "metadata": { "description": "RootName of the VM's of the sql tier"   } },
+
+                    "mgmtVmName":   { "type": "string",                         "metadata": { "description": "RootName of the VM's of the mgmt tier"  } },
+
+         "adAvailabilitySetName":   { "type": "string",                         "metadata": { "description": "Name of the AD Availability Set"        } },
+               "adInstanceCount":   { "type": "int",    "defaultValue": 1,      "metadata": { "description": "Number of ad Instances to create"       } },
+                      "adVmName":   { "type": "string",                         "metadata": { "description": "RootName of the VM's of the AD tier"    } }
+    },
+
+    "resources": [
+
+        {
+            "name": "nvaPip",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/public-ip.json')]" },
+
+                "parameters": {
+                    "commonSettings":      { "value": "[parameters('commonSettings')]"         },
+                    "publicIPAddressName": { "value": "[parameters('nvaPublicIPAddressName')]" }
+                }
+            }
+        },
+
+
+
+        {
+            "name": "jbPip",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/public-ip.json')]" },
+
+                "parameters": {
+                    "commonSettings":      { "value": "[parameters('commonSettings')]"        },
+                    "publicIPAddressName": { "value": "[parameters('jbPublicIPAddressName')]" }
+
+                }
+            }
+        },
+
+
+
+        {
+            "name": "adTier",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/vdc-adtier-azuredeploy.json')]" },
+
+                "parameters": {
+                    "commonSettings":           { "value": "[parameters('commonSettings')]"                      },
+                    "virtualNetworkParameters": { "value": "[parameters('virtualNetworkParameters')]"            },
+                       "availabilitySetName":   { "value": "[       parameters( 'adAvailabilitySetName')      ]" },
+                             "instanceCount":   { "value": "[       parameters(       'adInstanceCount')      ]" },
+                    "diagStorageAccountName":   { "value": "[       parameters('diagStorageAccountName')      ]" },
+                    "diskStorageAccountRoot":   { "value": "[concat(parameters('diskStorageAccountRoot'),'ad')]" },
+                                    "vmName":   { "value": "[       parameters(              'adVmName')      ]" }
+                }
+            }
+        },
+
+
+
+        {
+            "name": "dmzTier",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
+
+            "dependsOn": [ "Microsoft.Resources/deployments/nvaPip" ],
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/vdc-dmztier-azuredeploy.json')]" },
+
+                "parameters": {
+                    "commonSettings":           { "value": "[parameters('commonSettings')]"                       },
+                    "virtualNetworkParameters": { "value": "[parameters('virtualNetworkParameters')]"             },
+                       "publicIPAddressName":   { "value": "[       parameters('nvaPublicIPAddressName'       )]" },
+                          "loadBalancerName":   { "value": "[       parameters(   'nvaLoadBalancerName'       )]" },
+                       "availabilitySetName":   { "value": "[       parameters('nvaAvailabilitySetName'       )]" },
+                             "instanceCount":   { "value": "[       parameters(      'nvaInstanceCount'       )]" },
+                    "diagStorageAccountName":   { "value": "[       parameters('diagStorageAccountName'       )]" },
+                    "diskStorageAccountRoot":   { "value": "[concat(parameters('diskStorageAccountRoot'),'nva')]" },
+                                    "vmName":   { "value": "[       parameters(             'nvaVmName'       )]" }
+                }
+            }
+        },
+
+
+
+        {
+            "name": "sqlAlwaysOn",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
+
+            "dependsOn": [ "Microsoft.Resources/deployments/adTier" ],
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/vdc-sqltier-azuredeploy.json')]" },
+
+                "parameters": {
+                    "commonSettings":           { "value": "[parameters('commonSettings')]"                       },
+                    "virtualNetworkParameters": { "value": "[parameters('virtualNetworkParameters')]"             },
+                            "loadBalancerName": { "value": "[       parameters(   'sqlLoadBalancerName'       )]" },
+                         "availabilitySetName": { "value": "[       parameters('sqlAvailabilitySetName'       )]" },
+                               "instanceCount": { "value": "[       parameters(      'sqlInstanceCount'       )]" },
+                      "diagStorageAccountName": { "value": "[       parameters('diagStorageAccountName'       )]" },
+                      "diskStorageAccountRoot": { "value": "[concat(parameters('diskStorageAccountRoot'),'sql')]" },
+                                      "vmName": { "value": "[       parameters(             'sqlVmName'       )]" }
+                }
+            }
+        },
+
+
+
+        {
+            "name": "serviceTier-A",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/vdc-biztier-azuredeploy.json')]" },
+
+                "parameters": {
+                    "commonSettings":           { "value": "[parameters('commonSettings')]"                               },
+                    "virtualNetworkParameters": { "value": "[parameters('virtualNetworkParameters')]"                     },
+                                  "subnetName": { "value": "[parameters('virtualNetworkParameters').staSubnetName]"       },
+                            "privateIPAddress": { "value": "[parameters('virtualNetworkParameters').staPrivateIPAddress]" },
+                            "loadBalancerName": { "value": "[       parameters(   'staLoadBalancerName'       )]"         },
+                         "availabilitySetName": { "value": "[       parameters('staAvailabilitySetName'       )]"         },
+                               "instanceCount": { "value": "[       parameters(      'staInstanceCount'       )]"         },
+                      "diagStorageAccountName": { "value": "[       parameters('diagStorageAccountName'       )]"         },
+                      "diskStorageAccountRoot": { "value": "[concat(parameters('diskStorageAccountRoot'),'sta')]"         },
+                                      "vmName": { "value": "[       parameters(             'staVmName'       )]"         }
+                }
+            }
+        },
+
+
+
+        {
+            "name": "serviceTier-B",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/vdc-biztier-azuredeploy.json')]" },
+
+                "parameters": {
+                    "commonSettings":           { "value": "[parameters('commonSettings')]"                               },
+                    "virtualNetworkParameters": { "value": "[parameters('virtualNetworkParameters')]"                     },
+                                "subnetName":   { "value": "[parameters('virtualNetworkParameters').stbSubnetName]"       },
+                            "privateIPAddress": { "value": "[parameters('virtualNetworkParameters').stbPrivateIPAddress]" },
+                          "loadBalancerName":   { "value": "[       parameters(   'stbLoadBalancerName'       )]"         },
+                       "availabilitySetName":   { "value": "[       parameters('stbAvailabilitySetName'       )]"         },
+                             "instanceCount":   { "value": "[       parameters(      'stbInstanceCount'       )]"         },
+                    "diagStorageAccountName":   { "value": "[       parameters('diagStorageAccountName'       )]"         },
+                    "diskStorageAccountRoot":   { "value": "[concat(parameters('diskStorageAccountRoot'),'stb')]"         },
+                                    "vmName":   { "value": "[       parameters(             'stbVmName'       )]"         }
+                }
+            }
+        },
+
+
+
+        {
+            "name": "mgmtTier",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
+
+            "dependsOn": [ "Microsoft.Resources/deployments/jbPip" ],
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/vdc-mgmttier-azuredeploy.json')]" },
+
+                "parameters": {
+                    "commonSettings":           { "value": "[parameters('commonSettings')]"            },
+                    "virtualNetworkParameters": { "value": "[parameters('virtualNetworkParameters')]"  },
+                       "publicIPAddressName":   { "value": "[parameters( 'jbPublicIPAddressName')]"    },
+                    "diagStorageAccountName":   { "value": "[parameters('diagStorageAccountName')]"    },
+                    "diskStorageAccountRoot":   { "value": "[parameters('diskStorageAccountRoot')]"    },
+                                    "vmName":   { "value": "[parameters(            'mgmtVmName')]"    }
+                }
+            }
+        }
+    ]
+}

@@ -32,12 +32,14 @@ namespace FabrikamFiber.DAL.Data
     public class MessageRepository : IMessageRepository
     {
 
+        private readonly Uri _baseAddress = new Uri("http://localhost:3000/api/");
+
         public IQueryable<Message> All
         {
             get
             {
                 var client = new HttpClient();
-                client.BaseAddress = new Uri("http://localhost:3000/api/");
+                client.BaseAddress = _baseAddress;
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 HttpResponseMessage response = client.GetAsync("message/").Result;
@@ -67,7 +69,7 @@ namespace FabrikamFiber.DAL.Data
         public Message Find(int id)
         {
             var client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:3000/api/");
+            client.BaseAddress = _baseAddress;
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             HttpResponseMessage response = client.GetAsync("message/" + id).Result;
@@ -79,7 +81,6 @@ namespace FabrikamFiber.DAL.Data
             }
 
             return null;
-            //return this.context.Messages.Find(id);
         }
 
         public void InsertOrUpdate(Message message)
@@ -87,7 +88,7 @@ namespace FabrikamFiber.DAL.Data
             if (message.Id == default(int))
             {
                 var client = new HttpClient();
-                client.BaseAddress = new Uri("http://localhost:3000/api/");
+                client.BaseAddress = _baseAddress;
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -98,13 +99,12 @@ namespace FabrikamFiber.DAL.Data
                 {
                     return;
                 }
-
-                //this.context.Messages.Add(message);
+                
             }
             else
             {
                 var client = new HttpClient();
-                client.BaseAddress = new Uri("http://localhost:3000/api/");
+                client.BaseAddress = _baseAddress;
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -115,15 +115,14 @@ namespace FabrikamFiber.DAL.Data
                 {
                     return;
                 }
-
-                //this.context.Entry(message).State = EntityState.Modified;
+                
             }
         }
 
         public void Delete(int id)
         {
             var client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:3000/api/");
+            client.BaseAddress = _baseAddress;
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             HttpResponseMessage response = client.DeleteAsync("message/" + id).Result;
@@ -132,14 +131,11 @@ namespace FabrikamFiber.DAL.Data
             {
                 return;
             }
-
-            //var message = this.context.Messages.Find(id);
-            //this.context.Messages.Remove(message);
+            
         }
 
         public void Save()
         {
-            //this.context.SaveChanges();
         }
     }
 }

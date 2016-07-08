@@ -1,0 +1,113 @@
+﻿{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    
+    "parameters": {
+        "commonSettings":           { "type": "object",                     "metadata": { "description": "Common API values"                      } },
+        "virtualNetworkParameters": { "type": "object",                     "metadata": { "description": "Common VNET values"                     } },
+           "availabilitySetName":   { "type": "string",                     "metadata": { "description": "Name of the Availability Set"           } },
+                 "InstanceCount":   { "type": "int",    "defaultValue": 1,  "metadata": { "description": "Number of instances to create"          } },
+        "diagStorageAccountName":   { "type": "string",                     "metadata": { "description": "Name of Storage Account for diagnostics"} },
+        "diskStorageAccountRoot":   { "type": "string",                     "metadata": { "description": "Name of Storage Account for vhds"       } },
+                        "vmName":   { "type": "string",                     "metadata": { "description": "RootName of the VM's"                   } }
+    },
+
+    "resources": [
+
+        {
+            "name": "[parameters('availabilitySetName')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/availability-set.json')]" },
+
+                "parameters": {
+                    "commonSettings":      { "value": "[parameters('commonSettings')]"      },
+                    "availabilitySetName": { "value": "[parameters('availabilitySetName')]" }
+                }
+            }
+        },
+
+
+
+        {
+            "name": "[concat(copyIndex(),parameters('vmName'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
+
+            "copy": { "name": "vmcopy", "count": "[parameters('instanceCount')]" },
+
+            "dependsOn": [ "[concat('Microsoft.Resources/deployments/', parameters('availabilitySetName')) ]", ],
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/vdc-known-vmloop-nolb-azuredeploy.json')]" },
+
+                "parameters": {
+                    "commonSettings":         { "value": "[parameters('commonSettings')]"                              },
+                        "virtualNetworkName": { "value": "[parameters('virtualNetworkParameters').virtualNetworkName]" },
+                                "subnetName": { "value": "[parameters('virtualNetworkParameters').adSubnetName]"       },
+                       "availabilitySetName": { "value": "[parameters(   'availabilitySetName')]"                      },
+                    "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]"                      },
+                                 "thisIndex": { "value": "[                                             copyIndex() ]" },
+                                    "vmName": { "value": "[concat(parameters( 'vmName'),                copyIndex())]" },
+                    "diskStorageAccountName": { "value": "[concat(parameters('diskStorageAccountRoot'), copyIndex())]" }
+                }
+            }
+        },
+
+
+
+        {
+            "name": "[concat(parameters('vmName'),0,'/', 'AD')]",
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2015-06-15",
+
+            "dependsOn": [ "vmcopy" ],
+
+            "tags": { "displayName": "ababab" },
+
+            "properties": {
+                "publisher": "Microsoft.Compute",
+                "type": "CustomScriptExtension",
+                "typeHandlerVersion": "1.8",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "fileUris": [ "[concat(parameters('commonSettings').commonLocation,'/AD-Create.ps1')]" ],
+                    "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File AD-Create.ps1 -domain ',parameters('commonSettings').domain,' -password ',parameters('commonSettings').defaultPassword)]"
+                }
+            }
+        },
+
+    
+    
+        {
+            "name": "[concat(parameters('vmName'),1,'/', 'AD')]",
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2015-06-15",
+
+            "dependsOn": [ "vmcopy", "[resourceId('Microsoft.Compute/virtualMachines/extensions',concat(parameters('vmName'),0),'AD')]" ],
+
+            "tags": { "displayName": "ababab" },
+
+            "properties": {
+                "publisher": "Microsoft.Compute",
+                "type": "CustomScriptExtension",
+                "typeHandlerVersion": "1.8",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "fileUris": [ "[concat(parameters('commonSettings').commonLocation,'/AD-Join.ps1')]" ],
+                    "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File AD-Join.ps1 -domain ',parameters('commonSettings').domain,' -username ',parameters('commonSettings').defaultUsername,' -password ',parameters('commonSettings').defaultPassword)]"
+                }
+            }
+        }
+    
+    
+    
+    
+    ]
+}

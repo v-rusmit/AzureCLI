@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|AnyCPU">
+      <Configuration>Debug</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|AnyCPU">
+      <Configuration>Release</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>b7e7a71e-c73d-4a99-b6c2-2402cf24c7fe</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetFrameworkIdentifier>Deployment</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>1.0</TargetFrameworkVersion>
+    <PrepareForBuildDependsOn>
+    </PrepareForBuildDependsOn>
+  </PropertyGroup>
+  <Import Condition=" Exists('Deployment.targets') " Project="Deployment.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
+  <!-- vertag<:>start tokens<:>maj.min -->
+  <Import Condition=" Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Deployment\1.1\DeploymentProject.targets') " Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Deployment\1.1\DeploymentProject.targets" />
+  <!-- vertag<:>end -->
+  <ItemGroup>
+    <None Include="Deployment.targets">
+      <Visible>False</Visible>
+    </None>
+    <Content Include="Templates\azuredeploy.json" />
+    <Content Include="Templates\azuredeploy.parameters.json" />
+    <None Include="Scripts\CLIDeploy-nTier - prep.bat" />
+    <None Include="Scripts\CLIDeploy-nTier.bat" />
+    <None Include="Scripts\Deploy-AzureResourceGroup.ps1" />
+    <None Include="Templates\metadata.json" />
+    <None Include="Templates\nTier-known-vmloop-nolb-azuredeploy.json" />
+    <None Include="Templates\nTier-known-vmloop-lb-azuredeploy.json" />
+    <None Include="Templates\nTier-known-azuredeploy.json" />
+    <None Include="Templates\nTier-biztier-azuredeploy.json" />
+    <None Include="Templates\nTier-mgmttier-azuredeploy.json" />
+    <None Include="Templates\nTier-shared-azuredeploy.json" />
+    <None Include="Templates\nTier-sqltier-azuredeploy.json" />
+    <None Include="Templates\nTier-webtier-azuredeploy.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\0-Common\0-Common.deployproj">
+      <Targets>
+      </Targets>
+      <AdditionalProperties>
+      </AdditionalProperties>
+      <IncludeFilePath>
+      </IncludeFilePath>
+    </ProjectReference>
+  </ItemGroup>
+  <Target Name="GetReferenceAssemblyPaths" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties Templates_4azuredeploy_1json__JSONSchema="http://json.schemastore.org/webjob-publish-settings" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

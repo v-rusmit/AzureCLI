@@ -1,0 +1,39 @@
+﻿{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    
+    "parameters": {
+        "commonSettings":           { "type": "object",                               "metadata": { "description": "Common API values"               } },
+        "networkSecurityGroupName": { "type": "string",                               "metadata": { "description": "Name of Network Security Group"  } },
+              "virtualNetworkName": { "type": "string",                               "metadata": { "description": "Name of Virtual Network"         } },
+                      "subnetName": { "type": "string",                               "metadata": { "description": "Name of first/only subnet"       } },
+             "virtualNetworkRange": { "type": "string", "defaultValue":"10.0.0.0/16", "metadata": { "description": "IP Range of Virtual Network"     } },
+                     "subnetRange": { "type": "string", "defaultValue":"10.0.0.0/24", "metadata": { "description": "IP Range of subnet"              } }
+    },
+    
+    "variables": { },
+    
+    "resources": [
+
+        {
+            "name": "nsg",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/security-group-with-vnet.json')]" },
+
+                "parameters": {
+                    "commonSettings":           { "value": "[parameters('commonSettings')]"           },
+                    "networkSecurityGroupName": { "value": "[parameters('networkSecurityGroupName')]" },
+                          "virtualNetworkName": { "value": "[parameters(      'virtualNetworkName')]" },
+                                  "subnetName": { "value": "[parameters(              'subnetName')]" },
+                         "virtualNetworkRange": { "value": "[parameters(     'virtualNetworkRange')]" },
+                                 "subnetRange": { "value": "[parameters(             'subnetRange')]" }
+                }
+            }
+        }
+
+    ]
+}

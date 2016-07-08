@@ -1,0 +1,79 @@
+﻿{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    
+    "parameters": {
+                  "commonSettings": { "type": "object",                       "metadata": { "description": "Common API values"                      } },
+        "virtualNetworkParameters": { "type": "object",                       "metadata": { "description": "Common VNET values"                     } },
+             "publicIPAddressName": { "type": "string",                       "metadata": { "description": "Name of JumpBox Public IP Address"      } },
+                   "InstanceCount": { "type": "int",    "defaultValue": 1,    "metadata": { "description": "Number of instances to create"          } },
+          "diagStorageAccountName": { "type": "string",                       "metadata": { "description": "Name of Storage Account for diagnostics"} },
+          "diskStorageAccountRoot": { "type": "string",                       "metadata": { "description": "Name of Storage Account for vhds"       } },
+                          "vmName": { "type": "string",                       "metadata": { "description": "Name of the VM's"                       } },
+                         "nicName": { "type": "string",                       "metadata": { "description": "Name of the NIC"                        } }
+    },
+
+    "variables": { "diskStorageAccountName": "[concat(parameters('diskStorageAccountRoot'),'m')]" },
+
+    "resources": [
+        {
+            "name": "mgmt-nic",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/nic-via-pip.json')]" },
+
+                "parameters": {
+                    "commonSettings":      { "value": "[parameters('commonSettings')]"                              },
+                    "publicIPAddressName": { "value": "[parameters('publicIPAddressName')]"                         },
+                                "nicName": { "value": "[parameters(            'nicName')]"                         },
+                     "virtualNetworkName": { "value": "[parameters('virtualNetworkParameters').virtualNetworkName]" },
+                             "subnetName": { "value": "[parameters('virtualNetworkParameters').mgmtSubnetName]"     }
+                }
+            }
+        },
+
+
+
+        {
+            "name": "mgmt-sa",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/storage-account.json')]" },
+
+                "parameters": {
+                    "commonSettings":     { "value": "[parameters('commonSettings')]"         },
+                    "storageAccountName": { "value": "[ variables('diskStorageAccountName')]" }
+                }
+            }
+        },
+
+
+
+        {
+            "name": "vm",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
+
+            "dependsOn": [ "Microsoft.Resources/deployments/mgmt-nic", "Microsoft.Resources/deployments/mgmt-sa" ],
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/vm-via-nic.json')]" },
+
+                "parameters": {
+                    "commonSettings":         { "value": "[parameters('commonSettings')]"         },
+                                    "vmName": { "value": "[parameters(                'vmName')]" },
+                    "diskStorageAccountName": { "value": "[ variables('diskStorageAccountName')]" },
+                    "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]" },
+                                   "nicName": { "value": "[parameters(               'nicName')]" }
+                }
+            }
+        }
+    ]
+}

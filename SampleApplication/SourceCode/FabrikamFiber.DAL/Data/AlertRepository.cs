@@ -33,12 +33,14 @@ namespace FabrikamFiber.DAL.Data
     public class AlertRepository : IAlertRepository
     {
 
+        private readonly Uri _baseAddress = new Uri("http://localhost:3000/api/");
+
         public IQueryable<Alert> All
         {
             get
             {
                 var client = new HttpClient();
-                client.BaseAddress = new Uri("http://localhost:3000/api/");
+                client.BaseAddress = _baseAddress;
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 HttpResponseMessage response = client.GetAsync("alert/").Result;
@@ -68,7 +70,7 @@ namespace FabrikamFiber.DAL.Data
         public Alert Find(int id)
         {
             var client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:3000/api/");
+            client.BaseAddress = _baseAddress;
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             HttpResponseMessage response = client.GetAsync("alert/" + id).Result;
@@ -87,7 +89,7 @@ namespace FabrikamFiber.DAL.Data
             {
                 //Insert
                 var client = new HttpClient();
-                client.BaseAddress = new Uri("http://localhost:3000/api/");
+                client.BaseAddress = _baseAddress;
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -104,7 +106,7 @@ namespace FabrikamFiber.DAL.Data
             {
                 //Update
                 var client = new HttpClient();
-                client.BaseAddress = new Uri("http://localhost:3000/api/");
+                client.BaseAddress = _baseAddress;
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -122,7 +124,7 @@ namespace FabrikamFiber.DAL.Data
         {
             //Delete
             var client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:3000/api/");
+            client.BaseAddress = _baseAddress;
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             HttpResponseMessage response = client.DeleteAsync("alert/" + id).Result;

@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
 
     "parameters": {
-        "commonSettings":         { "type": "object",                               "metadata": { "description": "Common API values"                                    } },
+                  "commonSettings": { "type": "object",                               "metadata": { "description": "Common API values"                                    } },
               "virtualNetworkName": { "type": "string",                                "metadata": { "description": "Name of Virtual Network"                           } },
                 "publicSubnetName": { "type": "string",                                "metadata": { "description": "Name of the subnet"                                } },
                "privateSubnetName": { "type": "string",                                "metadata": { "description": "Name of the  subnet"                               } },

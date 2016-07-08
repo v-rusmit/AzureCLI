@@ -1,6 +1,2 @@
-D:\Users\tjensen\Documents\CLI Conversion Project\app-service-api-node-contact-list-master\bin\Microsoft.NodejsTools.WebRole.dll
-D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.API\obj\Debug\FabrikamFiber.Api.njsprojResolveAssemblyReference.cache
-D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM3\FabrikamFiber.CallCenter\FabrikamFiber.API\bin\Microsoft.NodejsTools.WebRole.dll
-D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\FabrikamFiber.CallCenter\FabrikamFiber.API\bin\Microsoft.NodejsTools.WebRole.dll
-D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\SampleApplication\SourceCode\FabrikamFiber.API\obj\Debug\FabrikamFiber.Api.njsprojResolveAssemblyReference.cache
-D:\Users\tjensen\Documents\FabrikamFiber_VS2013_RTM\SampleApplication\SourceCode\FabrikamFiber.API\bin\Microsoft.NodejsTools.WebRole.dll
+D:\Users\tjensen\Source\Repos\AzureCLI\SampleApplication\SourceCode\FabrikamFiber.API\obj\Debug\FabrikamFiber.Api.njsprojResolveAssemblyReference.cache
+D:\Users\tjensen\Source\Repos\AzureCLI\SampleApplication\SourceCode\FabrikamFiber.API\bin\Microsoft.NodejsTools.WebRole.dll

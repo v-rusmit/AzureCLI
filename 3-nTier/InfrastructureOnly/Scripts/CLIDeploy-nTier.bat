@@ -1,0 +1,1 @@
+azure group deployment create -f ..\Templates\azuredeploy.json -e ..\Templates\azuredeploy.parameters.json "CLI-nTier" "CLI-nTier_Initial"

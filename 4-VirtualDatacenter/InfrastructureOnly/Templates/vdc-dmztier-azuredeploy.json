@@ -1,0 +1,83 @@
+﻿{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    
+    "parameters": {
+        "commonSettings":           { "type": "object",                     "metadata": { "description": "Common API values"                      } },
+        "virtualNetworkParameters": { "type": "object",                     "metadata": { "description": "Common VNET values"                     } },
+           "publicIPAddressName":   { "type": "string",                     "metadata": { "description": "Name of Application Public IP Address"  } },
+              "loadBalancerName":   { "type": "string",                     "metadata": { "description": "Name of the Load Balancer"              } },
+           "availabilitySetName":   { "type": "string",                     "metadata": { "description": "Name of the Availability Set"           } },
+                 "InstanceCount":   { "type": "int",    "defaultValue": 1,  "metadata": { "description": "Number of instances to create"          } },
+        "diagStorageAccountName":   { "type": "string",                     "metadata": { "description": "Name of Storage Account for diagnostics"} },
+        "diskStorageAccountRoot":   { "type": "string",                     "metadata": { "description": "Name of Storage Account for vhds"       } },
+                        "vmName":   { "type": "string",                     "metadata": { "description": "RootName of the VM's"                   } }
+    },
+
+    "resources": [
+
+        {
+            "name": "dmz-lb",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
+     
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/load-balancer-with-public-ip.json')]" },
+
+                "parameters": {
+                    "commonSettings":      { "value": "[parameters('commonSettings')]"      },
+                       "loadBalancerName": { "value": "[parameters(   'loadBalancerName')]" },
+                    "publicIPAddressName": { "value": "[parameters('PublicIPAddressName')]" }
+                }
+            }
+        },
+   
+
+
+        {
+            "name": "dmz-as",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
+     
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/availability-set.json')]" },
+
+                "parameters": {
+                    "commonSettings":      { "value": "[parameters('commonSettings')]"      },
+                    "availabilitySetName": { "value": "[parameters('availabilitySetName')]" }
+                }
+            }
+        },    
+
+
+        {
+            "name": "[concat('vmLoopDMZ', copyIndex())]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
+
+            "dependsOn": [ "Microsoft.Resources/deployments/dmz-lb", "Microsoft.Resources/deployments/dmz-as" ],
+
+            "copy": { "name": "vmcopyDMZ", "count": "[parameters('instanceCount')]" },
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/vdc-known-vmloop-linux-lb-azuredeploy.json')]" },
+
+                "parameters": {
+                    "commonSettings":         { "value": "[parameters('commonSettings')]"                                 },
+                        "virtualNetworkName": { "value": "[parameters('virtualNetworkParameters').virtualNetworkName]"    },
+                          "publicSubnetName": { "value": "[parameters('virtualNetworkParameters').nvaPublicSubnetName]"   },
+                         "privateSubnetName": { "value": "[parameters('virtualNetworkParameters').nvaPrivateSubnetName]"  },
+                       "availabilitySetName": { "value": "[parameters(   'availabilitySetName')]"                         },
+                          "loadBalancerName": { "value": "[parameters(      'loadBalancerName')]"                         },
+                    "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]"                         },
+                                 "thisIndex": { "value": "[                                                copyIndex() ]" },
+                                    "vmName": { "value": "[concat(parameters('vmName'),                    copyIndex())]" },
+                    "diskStorageAccountName": { "value": "[concat(parameters('diskStorageAccountRoot'),'w',copyIndex())]" }
+                }
+            }
+        }
+    ]
+}
