@@ -305,6 +305,7 @@
     <None Include="SampleApp\FabrikamFiber.Web.zip" />
     <None Include="SampleApp\iisnode-full-v0.2.21-x64.msi" />
     <None Include="SampleApp\rewrite_amd64.msi" />
+    <None Include="Templates\applyDSC0.json" />
     <None Include="Templates\availability-set.json" />
     <None Include="Templates\azuredeploy.json" />
     <None Include="Templates\azuredeploy.parameters.json" />
@@ -321,7 +322,7 @@
     <None Include="Templates\public-ip.json" />
     <None Include="Templates\virtual-network.json" />
     <None Include="Templates\linuxvm-with-dual-nic-in-availability-set.json" />
-    <None Include="Templates\applyDSC.json" />
+    <None Include="Templates\applyDSC1.json" />
     <None Include="Templates\sqlvm-via-nic-with-availability-set.json" />
     <None Include="Templates\sqlvm-via-nic.json" />
     <None Include="Templates\vm-via-nic-with-availability-set.json" />

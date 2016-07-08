@@ -12,8 +12,6 @@
                           "vmName": { "type": "string", "metadata": { "description": "Name of virtual machine"                 } },
                          "nicName": { "type": "string", "metadata": { "description": "Name of nic to be assigned to VM"        } }
     },
-    
-    "variables": { },
 
     "resources": [
 
@@ -129,7 +127,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/applyDSC.json')]" },
+				"templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/applyDSC',parameters('commonSettings').deploySwitch,'.json')]" },
 
                 "parameters": {
                     "commonSettings": { "value": "[parameters('commonSettings')]" },

@@ -1,0 +1,13 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+
+    "parameters": {
+        "commonSettings": { "type": "object",  "metadata": { "description": "Common API values"                       } },
+        "vmName":         { "type": "string",  "metadata": { "description": "Name of the Virtual Machine."            } },
+        "scriptName":     { "type": "string",  "metadata": { "description": "Name of the DSC script (ps1 file)."      } },
+        "configName":     { "type": "string",  "metadata": { "description": "Name of the DSC script (Configuraiton)." } }
+    },
+
+    "resources": [  ]
+}

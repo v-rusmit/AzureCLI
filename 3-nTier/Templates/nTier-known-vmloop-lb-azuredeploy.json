@@ -95,7 +95,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/applyDSC.json')]" },
+				"templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/applyDSC',parameters('commonSettings').deploySwitch,'.json')]" },
 
                 "parameters": {
                     "commonSettings": { "value": "[parameters('commonSettings')]" },
