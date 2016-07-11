@@ -9,7 +9,7 @@ A set of proven practices for running a reliable N-tier architecture on Windows 
 ## Prescriptive Guidance
 Prescriptive  guidance plus considerations for availability, manageability, and security is available [here](https://azure.microsoft.com/en-us/documentation/articles/guidance-hybrid-network-vpn/#troubleshooting).
 
- ![GitHub Logo](../images/hybridNetwork.png)
+ ![GitHub Logo](../images/virtualDatacenter.png)
  
 ## Related Training
  * [Azure Network Security Groups (NSGs)](https://azure.microsoft.com/en-us/documentation/articles/virtual-networks-nsg/)
