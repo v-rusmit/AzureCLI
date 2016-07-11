@@ -17,7 +17,7 @@ Configuration DemoAllComponents
 		$webzip1 = "FabrikamFiber.Web.zip"
 		$webzip2 = "FabrikamFiber.API.zip"
 		$bacpac  = "FabrikamFiber.bacpac"
-		$iisnode = "iisnode-full-v0.2.21-x64.msi"
+		$iisnode = "iisnode-full-iis7-v0.2.2-x64.msi"
 		$urlrewrite = "rewrite_amd64.msi"
 
 		$stagingFolder  = "C:\Packages"
