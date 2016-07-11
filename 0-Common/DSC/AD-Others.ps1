@@ -27,7 +27,7 @@ configuration DemoAD2
 
 		xADDomainController SecondDC
 		{
-			DomainName                    = $domain.TrimEnd('.com')
+			DomainName                    = $domain
 			DomainAdministratorCredential = $DomainUserAccount
 			SafemodeAdministratorPassword = $DomainUserAccount
 			DependsOn                     = "[WindowsFeature]ADDSInstall"

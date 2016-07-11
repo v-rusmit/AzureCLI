@@ -19,16 +19,6 @@ configuration DemoAD1
 			DebugMode = "ForceModuleImport"
 		}
 
-		Log Msg1
-		{
-			Message=$LocalUserAccount
-		}
-
-		Log Msg1
-		{
-			Message=$DomainUserAccount
-		}
-
 		WindowsFeature ADDSInstall
 		{
 			Ensure = "Present"
@@ -41,17 +31,9 @@ configuration DemoAD1
 			DomainName                    = $domain
 			DomainAdministratorCredential = $LocalUserAccount
 			SafemodeAdministratorPassword = $LocalUserAccount
-    		DependsOn                     = "[WindowsFeature]ADDSInstall"
+			DependsOn                     = "[WindowsFeature]ADDSInstall"
 		}
 
-		xWaitForADDomain DscForestWait
-		{
-		    DomainName           = $domain
-		    DomainUserCredential = $DomainUserAccount
-		    RetryCount           = 20
-		    RetryIntervalSec     = 30
-		    DependsOn            = "[xADDomain]FirstDS"
-		}
 	}
 }
 
