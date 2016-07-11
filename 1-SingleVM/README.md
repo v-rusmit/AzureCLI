@@ -13,8 +13,8 @@ Prescriptive  guidance plus considerations for availability, manageability, and 
  ![GitHub Logo](../images/singleVM.png)
 
 ## Related Training
-* [Networking basics for building applications in Azure](http://github.com/)
-* [Microsoft Azure Fundamentals: Configure an Availability Set](http://github.com/)
+* [Networking basics for building applications in Azure](https://azure.microsoft.com/en-us/documentation/videos/azurecon-2015-networking-basics-for-building-applications-in-azure/)
+* [Microsoft Azure Fundamentals: Configure an Availability Set](https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-windows-create-availability-set/)
 
 ## Tools
 * [Installing the Azure CLI](https://azure.microsoft.com/en-us/documentation/articles/xplat-cli-install/)
