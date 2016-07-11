@@ -11,6 +11,9 @@ Examples of scenarios that fit this profile include:
 * Line-of-business applications used within an organization, where part of the functionality has been migrated to the cloud.
 * Development/test/lab workloads.
 
+## Architecture diagram
+![diagram](../images/hybridNetwork.png)
+
 ## Prescriptive Guidance
 Prescriptive  guidance plus considerations for availability, manageability, and security is available [here](https://azure.microsoft.com/en-us/documentation/articles/guidance-hybrid-network-vpn/).
 
