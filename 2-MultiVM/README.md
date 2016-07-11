@@ -9,7 +9,7 @@ In this architecture, the workload is distributed across the VM instances. There
 ![diagram](../images/multiVM.png)
 
 ## Prescriptive Guidance
-Prescriptive  guidance plus considerations for availability, manageability, and security is available.
+Prescriptive  guidance plus considerations for availability, manageability, and security is available [here](https://azure.microsoft.com/en-us/documentation/articles/guidance-compute-multi-vm/).
 
 ## Related Training
 * [Networking basics for building applications in Azure](https://azure.microsoft.com/en-us/documentation/videos/azurecon-2015-networking-basics-for-building-applications-in-azure/)
