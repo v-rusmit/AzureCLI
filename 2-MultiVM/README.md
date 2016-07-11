@@ -12,8 +12,8 @@ In this architecture, the workload is distributed across the VM instances. There
 Prescriptive  guidance plus considerations for availability, manageability, and security is available.
 
 ## Related Training
-* [Networking basics for building applications in Azure](Networking basics for building applications in Azure)
-* [Microsoft Azure Fundamentals:  Configure an Availability Set](https://azure.microsoft.com/en-us/documentation/articles/guidance-compute-single-vm/#architecture-diagram)
+* [Networking basics for building applications in Azure](https://azure.microsoft.com/en-us/documentation/videos/azurecon-2015-networking-basics-for-building-applications-in-azure/)
+* [Microsoft Azure Fundamentals:  Configure an Availability Set](https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-windows-create-availability-set/)
 
 ## Tools
 * [Installing the Azure CLI](https://azure.microsoft.com/en-us/documentation/articles/xplat-cli-install/)
