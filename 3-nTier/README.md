@@ -10,7 +10,7 @@ There are variations of N-tier architectures. A typical 3-tier web app is assume
  ![diagram](../images/nTierVM.png)
 
 ## Prescriptive Guidance
-Prescriptive  guidance plus considerations for availability, manageability, and security is available [here](https://azure.microsoft.com/en-us/documentation/articles/guidance-compute-n-tier-vm/).
+Prescriptive  guidance plus considerations for availability, manageability, and security is available [here](https://azure.microsoft.com/en-us/documentation/articles/guidance-compute-3-tier-vm/).
 
 ## Related Training
 * [Azure Network Security Groups (NSGs)](https://azure.microsoft.com/en-us/documentation/articles/virtual-networks-nsg/)
