@@ -38,10 +38,12 @@ by Microsoft
 [Terms of use](http://azure.microsoft.com/support/legal/) | [privacy policy](https://www.microsoft.com/privacystatement/en-us/OnlineServices/Default.aspx)
 
 **The highlighted Marketplace purchase(s) are not covered by your Azure credits, and will be billed separately.**
+
 You cannot use your Azure monetary commitment funds or subscription credits for these purchases. You will be billed separately for marketplace purchases.
 If you have previously purchased a free trial offering, your free trial period will run 30 days from the date of your original purchase; all use thereafter will be billed at the standard rates listed above.
 
 **Azure resource**
+
 You may use your Azure monetary commitment funds or subscription credits for these purchases. Prices presented are retail prices and may not reflect discounts associated with your subscription.
 Terms of use
 By clicking “Purchase”, I (a) agree to the legal terms and privacy statement(s) associated with each Marketplace offering above, (b) authorize Microsoft to charge or bill my current payment method for the fees associated with my use of the offering(s), including applicable taxes, with the same billing frequency as my Azure subscription, until I discontinue use of the offering(s), and (c) agree that Microsoft may share my contact information and transaction details with the seller(s) of the offering(s). Microsoft does not provide rights for third-party products or services. See the [Azure Marketplace Terms](http://azure.microsoft.com/support/legal/marketplace-terms/) for additional terms.
