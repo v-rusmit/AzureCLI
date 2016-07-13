@@ -1,6 +1,0 @@
-﻿{
-    "itemDisplayName": "Multi-VM",
-    "description": "Sample deployment template for a multiple virtual machines in a load-balanced environment",
-    "author": "Kevin Bergman",
-    "dateCreated":  "2016-06-10"
-}
