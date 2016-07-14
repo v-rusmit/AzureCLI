@@ -22,7 +22,7 @@
     "OSDiskName": "osdiskforlinuxsimple",
     "publicIPAddressType": "Dynamic",
     "vmStorageAccountContainerName": "vhds",
-    "vmSize": "Standard_D2"
+    "vmSize": "Standard_A3"
   },
 
         
