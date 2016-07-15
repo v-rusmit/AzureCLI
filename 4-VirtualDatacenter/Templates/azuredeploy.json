@@ -22,7 +22,7 @@
     "variables": {
 
         "commonSettings": {
-            "resourceApiVersion": "2016-02-01",       // all tempaltes in this hierarchical project use this value for  "type": "Microsoft.Resources/deployments",
+            "resourceApiVersion": "2016-02-01",       
             "deploySwitch":              "[    parameters('deploySwitch')                                ]",
             "artifactsLocation":         "[    parameters('_artifactsLocation')                          ]",
             "artifactsLocationSasToken": "[    parameters('_artifactsLocationSasToken')                  ]",
