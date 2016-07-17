@@ -309,7 +309,6 @@
     <None Include="Templates\availability-set.json" />
     <None Include="Templates\azuredeploy.json" />
     <None Include="Templates\azuredeploy.parameters.json" />
-    <None Include="Templates\Barracuda-WAF.json" />
     <None Include="Templates\config.psd1" />
     <None Include="Templates\load-balancer-with-private-ip.json" />
     <None Include="Templates\load-balancer-with-public-ip.json" />

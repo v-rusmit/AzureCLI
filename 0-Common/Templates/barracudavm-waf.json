@@ -19,7 +19,7 @@
     "dataDisk1VhdName": "datadisk1",
     "imagePublisher": "barracudanetworks",
     "imageOffer": "waf",
-    "OSDiskName": "osdiskforlinuxsimple",
+    "OSDiskName": "osdiskforwaf",
     "publicIPAddressType": "Dynamic",
     "vmStorageAccountContainerName": "vhds",
     "vmSize": "Standard_A3"
@@ -40,8 +40,8 @@
 
                 "osProfile": {
                     "computerName": "[replace(parameters('vmName'),'-','')]",
-                    "adminUsername": "[parameters('commonSettings').defaultUsername]",
-                    "adminPassword": "[parameters('commonSettings').defaultPassword]"
+                    "adminUsername": "wafadmin",
+                    "adminPassword": "ConnectMe2016"
                 },
 
                 "storageProfile": {

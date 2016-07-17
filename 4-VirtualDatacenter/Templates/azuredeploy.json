@@ -35,12 +35,12 @@
         "virtualNetworkParameters": {
              "virtualNetworkName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-vnet')]",                  "virtualNetworkRange": "10.0.0.0/16",
             "nvaPublicSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-nva-public-subnet')]",   "dmzPublicSubnetRange": "10.0.1.0/25",  
-           "nvaPrivateSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-nva-private-subnet')]", "dmzPrivateSubnetRange": "10.0.1.128/25",  
-                  "staSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-sta-subnet')]",                "staSubnetRange": "10.0.2.0/24",     "staPrivateIPAddress": "10.0.2.250",
-                  "stbSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-stb-subnet')]",                "stbSubnetRange": "10.0.3.0/24",     "stbPrivateIPAddress": "10.0.3.250",
-                  "sqlSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-sql-subnet')]",                "sqlSubnetRange": "10.0.8.0/24",     "sqlPrivateIPAddress": "10.0.8.250",
-                 "mgmtSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-mgmt-subnet')]",               "mgmtSubnetRange": "10.0.4.0/24",
-                   "adSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),   '-ad-subnet')]",                 "adSubnetRange": "10.0.9.0/24",
+           "nvaPrivateSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-nva-private-subnet')]", "dmzPrivateSubnetRange": "10.0.2.128/25",  
+                  "staSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-sta-subnet')]",                "staSubnetRange": "10.0.3.0/24",     "staPrivateIPAddress": "10.0.2.250",
+                  "stbSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-stb-subnet')]",                "stbSubnetRange": "10.0.4.0/24",     "stbPrivateIPAddress": "10.0.3.250",
+                  "sqlSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-sql-subnet')]",                "sqlSubnetRange": "10.0.5.0/24",     "sqlPrivateIPAddress": "10.0.8.250",
+                 "mgmtSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-mgmt-subnet')]",               "mgmtSubnetRange": "10.0.6.0/24",
+                   "adSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),   '-ad-subnet')]",                 "adSubnetRange": "10.0.7.0/24",
                "adminAccessRange": "[parameters('adminAccessRange')]" 
         },
 
