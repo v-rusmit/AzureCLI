@@ -1,0 +1,93 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+
+    "parameters": {
+        "commonSettings":         { "type": "object",                                       "metadata": { "description": "Common API values"                                                      } },
+                        "vmName": { "type": "string",                                       "metadata": { "description": "Name of the Virtual Machine."                                           } },
+        "diskStorageAccountName": { "type": "string",                                       "metadata": { "description": "Name of the storage account for disks of Virtual Machine."              } },
+        "diagStorageAccountName": { "type": "string",                                       "metadata": { "description": "Name of the storage account for diagnostics of many Virtual Machines."  } },
+                      "nic1Name": { "type": "string",                                       "metadata": { "description": "Name of the simulated Network interface card."                          } },
+                      "nic2Name": { "type": "string",                                       "metadata": { "description": "Name of the simulated Network interface card."                          } },
+           "availabilitySetName": { "type": "string",                                       "metadata": { "description": "Name of the Availability set."                                          } },
+
+        "windowsOSVersion": {
+            "type": "string",
+            "defaultValue": "2012-R2-Datacenter",
+            "allowedValues": [ "2008-R2-SP1", "2012-Datacenter", "2012-R2-Datacenter" ],
+            "metadata": { "description": "The Windows version for the VM. This will pick a fully patched image of this given Windows version. Allowed values: 2008-R2-SP1, 2012-Datacenter, 2012-R2-Datacenter." }
+        }       
+    },
+
+    "variables": {
+        "sizeOfDiskInGB": "1023",
+        "dataDisk1VhdName": "datadisk1",
+        "imagePublisher": "MicrosoftWindowsServer",
+        "imageOffer": "WindowsServer",
+        "OSDiskName": "osdiskforwindowssimple",
+        "publicIPAddressType": "Dynamic",
+        "vmStorageAccountContainerName": "vhds",
+        "vmSize": "Standard_D2"
+    },
+
+        
+    "resources": [
+        {
+            "name": "[parameters('vmName')]",
+            "type": "Microsoft.Compute/virtualMachines",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2016-03-30",
+
+            "properties": {
+                "availabilitySet": { "id": "[resourceId('Microsoft.Compute/availabilitySets',parameters('availabilitySetName'))]" },
+                "hardwareProfile": { "vmSize": "[variables('vmSize')]" },
+
+                "osProfile": {
+                    "computerName": "[replace(parameters('vmName'),'-','')]",
+                    "adminUsername": "[parameters('commonSettings').defaultUsername]",
+                    "adminPassword": "[parameters('commonSettings').defaultPassword]"
+                },
+
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "[variables('imagePublisher')]",
+                        "offer": "[variables('imageOffer')]",
+                        "sku": "[parameters('windowsOSVersion')]",
+                        "version": "latest"
+                    },
+
+                    "osDisk": {
+                        "name": "osdisk",
+                        "vhd": { "uri": "[concat('http://',parameters('diskStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('OSDiskName'),'.vhd')]" },
+                        "caching": "ReadWrite",
+                        "createOption": "FromImage"
+                    },
+
+                    "dataDisks": [
+                        {
+                            "name": "datadisk1",
+                            "diskSizeGB": "[variables('sizeOfDiskInGB')]",
+                            "lun": 0,
+                            "vhd": { "uri": "[concat('http://',parameters('diskStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('dataDisk1VhdName'),'.vhd')]" },
+                            "createOption": "Empty"
+                        }
+                    ]
+                },
+
+				"networkProfile": {
+					"networkInterfaces": [
+                        { "properties": { "primary": true }, "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('nic1Name'))]" },
+                        { "properties": { "primary": false}, "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('nic2Name'))]" }
+					] 
+				},
+
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": "true",
+                        "storageUri": "[concat('http://',parameters('diagStorageAccountName'),'.blob.core.windows.net')]"
+                    }
+                }
+            }
+        }
+    ]
+}

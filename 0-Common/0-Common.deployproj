@@ -325,6 +325,7 @@
     <None Include="Templates\applyDSC1.json" />
     <None Include="Templates\sqlvm-via-nic-with-availability-set.json" />
     <None Include="Templates\sqlvm-via-nic.json" />
+    <None Include="Templates\vm-via-dualnic-with-availability-set.json" />
     <None Include="Templates\vm-via-nic-with-availability-set.json" />
     <None Include="Templates\vm-via-nic.json" />
     <None Include="Templates\vnet-add-new-subnet-with-nsg.json" />

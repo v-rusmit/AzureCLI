@@ -13,13 +13,13 @@
     },
 
 	"variables": {
-		 "vm1Name": "[concat(parameters( 'vmName'),1)                ]",
-		 "vm2Name": "[concat(parameters( 'vmName'),2)                ]",
-		"nic1Name": "[concat( variables('vm1Name'),'-nic')           ]",
-		"nic2Name": "[concat( variables('vm2Name'),'-nic')           ]",
-		 "sa1Name": "[concat(parameters('diskStorageAccountRoot'),1) ]",
-		 "sa2Name": "[concat(parameters('diskStorageAccountRoot'),2) ]",
-		     "DNS": "168.63.129.16"
+		 "vm1Name": "[concat(parameters( 'vmName'),0)                ]",
+		 "vm2Name": "[concat(parameters( 'vmName'),1)                ]",
+//		"nic1Name": "[concat( variables('vm1Name'),'-nic')           ]",
+//		"nic2Name": "[concat( variables('vm2Name'),'-nic')           ]",
+		 "sa1Name": "[concat(parameters('diskStorageAccountRoot'),0) ]",
+		 "sa2Name": "[concat(parameters('diskStorageAccountRoot'),1) ]",
+		"AzureDNS": "168.63.129.16"
 	},
 
 	"resources": [
@@ -34,7 +34,7 @@
 				"templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/availability-set.json')]" },
 
 				"parameters": {
-					"commonSettings":      { "value": "[parameters('commonSettings')]" },
+					"commonSettings":      { "value": "[parameters('commonSettings')]"      },
 					"availabilitySetName": { "value": "[parameters('availabilitySetName')]" }
 				}
 			}
@@ -42,44 +42,66 @@
 
 
 
-        {
-            "name": "ADsa1",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
+		{
+			"name": "ADsa1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
-            "properties": {
-                "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/storage-account.json')]" },
+			"properties": {
+				"mode": "incremental",
+				"templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/storage-account.json')]" },
 
-                "parameters": {
-                    "commonSettings":     { "value": "[parameters('commonSettings') ]" },
+				"parameters": {
+					"commonSettings":     { "value": "[parameters('commonSettings') ]" },
 					"storageAccountName": { "value": "[ variables('sa1Name')        ]" }
-                }
-            }
-        },
-
-
-
-        {
-            "name": "ADsa2",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
-
-            "properties": {
-                "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/storage-account.json')]" },
-
-                "parameters": {
-                    "commonSettings":     { "value": "[parameters('commonSettings')   ]" },
-					"storageAccountName": { "value": "[ variables('sa2Name')          ]" }
-                }
-            }
-        },
+				}
+			}
+		},
 
 
 
 		{
-			"name": "[variables('nic1Name')]",
+			"name": "ADsa2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "[parameters('commonSettings').resourceApiVersion]",
+
+			"properties": {
+				"mode": "incremental",
+				"templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/storage-account.json')]" },
+
+				"parameters": {
+					"commonSettings":     { "value": "[parameters('commonSettings')   ]" },
+					"storageAccountName": { "value": "[ variables('sa2Name')          ]" }
+				}
+			}
+		},
+
+
+
+		{
+			"name": "[concat(parameters('vmName'),0,'-dynamicnic')]",
+			"type": "Microsoft.Network/networkInterfaces",
+			"location": "[resourceGroup().location]",
+			"apiVersion": "2016-03-30",
+
+			"properties": {
+				"ipConfigurations": [
+					{
+						"name": "ipconfig1",
+						"properties": {
+							"privateIPAllocationMethod": "Dynamic",
+							"subnet": { "id": "[  concat(resourceId('Microsoft.Network/virtualNetworks',  parameters('virtualNetworkParameters').virtualNetworkName),'/subnets/',parameters('virtualNetworkParameters').adSubnetName)]" }
+						}
+					}
+				],
+				"dnsSettings": { "dnsServers": [ "[variables('AzureDNS')]" ] } //Force AzureDNS, otherwise its wonky
+			}
+		},
+
+
+
+		{
+			"name": "[concat(parameters('vmName'),0,'-staticnic')]",
 			"type": "Microsoft.Network/networkInterfaces",
 			"location": "[resourceGroup().location]",
 			"apiVersion": "2016-03-30",
@@ -90,44 +112,90 @@
 						"name": "ipconfig1",
 						"properties": {
 							"privateIPAllocationMethod": "Static",
-							"privateIPAddress": "10.0.9.200",
+							"privateIPAddress":          "10.0.9.200",
 							"subnet": { "id": "[  concat(resourceId('Microsoft.Network/virtualNetworks',  parameters('virtualNetworkParameters').virtualNetworkName),'/subnets/',parameters('virtualNetworkParameters').adSubnetName)]" }
 						}
 					}
 				],
-				"dnsSettings": { "dnsServers": [ "[variables('DNS')]" ] }
+				"dnsSettings": { "dnsServers": [ "10.0.9.200" ] }
+			}
+		},
+
+
+		{
+			"name": "[concat(parameters('vmName'),1,'-staticnic0')]",
+			"type": "Microsoft.Network/networkInterfaces",
+			"location": "[resourceGroup().location]",
+			"apiVersion": "2016-03-30",
+
+			"properties": {
+				"ipConfigurations": [
+					{
+						"name": "ipconfig1",
+						"properties": {
+							"privateIPAllocationMethod": "Static",
+							"privateIPAddress":          "10.0.9.201",
+							"subnet": { "id": "[  concat(resourceId('Microsoft.Network/virtualNetworks',  parameters('virtualNetworkParameters').virtualNetworkName),'/subnets/',parameters('virtualNetworkParameters').adSubnetName)]" }
+						}
+					}
+				],
+				"dnsSettings": { "dnsServers": [ "10.0.9.200" ] }
+			}
+		},
+
+
+		{
+			"name": "[concat(parameters('vmName'),1,'-staticnic1')]",
+			"type": "Microsoft.Network/networkInterfaces",
+			"location": "[resourceGroup().location]",
+			"apiVersion": "2016-03-30",
+
+			"properties": {
+				"ipConfigurations": [
+					{
+						"name": "ipconfig1",
+						"properties": {
+							"privateIPAllocationMethod": "Static",
+							"privateIPAddress":          "10.0.9.202",
+							"subnet": { "id": "[  concat(resourceId('Microsoft.Network/virtualNetworks',  parameters('virtualNetworkParameters').virtualNetworkName),'/subnets/',parameters('virtualNetworkParameters').adSubnetName)]" }
+						}
+					}
+				],
+				"dnsSettings": { "dnsServers": [ "10.0.9.200" ] }
 			}
 		},
 
 
 
-        {
-            "name": "ADvm1",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
+		{
+			"name": "ADvm1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
 			"dependsOn": [
 				"Microsoft.Resources/deployments/AS",
-				"[concat('Microsoft.Network/networkInterfaces/', variables('nic1Name'))]",
+				"[concat('Microsoft.Network/networkInterfaces/', parameters('vmName'),0,'-dynamicnic')]",
+				"[concat('Microsoft.Network/networkInterfaces/', parameters('vmName'),0, '-staticnic')]",
 				"Microsoft.Resources/deployments/ADsa1"
 			],
-            
-            "properties": {
-                "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/vm-via-nic-with-availability-set.json')]" },
 
-                "parameters": {
-                    "commonSettings":         { "value": "[parameters('commonSettings')          ]" },
-                                    "vmName": { "value": "[ variables('vm1Name')                 ]" },
-					"diskStorageAccountName": { "value": "[ variables('sa1Name')                 ]" },
-                    "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')  ]" },        
-                                   "nicName": { "value": "[ variables('nic1Name')                ]" },
-                       "availabilitySetName": { "value": "[parameters('availabilitySetName')     ]" }
-                }
-            }
-        },
+			"properties": {
+				"mode": "incremental",
+				"templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/vm-via-dualnic-with-availability-set.json')]" },
 
-		
+				"parameters": {
+					"commonSettings":         { "value": "[       parameters('commonSettings')          ]" },
+					"vmName":                 { "value": "[        variables('vm1Name')                 ]" },
+					"diskStorageAccountName": { "value": "[        variables('sa1Name')                 ]" },
+					"diagStorageAccountName": { "value": "[       parameters('diagStorageAccountName')  ]" },
+					"nic1Name":               { "value": "[concat(parameters('vmName'),0,'-dynamicnic') ]" },  //first DC gets DYNAMIC first
+					"nic2Name":               { "value": "[concat(parameters('vmName'),0, '-staticnic') ]" },
+					"availabilitySetName":    { "value": "[       parameters('availabilitySetName')     ]" }
+				}
+			}
+		},
+
+
 
 		{
 			"name": "AD1",
@@ -143,92 +211,64 @@
 				"parameters": {
 					"commonSettings": { "value": "[parameters('commonSettings') ]" },
 					"vmName":         { "value": "[ variables('vm1Name')        ]" },
-					"scriptName":     { "value": "AD-First.ps1" },
-					"configName":     { "value": "DemoAD1"      }
+					"scriptName":     { "value": "AD-First.ps1"                    },
+					"configName":     { "value": "DemoAD1"                         }
 				}
 			}
 		},
 
 
 
+		{
+			"name": "ADvm2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
+			"dependsOn": [
+				"Microsoft.Resources/deployments/AS",
+				"[concat('Microsoft.Network/networkInterfaces/', parameters('vmName'),1,'-staticnic0')]",
+				"[concat('Microsoft.Network/networkInterfaces/', parameters('vmName'),1,'-staticnic1')]",
+				"Microsoft.Resources/deployments/ADsa2"
+			],
 
-		
+			"properties": {
+				"mode": "incremental",
+				"templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/vm-via-dualnic-with-availability-set.json')]" },
 
-		//,{
-		//	"name": "[variables('nic2Name')]",
-		//	"type": "Microsoft.Network/networkInterfaces",
-		//	"location": "[resourceGroup().location]",
-		//	"apiVersion": "2016-03-30",
-
-		//	"dependsOn": [ "Microsoft.Resources/deployments/AD1" ], // delaying VM2 until Active Directory for VM1 is fully provisioned
-
-		//	"properties": {
-		//		"ipConfigurations": [
-		//			{
-		//				"name": "ipconfig1",
-		//				"properties": {
-		//					"privateIPAllocationMethod": "Dynamic",
-		//					//"privateIPAllocationMethod": "Static",
-		//					//"privateIPAddress": "10.0.9.201",
-		//					"subnet": { "id": "[  concat(resourceId('Microsoft.Network/virtualNetworks',  parameters('virtualNetworkParameters').virtualNetworkName),'/subnets/',parameters('virtualNetworkParameters').adSubnetName)]" }
-		//				}
-		//			}
-		//		]
-		//		//,"dnsSettings": { "dnsServers": [ "[reference(resourceId('Microsoft.Network/networkInterfaces/',variables('nic1Name'))).ipConfigurations[0].properties.privateIPAddress]" ] }	
-		//	}
-		//}
-
-
-
-        //,{
-        //    "name": "ADvm2",
-        //    "type": "Microsoft.Resources/deployments",
-        //    "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
-
-		//	"dependsOn": [
-		//		"Microsoft.Resources/deployments/AS",
-		//		"[concat('Microsoft.Network/networkInterfaces/', variables('nic2Name'))]",
-		//		"Microsoft.Resources/deployments/ADsa2"
-		//	],
-            
-        //    "properties": {
-        //        "mode": "incremental",
-        //        "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/vm-via-nic-with-availability-set.json')]" },
-
-        //        "parameters": {
-        //            "commonSettings":         { "value": "[parameters('commonSettings')             ]" },
-        //                            "vmName": { "value": "[ variables('vm2Name')                    ]" },
-		//			"diskStorageAccountName": { "value": "[ variables('sa2Name')                    ]" },
-        //            "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')     ]" },        
-        //                           "nicName": { "value": "[ variables('nic2Name')                   ]" },
-        //               "availabilitySetName": { "value": "[parameters('availabilitySetName')        ]" }
-        //        }
-        //    }
-        //}
+				"parameters": {
+					"commonSettings":         { "value": "[parameters('commonSettings')                 ]" },
+					"vmName":                 { "value": "[ variables('vm2Name')                        ]" },
+					"diskStorageAccountName": { "value": "[ variables('sa2Name')                        ]" },
+					"diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')         ]" },
+					"nic2Name":               { "value": "[concat(parameters('vmName'),1,'-staticnic0') ]" },  //second DC gets STATIC first
+					"nic1Name":               { "value": "[concat(parameters('vmName'),1,'-staticnic1') ]" },
+					"availabilitySetName":    { "value": "[parameters('availabilitySetName')            ]" }
+				}
+			}
+		},
 
 
 
-		//,{
-		//	"name": "AD2",
-		//	"type": "Microsoft.Resources/deployments",
-		//	"apiVersion": "[parameters('commonSettings').resourceApiVersion]",
+		{
+			"name": "AD2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
-		//	"dependsOn": [ "Microsoft.Resources/deployments/ADvm2", "Microsoft.Resources/deployments/AD1" ],
+			"dependsOn": [ "Microsoft.Resources/deployments/ADvm2", "Microsoft.Resources/deployments/AD1" ],
 
-		//	"properties": {
-		//		"mode": "incremental",
-		//		"templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/applyDSC',parameters('commonSettings').deploySwitch,'.json')]" },
+			"properties": {
+				"mode": "incremental",
+				"templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/applyDSC',parameters('commonSettings').deploySwitch,'.json')]" },
 
-		//		"parameters": {
-		//			"commonSettings": { "value": "[parameters('commonSettings') ]" },
-		//			"vmName":         { "value": "[ variables('vm2Name')        ]" },
-		//			"scriptName":     { "value": "AD-Others.ps1" },
-		//			"configName":     { "value": "DemoAD2"       }
-		//		}
-		//	}
-		//}
-	
-	
+				"parameters": {
+					"commonSettings": { "value": "[parameters('commonSettings') ]" },
+					"vmName":         { "value": "[ variables('vm2Name')        ]" },
+					"scriptName":     { "value": "AD-Others.ps1" },
+					"configName":     { "value": "DemoAD2" }
+				}
+			}
+		}
+
+
 	]
 }
