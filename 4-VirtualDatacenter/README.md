@@ -26,14 +26,14 @@ Prescriptive  guidance plus considerations for availability, manageability, and 
 This template provisions two Network Virtual Appliance (NVAs) via 3rd party vendor Barracuda.  Be aware of the following addition charges provisioning this NVA (costs below reflect the costs for a single NVA):
 
 Offer details  
-1.3200 USD/hr  
+1.7600 USD/hr  
 Barracuda Web Application Firewall  
 by Barracuda Networks, Inc.
 
 Terms of use | [privacy policy](https://www.barracuda.com/legal/privacy)  
-0.2500 USD/hr  
+0.2400 USD/hr  
 [Pricing for other VM sizes](http://azure.microsoft.com/pricing/details/virtual-machines/#Linux)  
-Standard A5  
+Standard A3  
 by Microsoft  
 [Terms of use](http://azure.microsoft.com/support/legal/) | [privacy policy](https://www.microsoft.com/privacystatement/en-us/OnlineServices/Default.aspx)
 
