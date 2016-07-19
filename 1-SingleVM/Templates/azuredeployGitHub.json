@@ -1,0 +1,97 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+
+    "parameters": {
+        "deploySwitch":               { "type": "int",    "defaultValue": 0,       "allowedValues": [ 0,1 ],                  "metadata": { "description": "Switch driving SAMPLE APP deployment"                                                            } },
+        "appName":                    { "type": "string", "defaultValue": "myapp",                                            "metadata": { "description": "Name of Application"                                                                             } },
+        "appEnvironment":             { "type": "string", "defaultValue": "dev",   "allowedValues": [ "dev", "qa", "prod" ],  "metadata": { "description": "Environment for Application"                                                                     } },
+        "_artifactsLocation":         { "type": "string",                                                                     "metadata": { "description": "Auto-generated container in staging storage account to receive post-build staging folder upload" } },
+        "_artifactsLocationSasToken": { "type": "securestring",                                                               "metadata": { "description": "Auto-generated token to access _artifactsLocation"                                               } },
+        "username":                   { "type": "string",       "defaultValue": "demoUser",                                   "metadata": { "description": "Username for the Virtual Machine."                                                               } },
+        "password":                   { "type": "securestring", "defaultValue": "P@ssw0rd1234",                               "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } },
+        "domain":                     { "type": "string",       "defaultValue": "DomainOrDie.biz",                            "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } }
+    },
+  
+    "variables": {
+
+        "commonSettings": {
+            "resourceApiVersion": "2016-02-01",
+            "deploySwitch":              "[    parameters('deploySwitch')                                ]",
+            "artifactsLocation":         "[    parameters('_artifactsLocation')                          ]",
+            "artifactsLocationSasToken": "[    parameters('_artifactsLocationSasToken')                  ]",
+            "commonLocation":            "[uri(parameters('_artifactsLocation'),'common-stageartifacts') ]",
+            "defaultUsername":           "[    parameters('username')                                    ]",
+            "defaultPassword":           "[    parameters('password')                                    ]",
+            "domain":                    "[    parameters('domain')                                      ]"
+        },
+
+          "diskStorageAccountName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'disk'))]",
+          "diagStorageAccountName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'diag'))]",
+             "publicIPAddressName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'pip' ))]",
+        "networkSecurityGroupName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-nsg')]",
+                      "subnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-subnet')]",
+              "virtualNetworkName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-vnet')]",
+                          "vmName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-vm')]",
+                         "nicName": "[concat( variables('vmName'),                                     '-nic0')]"
+    },
+
+
+    "resources": [
+        {
+            "name": "shared",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('commonSettings').resourceApiVersion]",
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://raw.githubusercontent.com/ValoremConsulting/AzureCLI/master/1-SingleVM/Templates/singlevm-shared-azuredeploy.json?token=AMnPKi6hoySvZrG3NriWxPUYamIOBU1Vks5Xl7vPwA%3D%3D" },
+
+                "parameters": {
+                              "commonSettings": { "value": "[variables('commonSettings')]"           },
+                    "networkSecurityGroupName": { "value": "[variables('networkSecurityGroupName')]" },
+                          "virtualNetworkName": { "value": "[variables(      'virtualNetworkName')]" },
+                                  "subnetName": { "value": "[variables(              'subnetName')]" }
+                }
+            }
+        },
+
+
+
+        {
+            "name": "known",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('commonSettings').resourceApiVersion]",
+
+            "dependsOn": [ "Microsoft.Resources/deployments/shared" ],
+           
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://raw.githubusercontent.com/ValoremConsulting/AzureCLI/master/1-SingleVM/Templates/singlevm-known-azuredeploy.json?token=AMnPKhw3sLKSA2IRS456gvQrhhsC2--gks5Xl7vowA%3D%3D" },
+
+                "parameters": {
+                              "commonSettings": { "value": "[variables('commonSettings')]"         },
+                      "diskStorageAccountName": { "value": "[variables('diskStorageAccountName')]" },
+                      "diagStorageAccountName": { "value": "[variables('diagStorageAccountName')]" },
+                         "publicIPAddressName": { "value": "[variables(   'publicIPAddressName')]" },
+                                  "subnetName": { "value": "[variables(            'subnetName')]" },
+                          "virtualNetworkName": { "value": "[variables(    'virtualNetworkName')]" },
+                                      "vmName": { "value": "[variables(                'vmName')]" },
+                                     "nicName": { "value": "[variables(               'nicName')]" }
+                }
+            }
+        }
+    ],
+
+  "outputs": {
+      "diskStorageAccountName": {"type": "string", "value": "[variables('diskStorageAccountName')]"   },
+      "diagStorageAccountName": {"type": "string", "value": "[variables('diagStorageAccountName')]"   },
+         "publicIPAddressName": {"type": "string", "value": "[variables('publicIPAddressName')]"      },
+    "networkSecurityGroupName": {"type": "string", "value": "[variables('networkSecurityGroupName')]" },
+                  "subnetName": {"type": "string", "value": "[variables('subnetName')]"               },
+          "virtualNetworkName": {"type": "string", "value": "[variables('virtualNetworkName')]"       },
+                      "vmName": {"type": "string", "value": "[variables('vmName')]"                   },
+                     "nicName": {"type": "string", "value": "[variables('nicName')]"                  }
+  }
+
+}
