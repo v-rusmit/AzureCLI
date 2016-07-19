@@ -26,6 +26,13 @@ configuration DemoAD1
 			IncludeAllSubFeature = $true
 		}
 
+		WindowsFeature ADTools
+		{
+			Ensure = "Present"
+			Name = "RSAT-AD-Tools"
+			IncludeAllSubFeature = $true
+		}
+
 		xADDomain FirstDS
 		{
 			DomainName                    = $domain

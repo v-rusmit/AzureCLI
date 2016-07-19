@@ -1,0 +1,54 @@
+﻿{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    
+    "parameters": {
+        "commonSettings":           { "type": "object",      "metadata": { "description": "Common API values"                       } },
+        "virtualNetworkParameters": { "type": "object",      "metadata": { "description": "Common VNET values"                      } }
+    },
+
+    "resources": [
+
+        {
+            "name": "[parameters('virtualNetworkParameters').virtualNetworkName]",
+            "type": "Microsoft.Network/virtualNetworks",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2015-06-15",
+
+			"properties": {
+				"addressSpace": { "addressPrefixes": [ "[parameters('virtualNetworkParameters').virtualNetworkRange]" ] },
+				 "dhcpOptions": {      "dnsServers": [ "[parameters('virtualNetworkParameters').adFirstDCIPAddress]", "168.63.129.16" ] },
+				"subnets": [
+					{
+						"name": "[parameters('virtualNetworkParameters').nvaPublicSubnetName]",
+						"properties": { "addressPrefix": "[parameters('virtualNetworkParameters').dmzPublicSubnetRange]" }
+					},
+					{
+						"name": "[parameters('virtualNetworkParameters').nvaPrivateSubnetName]",
+						"properties": { "addressPrefix": "[parameters('virtualNetworkParameters').dmzPrivateSubnetRange]" }
+					},
+					{
+						"name": "[parameters('virtualNetworkParameters').staSubnetName]",
+						"properties": { "addressPrefix": "[parameters('virtualNetworkParameters').staSubnetRange]" }
+					},
+					{
+						"name": "[parameters('virtualNetworkParameters').stbSubnetName]",
+						"properties": { "addressPrefix": "[parameters('virtualNetworkParameters').stbSubnetRange]" }
+					},
+					{
+						"name": "[parameters('virtualNetworkParameters').sqlSubnetName]",
+						"properties": { "addressPrefix": "[parameters('virtualNetworkParameters').sqlSubnetRange]" }
+					},
+					{
+						"name": "[parameters('virtualNetworkParameters').mgmtSubnetName]",
+						"properties": { "addressPrefix": "[parameters('virtualNetworkParameters').mgmtSubnetRange]" }
+					},
+					{
+						"name": "[parameters('virtualNetworkParameters').adSubnetName]",
+						"properties": { "addressPrefix": "[parameters('virtualNetworkParameters').adSubnetRange]" }
+					}
+				]
+			}
+        }
+    ]
+}

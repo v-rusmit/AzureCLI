@@ -25,6 +25,13 @@ configuration DemoAD2
 			IncludeAllSubFeature = $true
 		}
 
+		WindowsFeature ADTools
+		{
+			Ensure = "Present"
+			Name = "RSAT-AD-Tools"
+			IncludeAllSubFeature = $true
+		}
+
 		xADDomainController SecondDC
 		{
 			DomainName                    = $domain
