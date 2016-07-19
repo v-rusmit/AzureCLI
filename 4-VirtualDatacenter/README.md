@@ -47,7 +47,7 @@ Terms of use
 By clicking “Purchase”, I (a) agree to the legal terms and privacy statement(s) associated with each Marketplace offering above, (b) authorize Microsoft to charge or bill my current payment method for the fees associated with my use of the offering(s), including applicable taxes, with the same billing frequency as my Azure subscription, until I discontinue use of the offering(s), and (c) agree that Microsoft may share my contact information and transaction details with the seller(s) of the offering(s). Microsoft does not provide rights for third-party products or services. See the [Azure Marketplace Terms](http://azure.microsoft.com/support/legal/marketplace-terms/) for additional terms.
 
 **Post Deployment Configuration**
-In order to get web traffic to make it from the internet to the backend web service areas, please follow the instructions listed in this document. (https://github.com/ValoremConsulting/AzureCLI/blob/master/4-VirtualDatacenter/Post%20Deployment%20Configuration%20-%20Barracuda.docx)
+In order to get web traffic to make it from the internet to the backend web service areas, please follow the instructions listed in this document. (https://github.com/ValoremConsulting/AzureCLI/blob/master/4-VirtualDatacenter/Post%20Deployment%20Configuration%20-%20Barracuda.docx?raw=true)
 
 ## Deployment
 
