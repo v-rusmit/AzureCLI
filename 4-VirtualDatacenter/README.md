@@ -52,7 +52,7 @@ In order to get web traffic to make it from the internet to the backend web serv
 ## Deployment
 
 ### Deploy using the Azure Portal
-[![Deploy to Azure](../images/azurebtn.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FValoremConsulting%2FAzureCLI%2Fmaster%2F4-VirtualDatacenter%2FTemplates%2Fazuredeploy.json%3Ftoken%3DASzQZuP3-DAqLbWH9XQZ64ng__0vAMT_ks5XkSL8wA%253D%253D)
+[![Deploy to Azure](../images/azurebtn.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FValoremConsulting%2FAzureCLI%2Fmaster%2F4-VirtualDatacenter%2FTemplates%2FazuredeployGitHub.json%3Ftoken%3DAMnPKjJJguxcO9x9REIAgG2VF-Grd1cwks5Xl8hzwA%253D%253D)
 
 You will need to be logged into the Azure portal under the subscription you would like to use.
 
