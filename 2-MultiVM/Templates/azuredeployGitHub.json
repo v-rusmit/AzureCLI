@@ -1,0 +1,90 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+
+    "parameters": {
+        "deploySwitch":               { "type": "int",    "defaultValue": 0,       "allowedValues": [ 0,1 ],                  "metadata": { "description": "Switch driving SAMPLE APP deployment"                                                            } },
+        "appName":                    { "type": "string", "defaultValue": "myapp",                                            "metadata": { "description": "Name of Application"                                                                             } },
+        "appEnvironment":             { "type": "string", "defaultValue": "dev",   "allowedValues": [ "dev", "qa", "prod" ],  "metadata": { "description": "Environment for Application"                                                                     } },
+        "instanceCount":              { "type": "int",    "defaultValue": 2,                                                  "metadata": { "description": "Number of Instances to create"                                                                   } },
+        "_artifactsLocation":         { "type": "string",                                                                     "metadata": { "description": "Auto-generated container in staging storage account to receive post-build staging folder upload" } },
+        "_artifactsLocationSasToken": { "type": "securestring",                                                               "metadata": { "description": "Auto-generated token to access _artifactsLocation"                                               } },
+        "username":                   { "type": "string",       "defaultValue": "demoUser",                                   "metadata": { "description": "Username for the Virtual Machine."                                                               } },
+        "password":                   { "type": "securestring", "defaultValue": "P@ssw0rd1234",                               "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } },
+        "domain":                     { "type": "string",       "defaultValue": "DomainOrDie.biz",                            "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } }
+     },
+
+
+    "variables": {
+
+        "commonSettings": {
+            "resourceApiVersion": "2016-02-01",                            
+            "deploySwitch":              "[    parameters('deploySwitch')                               ]",
+            "artifactsLocation":         "[    parameters('_artifactsLocation') ]",
+            "artifactsLocationSasToken": "[    parameters('_artifactsLocationSasToken')]",
+            "commonLocation":            "[uri(parameters('_artifactsLocation'),'common-stageartifacts')]",
+            "defaultUsername":           "[    parameters('username') ]",
+            "defaultPassword":           "[    parameters('password') ]",
+            "domain":                    "[    parameters('domain')   ]"
+        },
+
+        "diskStorageAccountName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'disk'))]",
+        "diagStorageAccountName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'diag'))]",
+           "publicIPAddressName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'pip' ))]",
+           "availabilitySetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-as')]",
+              "loadBalancerName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-lb')]",
+                    "subnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-subnet')]",
+            "virtualNetworkName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-vnet')]",
+                    "vmNameRoot": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-vm')]",
+                   "nicNameRoot": "[concat( variables('vmNameRoot'),                                 '-nic')]"
+    },
+
+    "resources": [
+
+        {
+            "name": "shared",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('commonSettings').resourceApiVersion]",
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://raw.githubusercontent.com/ValoremConsulting/AzureCLI/master/2-MultiVM/Templates/multivm-shared-azuredeploy.json?token=AMnPKmwDYRGbrGz4P1hICqXFMlFP96yrks5Xl8PSwA%3D%3D" },
+
+                "parameters": {
+                    "commonSettings":     { "value": "[variables('commonSettings')]"     },
+                    "virtualNetworkName": { "value": "[variables('virtualNetworkName')]" },
+                            "subnetName": { "value": "[variables(        'subnetName')]" }
+                }
+            }
+        },
+
+
+
+        {
+            "name": "known",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('commonSettings').resourceApiVersion]",
+
+            "dependsOn": [ "Microsoft.Resources/deployments/shared" ],
+           
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://raw.githubusercontent.com/ValoremConsulting/AzureCLI/master/2-MultiVM/Templates/multivm-known-azuredeploy.json?token=AMnPKlBALE3KisShyMR3s67FrIZTtArJks5Xl8PnwA%3D%3D" },
+
+                "parameters": {
+                    "commonSettings":         { "value": "[ variables('commonSettings')]"           },
+                        "virtualNetworkName": { "value": "[ variables(      'virtualNetworkName')]" },
+                                "subnetName": { "value": "[ variables(              'subnetName')]" },
+                       "availabilitySetName": { "value": "[ variables(     'availabilitySetName')]" },
+                          "loadBalancerName": { "value": "[ variables(        'loadBalancerName')]" },
+                       "publicIPAddressName": { "value": "[ variables(     'publicIPAddressName')]" },
+                    "diskStorageAccountName": { "value": "[ variables(  'diskStorageAccountName')]" },
+                    "diagStorageAccountName": { "value": "[ variables(  'diagStorageAccountName')]" },
+                             "instanceCount": { "value": "[parameters(           'instanceCount')]" },
+                                "vmNameRoot": { "value": "[ variables(              'vmNameRoot')]" },
+                               "nicNameRoot": { "value": "[ variables(             'nicNameRoot')]" }
+                }
+            }
+        }   
+    ]
+}

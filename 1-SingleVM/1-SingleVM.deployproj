@@ -31,6 +31,7 @@
     <Content Include="Templates\azuredeployGitHub.json" />
     <Content Include="Templates\azuredeploy.json" />
     <Content Include="Templates\azuredeploy.parameters.json" />
+    <None Include="README.md" />
     <None Include="Scripts\CLIDeploy-SingleVM - prep.bat" />
     <None Include="Scripts\CLIDeploy-SingleVM.bat" />
     <None Include="Scripts\Deploy-AzureResourceGroup.ps1" />
