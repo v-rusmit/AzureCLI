@@ -75,7 +75,7 @@ function Set-TargetResource
             {
                 # Rename the computer, but stay joined to the domain.
                 Rename-Computer -NewName $Name -DomainCredential $Credential -Force
-                Write-Information -Message "Renamed computer to '$($Name)'."
+                Write-Verbose -Message "Renamed computer to '$($Name)'."
             }
             else
             {
@@ -95,7 +95,7 @@ function Set-TargetResource
                             Add-Computer -DomainName $DomainName -Credential $Credential -NewName $Name -Force
                         }
                     }
-                    Write-Information -Message "Renamed computer to '$($Name)' and added to the domain '$($DomainName)."
+                    Write-Verbose -Message "Renamed computer to '$($Name)' and added to the domain '$($DomainName)."
                 }
                 else
                 {
@@ -113,7 +113,7 @@ function Set-TargetResource
                             Add-Computer -DomainName $DomainName -Credential $Credential -Force
                         }
                     }
-                    Write-Information -Message "Added computer to domain '$($DomainName)."
+                    Write-Verbose -Message "Added computer to domain '$($DomainName)."
                 }
             }
         }
@@ -123,7 +123,7 @@ function Set-TargetResource
             {
                 # Rename the comptuer, but stay in the same workgroup.
                 Rename-Computer -NewName $Name
-                Write-Information -Message "Renamed computer to '$($Name)'."
+                Write-Verbose -Message "Renamed computer to '$($Name)'."
             }
             else
             {
@@ -131,13 +131,13 @@ function Set-TargetResource
                 {
                     # Rename the computer, and join it to the workgroup.
                     Add-Computer -NewName $Name -Credential $Credential -WorkgroupName $WorkGroupName -Force
-                    Write-Information -Message "Renamed computer to '$($Name)' and addded to workgroup '$($WorkGroupName)'."
+                    Write-Verbose -Message "Renamed computer to '$($Name)' and addded to workgroup '$($WorkGroupName)'."
                 }
                 else
                 {
                     # Same computer name, and join it to the workgroup.
                     Add-Computer -WorkGroupName $WorkGroupName -Credential $Credential -Force
-                    Write-Information -Message "Added computer to workgroup '$($WorkGroupName)'."
+                    Write-Verbose -Message "Added computer to workgroup '$($WorkGroupName)'."
                 }
             }
         }
@@ -146,12 +146,12 @@ function Set-TargetResource
             if (GetComputerDomain)
             {
                 Rename-Computer -NewName $Name -DomainCredential $Credential -Force
-                Write-Information -Message "Renamed computer to '$($Name)'."
+                Write-Verbose -Message "Renamed computer to '$($Name)'."
             }
             else
             {
                 Rename-Computer -NewName $Name -Force
-                Write-Information -Message "Renamed computer to '$($Name)'."
+                Write-Verbose -Message "Renamed computer to '$($Name)'."
             }
         }
     }
@@ -168,7 +168,7 @@ function Set-TargetResource
             {
                 # Same workgroup, new computer name
                 Rename-Computer -NewName $Name -force
-                Write-Information -Message "Renamed computer to '$($Name)'."
+                Write-Verbose -Message "Renamed computer to '$($Name)'."
             }
             else
             {
@@ -176,13 +176,13 @@ function Set-TargetResource
                 {
                     # New workgroup, new computer name
                     Add-Computer -WorkgroupName $WorkGroupName -NewName $Name
-                    Write-Information -Message "Renamed computer to '$($Name)' and added to workgroup '$($WorkGroupName)'."
+                    Write-Verbose -Message "Renamed computer to '$($Name)' and added to workgroup '$($WorkGroupName)'."
                 }
                 else
                 {
                     # New workgroup, same computer name
                     Add-Computer -WorkgroupName $WorkGroupName
-                    Write-Information -Message "Added computer to workgroup '$($WorkGroupName)'."
+                    Write-Verbose -Message "Added computer to workgroup '$($WorkGroupName)'."
                 }
             }
         }
@@ -191,7 +191,7 @@ function Set-TargetResource
             if ($Name -ne $env:COMPUTERNAME)
             {
                 Rename-Computer -NewName $Name
-                Write-Information -Message "Renamed computer to '$($Name)'."
+                Write-Verbose -Message "Renamed computer to '$($Name)'."
             }
         }
     }
@@ -221,9 +221,9 @@ function Test-TargetResource
         [string] $WorkGroupName
     )
     
-    Write-Information -Message "Validate desired Name is a valid name"
+    Write-Verbose -Message "Validate desired Name is a valid name"
     
-    Write-Information -Message "Checking if computer name is correct"
+    Write-Verbose -Message "Checking if computer name is correct"
     if (($Name -ne 'localhost') -and ($Name -ne $env:COMPUTERNAME)) {return $false}
 
     ValidateDomainOrWorkGroup -DomainName $DomainName -WorkGroupName $WorkGroupName
@@ -237,18 +237,18 @@ function Test-TargetResource
         
         try
         {
-            Write-Information "Checking if the machine is a member of $DomainName."
+            Write-Verbose "Checking if the machine is a member of $DomainName."
             return ($DomainName.ToLower() -eq (GetComputerDomain).ToLower())
         }
         catch
         {
-           Write-Information 'The machine is not a domain member.'
+           Write-Verbose 'The machine is not a domain member.'
            return $false
         }
     }
     elseif($WorkGroupName)
     {
-        Write-Information -Message "Checking if workgroup name is $WorkGroupName"
+        Write-Verbose -Message "Checking if workgroup name is $WorkGroupName"
         return ($WorkGroupName -eq (gwmi WIN32_ComputerSystem).WorkGroup)
     }
     else
