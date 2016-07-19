@@ -14,7 +14,8 @@
         "adminAccessRange":           { "type": "string",       "defaultValue": "216.21.164.178",                                   "metadata": { "description": "Network subnet where Admins live"                                                                } },
         "username":                   { "type": "string",       "defaultValue": "demoUser",                                         "metadata": { "description": "Username for the Virtual Machine."                                                               } },
         "password":                   { "type": "securestring", "defaultValue": "P@ssw0rd1234",                                     "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } },
-        "domain":                     { "type": "string",       "defaultValue": "DomainOrDie.biz",                                  "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } }
+        "domain":                     { "type": "string",       "defaultValue": "DomainOrDie.biz",                                  "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } },
+        "GitHubRepository":           { "type": "string",       "defaultValue": "ValoremConsulting/AzureCLI",                 "metadata": { "description": "The GitHub repository that is hosting the Template files"                                              } }   
     },
 
     "variables": {
@@ -22,7 +23,8 @@
         "commonSettings": {
             "resourceApiVersion": "2016-02-01",       
             "deploySwitch":              "[    parameters('deploySwitch')                                ]",
-            "commonLocation":            "https://raw.githubusercontent.com/ValoremConsulting/AzureCLI/master/0-Common/Templates",
+            "commonLocation":            "[uri(concat('https://raw.githubusercontent.com/', parameters('GitHubRepository') ,'/master/0-Common/Templates'), '') ]",
+            "baseLocation":              "[uri(concat('https://raw.githubusercontent.com/', parameters('GitHubRepository') ,'/master'), '') ]",
             "defaultUsername":           "[    parameters('username')                                    ]",
             "defaultPassword":           "[    parameters('password')                                    ]",
             "domain":                    "[    parameters('domain')                                      ]"
@@ -75,7 +77,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://raw.githubusercontent.com/ValoremConsulting/AzureCLI/master/4-VirtualDatacenter/Templates/vdc-shared-azuredeploy.json?token=AMnPKjFMfawcr9ADhp-VonKVCbEXLooLks5Xl8V5wA%3D%3D" },
+                "templateLink": { "uri": "[concat(variables('commonSettings').baseLocation,'/4-VirtualDatacenter/Templates/vdc-shared-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":           { "value": "[variables('commonSettings')]"           },
@@ -96,7 +98,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://raw.githubusercontent.com/ValoremConsulting/AzureCLI/master/4-VirtualDatacenter/Templates/vdc-known-azuredeploy.json?token=AMnPKnENaySFq0xtxVxBlWx7hFI33D8Iks5Xl8WiwA%3D%3D" },
+              "templateLink": { "uri": "[concat(variables('commonSettings').baseLocation,'/4-VirtualDatacenter/Templates/vdc-known-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":           { "value": "[variables('commonSettings')]"           },

@@ -9,8 +9,9 @@
         "instanceCount":              { "type": "int",    "defaultValue": 2,                                                  "metadata": { "description": "Number of Instances to create"                                                                   } },
         "username":                   { "type": "string",       "defaultValue": "demoUser",                                   "metadata": { "description": "Username for the Virtual Machine."                                                               } },
         "password":                   { "type": "securestring", "defaultValue": "P@ssw0rd1234",                               "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } },
-        "domain":                     { "type": "string",       "defaultValue": "DomainOrDie.biz",                            "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } }
-     },
+        "domain":                     { "type": "string",       "defaultValue": "DomainOrDie.biz",                            "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } },
+        "GitHubRepository":           { "type": "string",       "defaultValue": "ValoremConsulting/AzureCLI",                 "metadata": { "description": "The GitHub repository that is hosting the Template files"                                        } }   
+    },
 
 
     "variables": {
@@ -18,7 +19,8 @@
         "commonSettings": {
             "resourceApiVersion": "2016-02-01",                            
             "deploySwitch":              "[    parameters('deploySwitch')                               ]",
-            "commonLocation":            "https://raw.githubusercontent.com/ValoremConsulting/AzureCLI/master/0-Common/Templates",
+            "commonLocation":            "[uri(concat('https://raw.githubusercontent.com/', parameters('GitHubRepository') ,'/master/0-Common/Templates'), '') ]",
+            "baseLocation":              "[uri(concat('https://raw.githubusercontent.com/', parameters('GitHubRepository') ,'/master'), '') ]",
             "defaultUsername":           "[    parameters('username') ]",
             "defaultPassword":           "[    parameters('password') ]",
             "domain":                    "[    parameters('domain')   ]"
@@ -44,7 +46,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://raw.githubusercontent.com/ValoremConsulting/AzureCLI/master/2-MultiVM/Templates/multivm-shared-azuredeploy.json?token=AMnPKmwDYRGbrGz4P1hICqXFMlFP96yrks5Xl8PSwA%3D%3D" },
+              "templateLink": { "uri": "[concat(variables('commonSettings').baseLocation,'/2-MultiVM/Templates/multivm-shared-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":     { "value": "[variables('commonSettings')]"     },
@@ -65,7 +67,7 @@
            
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://raw.githubusercontent.com/ValoremConsulting/AzureCLI/master/2-MultiVM/Templates/multivm-known-azuredeploy.json?token=AMnPKlBALE3KisShyMR3s67FrIZTtArJks5Xl8PnwA%3D%3D" },
+                "templateLink": { "uri": "[concat(variables('commonSettings').baseLocation,'/2-MultiVM/Templates/multivm-known-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":         { "value": "[ variables('commonSettings')]"           },
