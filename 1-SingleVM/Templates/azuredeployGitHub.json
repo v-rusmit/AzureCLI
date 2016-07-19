@@ -1,4 +1,4 @@
-{
+githu{
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
 
@@ -16,6 +16,7 @@
         "commonSettings": {
             "resourceApiVersion": "2016-02-01",
             "deploySwitch":              "[    parameters('deploySwitch')                                ]",
+            "commonLocation":            "https://raw.githubusercontent.com/ValoremConsulting/AzureCLI/master/0-Common/Templates",
             "defaultUsername":           "[    parameters('username')                                    ]",
             "defaultPassword":           "[    parameters('password')                                    ]",
             "domain":                    "[    parameters('domain')                                      ]"
@@ -40,7 +41,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://raw.githubusercontent.com/ValoremConsulting/AzureCLI/master/1-SingleVM/Templates/singlevm-shared-azuredeploy.json?token=AMnPKi6hoySvZrG3NriWxPUYamIOBU1Vks5Xl7vPwA%3D%3D" },
+                "templateLink": { "uri": "https://raw.githubusercontent.com/ValoremConsulting/AzureCLI/master/1-SingleVM/Templates/singlevm-shared-azuredeploy.json" },
 
                 "parameters": {
                               "commonSettings": { "value": "[variables('commonSettings')]"           },
@@ -62,7 +63,7 @@
            
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://raw.githubusercontent.com/ValoremConsulting/AzureCLI/master/1-SingleVM/Templates/singlevm-known-azuredeploy.json?token=AMnPKhw3sLKSA2IRS456gvQrhhsC2--gks5Xl7vowA%3D%3D" },
+                "templateLink": { "uri": "https://raw.githubusercontent.com/ValoremConsulting/AzureCLI/master/1-SingleVM/Templates/singlevm-known-azuredeploy.json" },
 
                 "parameters": {
                               "commonSettings": { "value": "[variables('commonSettings')]"         },
