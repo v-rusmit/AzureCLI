@@ -99,31 +99,33 @@
 				"parameters": {
 					"commonSettings": { "value": "[       parameters('commonSettings') ]" },
 					"vmName":         { "value": "[concat(parameters('vmName'),0)      ]" },
-					"scriptName":     { "value": "SQL-AO.ps1"                             },
+					"scriptName":     { "value": "SQLAO-First.ps1"                        },
 					"configName":     { "value": "DemoSQL"                                }
 				}
 			}
 		},
+
+
     
-		//{
-		//	"name": "SQL-AO-2",
-		//	"type": "Microsoft.Resources/deployments",
-		//	"apiVersion": "[parameters('commonSettings').resourceApiVersion]",
+		{
+			"name": "SQL-AO-2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
-		//	"dependsOn": [ "Microsoft.Resources/deployments/SQL-AO-1" ],
+			"dependsOn": [ "Microsoft.Resources/deployments/SQL-AO-1" ],
 
-		//	"properties": {
-		//		"mode": "incremental",
-		//		"templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/applyDSC',parameters('commonSettings').deploySwitch,'.json')]" },
+			"properties": {
+				"mode": "incremental",
+				"templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/applyDSC',parameters('commonSettings').deploySwitch,'.json')]" },
 
-		//		"parameters": {
-		//			"commonSettings": { "value": "[       parameters('commonSettings') ]" },
-		//			"vmName":         { "value": "[concat(parameters('vmName'),1)      ]" },
-		//			"scriptName":     { "value": "SQL-AO.ps1"                             },
-		//			"configName":     { "value": "DemoSQL"                                }
-		//		}
-		//	}
-		//},
+				"parameters": {
+					"commonSettings": { "value": "[       parameters('commonSettings') ]" },
+					"vmName":         { "value": "[concat(parameters('vmName'),1)      ]" },
+					"scriptName":     { "value": "SQLAO-Second.ps1"                       },
+					"configName":     { "value": "DemoSQL"                                }
+				}
+			}
+		}
     
 	]
 }
