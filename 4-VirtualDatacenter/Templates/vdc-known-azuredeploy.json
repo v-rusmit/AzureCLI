@@ -158,6 +158,8 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
 
+            "dependsOn": [ "Microsoft.Resources/deployments/adTier" ],
+
             "properties": {
                 "mode": "incremental",
                 "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/vdc-biztier-azuredeploy.json')]" },
@@ -183,6 +185,8 @@
             "name": "serviceTier-B",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "[parameters('commonSettings').resourceApiVersion]",
+
+            "dependsOn": [ "Microsoft.Resources/deployments/adTier" ],
 
             "properties": {
                 "mode": "incremental",
