@@ -16,7 +16,7 @@
         "commonSettings": {
             "resourceApiVersion": "2016-02-01",
             "deploySwitch":              "[    parameters('deploySwitch')                                ]",
-            "commonLocation":            "[uri('https://raw.githubusercontent.com/', 'ValoremConsulting/AzureCLI/master/0-Common/Templates') ]",
+            "commonLocation":            "[uri('https://raw.githubusercontent.com/ValoremConsulting/AzureCLI/master/0-Common/Templates', '') ]",
             "defaultUsername":           "[    parameters('username')                                    ]",
             "defaultPassword":           "[    parameters('password')                                    ]",
             "domain":                    "[    parameters('domain')                                      ]"
