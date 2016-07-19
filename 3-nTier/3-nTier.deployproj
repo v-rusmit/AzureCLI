@@ -28,8 +28,10 @@
     <None Include="Deployment.targets">
       <Visible>False</Visible>
     </None>
+    <Content Include="Templates\azuredeployGitHub.json" />
     <Content Include="Templates\azuredeploy.json" />
     <Content Include="Templates\azuredeploy.parameters.json" />
+    <None Include="README.md" />
     <None Include="Scripts\CLIDeploy-nTier - prep.bat" />
     <None Include="Scripts\CLIDeploy-nTier.bat" />
     <None Include="Scripts\Deploy-AzureResourceGroup.ps1" />
@@ -56,7 +58,7 @@
   <Target Name="GetReferenceAssemblyPaths" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties Templates_4azuredeploy_1json__JSONSchema="http://json.schemastore.org/webjob-publish-settings" />
+      <UserProperties />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

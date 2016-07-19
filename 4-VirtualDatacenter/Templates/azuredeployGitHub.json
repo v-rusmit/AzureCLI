@@ -1,0 +1,142 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+
+
+    "parameters": {
+        "deploySwitch":               { "type": "int",          "defaultValue": 0,       "allowedValues": [ 0,1 ],                  "metadata": { "description": "Switch driving SAMPLE APP deployment"                                                            } },
+        "appName":                    { "type": "string",       "defaultValue": "myapp",                                            "metadata": { "description": "Name of Application"                                                                             } },
+        "appEnvironment":             { "type": "string",       "defaultValue": "dev",   "allowedValues": [ "dev", "qa", "prod" ],  "metadata": { "description": "Environment for Application"                                                                     } },
+        "nvaInstanceCount":           { "type": "int",          "defaultValue": 2,                                                  "metadata": { "description": "Number of nva Tier Instances to create"                                                          } },
+        "staInstanceCount":           { "type": "int",          "defaultValue": 3,                                                  "metadata": { "description": "Number of Business Layer Instances to create"                                                    } },
+        "stbInstanceCount":           { "type": "int",          "defaultValue": 3,                                                  "metadata": { "description": "Number of Business Layer Instances to create"                                                    } },
+        "sqlInstanceCount":           { "type": "int",          "defaultValue": 3,                                                  "metadata": { "description": "Number of SQL Instances to create"                                                               } },
+        "adminAccessRange":           { "type": "string",       "defaultValue": "216.21.164.178",                                   "metadata": { "description": "Network subnet where Admins live"                                                                } },
+        "_artifactsLocation":         { "type": "string",                                                                           "metadata": { "description": "Auto-generated container in staging storage account to receive post-build staging folder upload" } },
+        "_artifactsLocationSasToken": { "type": "securestring",                                                                     "metadata": { "description": "Auto-generated token to access _artifactsLocation"                                               } },
+        "username":                   { "type": "string",       "defaultValue": "demoUser",                                         "metadata": { "description": "Username for the Virtual Machine."                                                               } },
+        "password":                   { "type": "securestring", "defaultValue": "P@ssw0rd1234",                                     "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } },
+        "domain":                     { "type": "string",       "defaultValue": "DomainOrDie.biz",                                  "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } }
+    },
+
+    "variables": {
+
+        "commonSettings": {
+            "resourceApiVersion": "2016-02-01",       
+            "deploySwitch":              "[    parameters('deploySwitch')                                ]",
+            "artifactsLocation":         "[    parameters('_artifactsLocation')                          ]",
+            "artifactsLocationSasToken": "[    parameters('_artifactsLocationSasToken')                  ]",
+            "commonLocation":            "[uri(parameters('_artifactsLocation'),'common-stageartifacts') ]",
+            "defaultUsername":           "[    parameters('username')                                    ]",
+            "defaultPassword":           "[    parameters('password')                                    ]",
+            "domain":                    "[    parameters('domain')                                      ]"
+        },
+
+        "virtualNetworkParameters": {
+             "virtualNetworkName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-vnet')]",                  "virtualNetworkRange": "10.0.0.0/16",
+            "nvaPublicSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-nva-public-subnet')]",   "dmzPublicSubnetRange": "10.0.1.0/25",  
+           "nvaPrivateSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-nva-private-subnet')]", "dmzPrivateSubnetRange": "10.0.1.128/25",  
+                  "staSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-sta-subnet')]",                "staSubnetRange": "10.0.2.0/24",    "staPrivateIPAddress": "10.0.2.250",
+                  "stbSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-stb-subnet')]",                "stbSubnetRange": "10.0.3.0/24",    "stbPrivateIPAddress": "10.0.3.250",
+                  "sqlSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-sql-subnet')]",                "sqlSubnetRange": "10.0.8.0/24",    "sqlPrivateIPAddress": "10.0.8.250",
+                 "mgmtSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-mgmt-subnet')]",               "mgmtSubnetRange": "10.0.6.0/24",
+                   "adSubnetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),   '-ad-subnet')]",                 "adSubnetRange": "10.0.9.0/24",	 "adFirstDCIPAddress": "10.0.9.250",
+			   "adminAccessRange": "[parameters('adminAccessRange')]",
+					   "AzureDNS": "168.63.129.16"
+        },
+
+        "diagStorageAccountName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'diag'))]",
+        "diskStorageAccountRoot": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'disk'))]",
+        "appPublicIPAddressName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'pip' ))]",
+         "jbPublicIPAddressName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'Jpip'))]",
+
+        "nvaLoadBalancerName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-nva-lb')]",
+        "staLoadBalancerName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-sta-lb')]",
+        "stbLoadBalancerName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-stb-lb')]",
+        "sqlLoadBalancerName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-sql-lb')]",
+
+        "nvaAvailabilitySetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-nva-as')]",
+        "staAvailabilitySetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-sta-as')]",
+        "stbAvailabilitySetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-stb-as')]",
+        "sqlAvailabilitySetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-sql-as')]",
+         "adAvailabilitySetName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-ad-as')]",
+
+         "nvaVmName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-nva-vm')]",
+         "staVmName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-sta-vm')]",
+         "stbVmName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-stb-vm')]",
+         "sqlVmName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),  '-sql-vm')]",
+        "mgmtVmName": "[concat(parameters('appName'), '-', parameters('appEnvironment'), '-mgmt-vm')]",
+          "adVmName": "[concat(parameters('appName'), '-', parameters('appEnvironment'),   '-ad-vm')]"
+
+    },
+
+    "resources": [
+
+        {
+                  "name": "shared",
+                  "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('commonSettings').resourceApiVersion]",
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://raw.githubusercontent.com/ValoremConsulting/AzureCLI/master/4-VirtualDatacenter/Templates/vdc-shared-azuredeploy.json?token=AMnPKjFMfawcr9ADhp-VonKVCbEXLooLks5Xl8V5wA%3D%3D" },
+
+                "parameters": {
+                    "commonSettings":           { "value": "[variables('commonSettings')]"           },
+                    "virtualNetworkParameters": { "value": "[variables('virtualNetworkParameters')]" },
+                    "diagStorageAccountName":   { "value": "[variables('diagStorageAccountName')]"   }
+                }
+            }
+        },
+
+
+
+        {
+                  "name": "known",
+                  "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('commonSettings').resourceApiVersion]",
+
+            "dependsOn": [ "Microsoft.Resources/deployments/shared" ],
+
+            "properties": {
+                "mode": "incremental",
+                "templateLink": { "uri": "https://raw.githubusercontent.com/ValoremConsulting/AzureCLI/master/4-VirtualDatacenter/Templates/vdc-known-azuredeploy.json?token=AMnPKnENaySFq0xtxVxBlWx7hFI33D8Iks5Xl8WiwA%3D%3D" },
+
+                "parameters": {
+                    "commonSettings":           { "value": "[variables('commonSettings')]"           },
+                    "virtualNetworkParameters": { "value": "[variables('virtualNetworkParameters')]" },
+                    "diagStorageAccountName":   { "value": "[variables('diagStorageAccountName')]"   },
+                    "diskStorageAccountRoot":   { "value": "[variables('diskStorageAccountRoot')]"   },
+
+                    "nvaPublicIPAddressName": { "value": "[variables( 'appPublicIPAddressName')]" },
+                     "jbPublicIPAddressName": { "value": "[variables(  'jbPublicIPAddressName')]" },
+
+                       "nvaLoadBalancerName": { "value": "[variables(   'nvaLoadBalancerName')]"  },
+                    "nvaAvailabilitySetName": { "value": "[variables('nvaAvailabilitySetName')]"  },
+                          "nvaInstanceCount": { "value": "[parameters(     'nvaInstanceCount')]"  },
+                                 "nvaVmName": { "value": "[variables(             'nvaVmName')]"  },
+                    
+                       "staLoadBalancerName": { "value": "[variables(   'staLoadBalancerName')]"  },
+                    "staAvailabilitySetName": { "value": "[variables('staAvailabilitySetName')]"  },
+                          "staInstanceCount": { "value": "[parameters(     'staInstanceCount')]"  },
+                                 "staVmName": { "value": "[variables(             'staVmName')]"  },
+
+                       "stbLoadBalancerName": { "value": "[variables(   'stbLoadBalancerName')]"  },
+                    "stbAvailabilitySetName": { "value": "[variables('stbAvailabilitySetName')]"  },
+                          "stbInstanceCount": { "value": "[parameters(     'stbInstanceCount')]"  },
+                                 "stbVmName": { "value": "[variables(             'stbVmName')]"  },
+
+                       "sqlLoadBalancerName": { "value": "[variables(    'sqlLoadBalancerName')]" },
+                    "sqlAvailabilitySetName": { "value": "[ variables('sqlAvailabilitySetName')]" },
+                          "sqlInstanceCount": { "value": "[parameters(      'sqlInstanceCount')]" },
+                                 "sqlVmName": { "value": "[ variables(             'sqlVmName')]" },
+
+                                "mgmtVmName": { "value": "[ variables(            'mgmtVmName')]" },
+
+                     "adAvailabilitySetName": { "value": "[ variables('adAvailabilitySetName')]" },
+                                  "adVmName": { "value": "[ variables(             'adVmName')]" }
+                }
+            }
+        }
+    ]
+}
