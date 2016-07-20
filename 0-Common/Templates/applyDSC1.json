@@ -37,8 +37,9 @@
                 "protectedSettings": {
 					"configurationArguments": {
 						"LocalUserAccount": {
-							"UserName": "[parameters('commonSettings').defaultUsername]",
-							"Password": "[parameters('commonSettings').defaultPassword]"
+							"UserName":          "[parameters('commonSettings').defaultUsername]",
+							"Password":          "[parameters('commonSettings').defaultPassword]",
+							"SampleAppLocation": "[parameters('commonSettings').commonLocation]"
 						},
 						"DomainUserAccount": {
 //							"UserName": "[concat(parameters('commonSettings').defaultUsername),'@',parameters('commonSettings').domain]",

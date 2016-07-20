@@ -4,6 +4,7 @@ Configuration DemoSQL
 	(
        	[Parameter(Mandatory=$true)] [ValidateNotNullorEmpty()]       [string] $domain,
                                                                       [string] $AppName,
+                                                                      [string] $SampleAppLocation,
 		[Parameter(Mandatory=$true)] [ValidateNotNullorEmpty()] [PSCredential] $LocalUserAccount,
 		[Parameter(Mandatory=$true)] [ValidateNotNullorEmpty()] [PSCredential] $DomainUserAccount
     )
@@ -12,7 +13,6 @@ Configuration DemoSQL
 	Import-DscResource -Module xDatabase
 	
 	$bacpac = "FabrikamFiber.bacpac"
-	$storacct = "https://clijson.blob.core.windows.net/common-stageartifacts/"
 	$stagingFolder  = "C:\Packages"
 
     LocalConfigurationManager
@@ -22,8 +22,8 @@ Configuration DemoSQL
 
 	xRemoteFile GetBacpac
 	{  
-		URI             = $storacct + $bacpac
-		DestinationPath = $stagingFolder + '\' + $bacpac
+		URI             = $SampleAppLocation + '\' + $bacpac
+		DestinationPath =     $stagingFolder + '\' + $bacpac
 	}         
 
 	xDatabaseLogin AppCredw4DB
