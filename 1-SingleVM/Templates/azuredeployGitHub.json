@@ -3,12 +3,12 @@
     "contentVersion": "1.0.0.0",
 
     "parameters": {
-        "deploySwitch":               { "type": "int",    "defaultValue": 0,       "allowedValues": [ 0,1 ],                  "metadata": { "description": "Switch driving SAMPLE APP deployment"                                                            } },
+        "deploySwitch":               { "type": "int",    "defaultValue": 0,       "allowedValues": [ 0,1 ],                  "metadata": { "description": "Deploy infrastructure only (0) or infrastructure and the Sample App (1)"                                                            } },
         "appName":                    { "type": "string", "defaultValue": "myapp",                                            "metadata": { "description": "Name of Application"                                                                             } },
         "appEnvironment":             { "type": "string", "defaultValue": "dev",   "allowedValues": [ "dev", "qa", "prod" ],  "metadata": { "description": "Environment for Application"                                                                     } },
         "username":                   { "type": "string",       "defaultValue": "demoUser",                                   "metadata": { "description": "Username for the Virtual Machine."                                                               } },
-        "password":                   { "type": "securestring", "defaultValue": "P@ssw0rd1234",                               "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } },
-        "domain":                     { "type": "string",       "defaultValue": "DomainOrDie.biz",                            "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } },
+        "password":                   { "type": "securestring", "defaultValue": "pass@word1",                                 "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } },
+        "domain":                     { "type": "string",       "defaultValue": "Contoso.com",                                "metadata": { "description": "The default domain."                                                               } },
         "GitHubAccount":              { "type": "string",       "defaultValue": "ValoremConsulting",                          "metadata": { "description": "The GitHub account that is hosting the Template files"                                                               } }
     },
   
