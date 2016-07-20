@@ -24,9 +24,9 @@
         "commonSettings": {
             "resourceApiVersion": "2016-02-01",       
             "deploySwitch":              "[parameters('deploySwitch')]",
-            "artifactsLocation":         "https://clijson.blob.core.windows.net",
+            "artifactsLocation":         "https://clijsonpublic.blob.core.windows.net",
             "artifactsLocationSasToken": "",
-            "commonLocation":            "https://clijson.blob.core.windows.net/common-stageartifacts",
+            "commonLocation":            "https://clijsonpublic.blob.core.windows.net/common-stageartifacts",
             "defaultUsername":           "[parameters('username')  ]",
             "defaultPassword":           "[parameters('password')  ]",
             "domain":                    "[parameters('domain')    ]"

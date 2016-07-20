@@ -29,8 +29,9 @@
 						"function": "[parameters('configName')]"
 					},
 					"configurationArguments": {
-						"Domain":  "[parameters('commonSettings').domain]",
-						"AppName": "Sample App"
+						"Domain":            "[parameters('commonSettings').domain]",
+						"AppName":           "Sample App",
+						"SampleAppLocation": "[parameters('commonSettings').commonLocation]"
 					},
 					"configurationData": {"url": "[concat(parameters('commonSettings').commonLocation,'/config.psd1')]" }
 				},

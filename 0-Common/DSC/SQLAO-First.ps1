@@ -4,6 +4,7 @@ Configuration DemoSQL
 	(
        	[Parameter(Mandatory=$true)] [ValidateNotNullorEmpty()]       [string] $domain,
                                                                       [string] $AppName,
+                                                                      [string] $SampleAppLocation,
 		[Parameter(Mandatory=$true)] [ValidateNotNullorEmpty()] [PSCredential] $LocalUserAccount,
 		[Parameter(Mandatory=$true)] [ValidateNotNullorEmpty()] [PSCredential] $DomainUserAccount,
 		
@@ -17,15 +18,10 @@ Configuration DemoSQL
 	
 	Import-DscResource -Module xStorage
 	Import-DscResource -Module cDisk
-
 	Import-DscResource -Module xComputerManagement
 	Import-DscResource -Module xActiveDirectory
-
 	Import-DscResource -Module xNetworking
 	Import-DscResource -Module xSQL
-
-
-
 #	Import-DscResource -Module xPSDesiredStateConfiguration
 #	Import-DscResource -Module xDatabase
 #	Import-DscResource -Module xFailoverCluster
@@ -33,7 +29,6 @@ Configuration DemoSQL
     [System.Management.Automation.PSCredential]$SQLServicecreds = New-Object System.Management.Automation.PSCredential ("${DomainNetbiosName}\$SQLServiceAccount", $DomainUserAccount.Password)
 	
 	$bacpac = "FabrikamFiber.bacpac"
-	$storacct = "https://clijson.blob.core.windows.net/common-stageartifacts/"
 	$stagingFolder  = "C:\Packages"
 	
 	WaitForSqlSetup

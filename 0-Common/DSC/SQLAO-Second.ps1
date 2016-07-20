@@ -4,6 +4,7 @@ Configuration DemoSQL
 	(
        	[Parameter(Mandatory=$true)] [ValidateNotNullorEmpty()]       [string] $domain,
                                                                       [string] $AppName,
+                                                                      [string] $SampleAppLocation,
 		[Parameter(Mandatory=$true)] [ValidateNotNullorEmpty()] [PSCredential] $LocalUserAccount,
 		[Parameter(Mandatory=$true)] [ValidateNotNullorEmpty()] [PSCredential] $DomainUserAccount,
 		
@@ -23,7 +24,6 @@ Configuration DemoSQL
 
 	
 	$bacpac = "FabrikamFiber.bacpac"
-	$storacct = "https://clijson.blob.core.windows.net/common-stageartifacts/"
 	$stagingFolder  = "C:\Packages"
 
 	Node localhost
