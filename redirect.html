@@ -9,12 +9,17 @@
         function redirectPage() {
             var sourceUrl = document.referrer
             var parentUrl = sourceUrl.replace("README.md", "");
-            var encodeUrl = encodeURIComponent(parentUrl + "/Templates/azuredeployGitHub.json");
+            
 
-var urlSplit = parentUrl.split('/');
-var hostName = urlSplit[2];
+            var urlSplit = parentUrl.split('/');
+            var hostName = urlSplit[2];
 
-alert(hostName);
+            var newUrl = parentUrl.replace("//" + hostName + "/", "raw.githubusercontent.com");
+            newUrl = newUrl.replace("/blob/", "/");
+
+alert(newUrl);
+
+var encodeUrl = encodeURIComponent(newUrl + "/Templates/azuredeployGitHub.json");
 
 alert(parentUrl);
 alert(encodeUrl);
