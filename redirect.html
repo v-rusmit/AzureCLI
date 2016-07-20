@@ -14,7 +14,7 @@
             var urlSplit = parentUrl.split('/');
             var hostName = urlSplit[2];
 
-            var newUrl = parentUrl.replace("//" + hostName + "/", "raw.githubusercontent.com");
+            var newUrl = parentUrl.replace("//" + hostName + "/", "//raw.githubusercontent.com/");
             newUrl = newUrl.replace("/blob/", "/");
 
 alert(newUrl);
