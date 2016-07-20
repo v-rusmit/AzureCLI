@@ -10,7 +10,6 @@
             var sourceUrl = document.referrer
             var parentUrl = sourceUrl.replace("README.md", "");
             
-
             var urlSplit = parentUrl.split('/');
             var hostName = urlSplit[2];
 
@@ -19,15 +18,11 @@
 
 alert(newUrl);
 
-var encodeUrl = encodeURIComponent(newUrl + "Templates/azuredeployGitHub.json");
-
-alert(parentUrl);
-alert(encodeUrl);
-
+            var encodeUrl = encodeURIComponent(newUrl + "Templates/azuredeployGitHub.json");
             window.location = "https://portal.azure.com/#create/Microsoft.Template/uri/" + encodeUrl ;
         }
 
-        setTimeout('redirectPage()', 5000);
+        setTimeout('redirectPage()', 500);
 
     </script>
 </head>
