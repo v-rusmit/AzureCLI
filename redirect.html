@@ -16,7 +16,7 @@
             var newUrl = parentUrl.replace("//" + hostName + "/", "//raw.githubusercontent.com/");
             newUrl = newUrl.replace("/blob/", "/");
 
-            var encodeUrl = encodeURIComponent(newUrl + "Templates/azuredeployGitHub.json");
+            var encodeUrl = encodeURIComponent(newUrl + "/Templates/azuredeployGitHub.json");
             window.location = "https://portal.azure.com/#create/Microsoft.Template/uri/" + encodeUrl ;
         }
 
