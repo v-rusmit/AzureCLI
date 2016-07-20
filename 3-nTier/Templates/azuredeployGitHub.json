@@ -15,7 +15,7 @@
         "username":                   { "type": "string",       "defaultValue": "demoUser",                                         "metadata": { "description": "Username for the Virtual Machine."                                                               } },
         "password":                   { "type": "securestring", "defaultValue": "P@ssw0rd1234",                                     "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } },
         "domain":                     { "type": "string",       "defaultValue": "DomainOrDie.biz",                                  "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } },
-        "GitHubAccount":           { "type": "string",       "defaultValue": "ValoremConsulting",                                "metadata": { "description": "The GitHub account that is hosting the Template files"                                              } }   
+        "GitHubAccount":              { "type": "string",       "defaultValue": "ValoremConsulting",                                "metadata": { "description": "The GitHub account that is hosting the Template files"                                              } }   
     },
 
     "variables": {
