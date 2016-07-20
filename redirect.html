@@ -11,6 +11,11 @@
             var parentUrl = sourceUrl.replace("README.md", "");
             var encodeUrl = encodeURIComponent(parentUrl + "/Templates/azuredeployGitHub.json");
 
+var urlSplit = parentUrl.split('/');
+var hostName = urlSplit[2];
+
+alert(hostName);
+
 alert(parentUrl);
 alert(encodeUrl);
 
