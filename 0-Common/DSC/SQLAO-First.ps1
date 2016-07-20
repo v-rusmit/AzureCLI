@@ -26,7 +26,7 @@ Configuration DemoSQL
 #	Import-DscResource -Module xDatabase
 #	Import-DscResource -Module xFailoverCluster
 
-    [System.Management.Automation.PSCredential]$SQLServicecreds = New-Object System.Management.Automation.PSCredential ("${DomainNetbiosName}\$SQLServiceAccount", $DomainUserAccount.Password)
+    [System.Management.Automation.PSCredential]$SQLServiceCreds = New-Object System.Management.Automation.PSCredential ("${DomainNetbiosName}\$SQLServiceAccount", $DomainUserAccount.Password)
 	
 	$bacpac = "FabrikamFiber.bacpac"
 	$stagingFolder  = "C:\Packages"
@@ -135,13 +135,13 @@ Configuration DemoSQL
             DomainAdministratorCredential = $DomainUserAccount
             DomainName                    = $domain
             UserName                      = $SQLServiceAccount
-            Password                      = $SQLServicecreds
+            Password                      = $SQLServiceCreds
             Ensure                        = "Present"
         }
 
         xSqlLogin AddSqlServerServiceAccountToSysadminServerRole           # we created a service account - make that an admin two
         {
-            Name        = $SQLServicecreds.UserName
+            Name        = $SQLServiceCreds.UserName
             LoginType   = "WindowsUser"
             ServerRoles = "sysadmin"
             Enabled     = $true
@@ -168,7 +168,7 @@ Configuration DemoSQL
         {
             InstanceName                  = $env:COMPUTERNAME
             SqlAdministratorCredential    = $DomainUserAccount
-            ServiceCredential             = $SQLServicecreds
+            ServiceCredential             = $SQLServiceCreds
             MaxDegreeOfParallelism        = 1
             FilePath                      = "F:\DATA"
             LogPath                       = "F:\LOG"
