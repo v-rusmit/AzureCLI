@@ -7,12 +7,11 @@
         "appName":                    { "type": "string", "defaultValue": "myapp",                                            "metadata": { "description": "Name of Application"                                                                             } },
         "appEnvironment":             { "type": "string", "defaultValue": "dev",   "allowedValues": [ "dev", "qa", "prod" ],  "metadata": { "description": "Environment for Application"                                                                     } },
         "instanceCount":              { "type": "int",    "defaultValue": 2,                                                  "metadata": { "description": "Number of Instances to create"                                                                   } },
-        "_artifactsLocation":         { "type": "string",                                                                     "metadata": { "description": "Auto-generated container in staging storage account to receive post-build staging folder upload" } },
-        "_artifactsLocationSasToken": { "type": "securestring",                                                               "metadata": { "description": "Auto-generated token to access _artifactsLocation"                                               } },
         "username":                   { "type": "string",       "defaultValue": "demoUser",                                   "metadata": { "description": "Username for the Virtual Machine."                                                               } },
         "password":                   { "type": "securestring", "defaultValue": "P@ssw0rd1234",                               "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } },
-        "domain":                     { "type": "string",       "defaultValue": "DomainOrDie.biz",                            "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } }
-     },
+        "domain":                     { "type": "string",       "defaultValue": "DomainOrDie.biz",                            "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } },
+        "GitHubRepository":           { "type": "string",       "defaultValue": "ValoremConsulting/AzureCLI",                 "metadata": { "description": "The GitHub repository that is hosting the Template files"                                        } }   
+    },
 
 
     "variables": {
@@ -20,9 +19,8 @@
         "commonSettings": {
             "resourceApiVersion": "2016-02-01",                            
             "deploySwitch":              "[    parameters('deploySwitch')                               ]",
-            "artifactsLocation":         "[    parameters('_artifactsLocation') ]",
-            "artifactsLocationSasToken": "[    parameters('_artifactsLocationSasToken')]",
-            "commonLocation":            "[uri(parameters('_artifactsLocation'),'common-stageartifacts')]",
+            "commonLocation":            "[uri(concat('https://raw.githubusercontent.com/', parameters('GitHubRepository') ,'/master/0-Common/Templates'), '') ]",
+            "baseLocation":              "[uri(concat('https://raw.githubusercontent.com/', parameters('GitHubRepository') ,'/master'), '') ]",
             "defaultUsername":           "[    parameters('username') ]",
             "defaultPassword":           "[    parameters('password') ]",
             "domain":                    "[    parameters('domain')   ]"
@@ -48,7 +46,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://raw.githubusercontent.com/ValoremConsulting/AzureCLI/master/2-MultiVM/Templates/multivm-shared-azuredeploy.json?token=AMnPKmwDYRGbrGz4P1hICqXFMlFP96yrks5Xl8PSwA%3D%3D" },
+              "templateLink": { "uri": "[concat(variables('commonSettings').baseLocation,'/2-MultiVM/Templates/multivm-shared-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":     { "value": "[variables('commonSettings')]"     },
@@ -69,7 +67,7 @@
            
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://raw.githubusercontent.com/ValoremConsulting/AzureCLI/master/2-MultiVM/Templates/multivm-known-azuredeploy.json?token=AMnPKlBALE3KisShyMR3s67FrIZTtArJks5Xl8PnwA%3D%3D" },
+                "templateLink": { "uri": "[concat(variables('commonSettings').baseLocation,'/2-MultiVM/Templates/multivm-known-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":         { "value": "[ variables('commonSettings')]"           },

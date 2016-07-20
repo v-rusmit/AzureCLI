@@ -12,11 +12,10 @@
         "sqlinstanceCount":           { "type": "int",          "defaultValue": 2,                                                  "metadata": { "description": "Number of SQL Instances to create"                                                               } },
        "mgmtInstanceCount":           { "type": "int",          "defaultValue": 1,                                                  "metadata": { "description": "Number of Management Instances to create"                                                        } },
         "adminAccessRange":           { "type": "string",       "defaultValue": "216.21.164.178",                                   "metadata": { "description": "Network subnet where Admins live"                                                                } },
-        "_artifactsLocation":         { "type": "string",                                                                           "metadata": { "description": "Auto-generated container in staging storage account to receive post-build staging folder upload" } },
-        "_artifactsLocationSasToken": { "type": "securestring",                                                                     "metadata": { "description": "Auto-generated token to access _artifactsLocation"                                               } },
         "username":                   { "type": "string",       "defaultValue": "demoUser",                                         "metadata": { "description": "Username for the Virtual Machine."                                                               } },
         "password":                   { "type": "securestring", "defaultValue": "P@ssw0rd1234",                                     "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } },
-        "domain":                     { "type": "string",       "defaultValue": "DomainOrDie.biz",                                  "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } }
+        "domain":                     { "type": "string",       "defaultValue": "DomainOrDie.biz",                                  "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } },
+        "GitHubRepository":           { "type": "string",       "defaultValue": "ValoremConsulting/AzureCLI",                 "metadata": { "description": "The GitHub repository that is hosting the Template files"                                              } }   
     },
 
     "variables": {
@@ -24,9 +23,8 @@
         "commonSettings": {
             "resourceApiVersion": "2016-02-01",                                         // all tempaltes in this hierarchical project use this value for  "type": "Microsoft.Resources/deployments",
             "deploySwitch":              "[    parameters('deploySwitch')                                ]",
-            "artifactsLocation":         "[    parameters('_artifactsLocation')                          ]",
-            "artifactsLocationSasToken": "[    parameters('_artifactsLocationSasToken')                  ]",
-            "commonLocation":            "[uri(parameters('_artifactsLocation'),'common-stageartifacts') ]",
+            "commonLocation":            "[uri(concat('https://raw.githubusercontent.com/', parameters('GitHubRepository') ,'/master/0-Common/Templates'), '') ]",
+            "baseLocation":              "[uri(concat('https://raw.githubusercontent.com/', parameters('GitHubRepository') ,'/master'), '') ]",
             "defaultUsername":           "[    parameters('username')                                    ]",
             "defaultPassword":           "[    parameters('password')                                    ]",
             "domain":                    "[    parameters('domain')                                      ]"
@@ -68,8 +66,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://raw.githubusercontent.com/ValoremConsulting/AzureCLI/master/3-nTier/Templates/nTier-shared-azuredeploy.json?token=AMnPKiC5vzhydKMfeqRwDdOs7KdPCChBks5Xl8UiwA%3D%3D" },
-
+                "templateLink": { "uri": "[concat(variables('commonSettings').baseLocation,'/3-nTier/Templates/nTier-shared-azuredeploy.json')]" },
                 "parameters": {
                     "commonSettings":           { "value": "[variables('commonSettings')]"           },
                     "virtualNetworkParameters": { "value": "[variables('virtualNetworkParameters')]" },
@@ -89,8 +86,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "https://raw.githubusercontent.com/ValoremConsulting/AzureCLI/master/3-nTier/Templates/nTier-known-azuredeploy.json?token=AMnPKtazZzwk6seG6Z2_786umRBpyweJks5Xl8U4wA%3D%3D" },
-
+                "templateLink": { "uri": "[concat(variables('commonSettings').baseLocation,'/3-nTier/Templates/nTier-known-azuredeploy.json')]" },
                 "parameters": {
                     "commonSettings":           { "value": "[variables('commonSettings')]"           },
                     "virtualNetworkParameters": { "value": "[variables('virtualNetworkParameters')]" },
