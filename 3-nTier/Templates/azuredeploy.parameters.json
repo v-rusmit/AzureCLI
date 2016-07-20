@@ -3,12 +3,13 @@
     "contentVersion": "1.0.0.0",
     
     "parameters": {
-		"deploySwitch":     { "value": 0                },
-        "appName":          { "value": "my3app"         },
-        "appEnvironment":   { "value": "qa"             },
-        "adminAccessRange": { "value": "216.21.164.178" },
-        "username":         { "value": "AzureAdmin"     },
-        "password":         { "value": "Sw!mmingP00l"   },
-        "domain":           { "value": "Fabrikam.com"   }
+		"deploySwitch":       { "value": 0                },
+        "appName":            { "value": "my3app"         },
+        "appEnvironment":     { "value": "qa"             },
+        "adminAccessRange":   { "value": "216.21.164.178" },
+        "_artifactsLocation": { "value": "https://clijsonpublic.blob.core.windows.net/ntier-stageartifacts" },
+        "username":           { "value": "AzureAdmin"     },
+        "password":           { "value": "Sw!mmingP00l"   },
+        "domain":             { "value": "Fabrikam.com"   }
     }
 }

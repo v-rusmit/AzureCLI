@@ -3,12 +3,13 @@
     "contentVersion": "1.0.0.0",
     
     "parameters": {
-		"deploySwitch":   { "value": 0              },
-        "appName":        { "value": "my1app"       },
-        "appEnvironment": { "value": "prod"         },
-        "username":       { "value": "AzureAdmin"   },
-        "password":       { "value": "Sw!mmingP00l" },
-        "domain":         { "value": "Fabrikam.com" }
+		"deploySwitch":       { "value": 0              },
+        "appName":            { "value": "my1app"       },
+        "appEnvironment":     { "value": "prod"         },
+        "_artifactsLocation": { "value": "https://clijsonpublic.blob.core.windows.net/svm-stageartifacts" },
+        "username":           { "value": "AzureAdmin"   },
+        "password":           { "value": "Sw!mmingP00l" },
+        "domain":             { "value": "Fabrikam.com" }
     }
 }
 

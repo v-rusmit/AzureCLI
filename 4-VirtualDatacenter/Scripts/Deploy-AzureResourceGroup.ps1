@@ -19,9 +19,6 @@ Param(
     [string] $TemplatesFolder       = '..\Templates',  
     [string] $TemplatesFolderCommon = '..\..\0-Common\Templates',
 
-#   [string] $CSESourceFolder       = '..\CSE',
-#   [string] $CSESourceFolderCommon = '..\..\0-Common\CSE',
-
     [string] $DSCSourceFolder       = '..\DSC',
     [string] $DSCSourceFolderCommon = '..\..\0-Common\DSC',
     [string] $AppSourceFolderCommon = '..\..\0-Common\SampleApp'
@@ -67,8 +64,6 @@ if ($UploadArtifacts) {
 
     # Convert relative paths to absolute paths if needed
     $ArtifactStagingDirectory = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $ArtifactStagingDirectory))
-#   $CSESourceFolder          = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $CSESourceFolder))
-#   $CSESourceFolderCommon    = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $CSESourceFolderCommon))
     $DSCSourceFolder          = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $DSCSourceFolder))
     $DSCSourceFolderCommon    = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $DSCSourceFolderCommon))
     $AppSourceFolderCommon    = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $AppSourceFolderCommon))
@@ -79,7 +74,7 @@ if ($UploadArtifacts) {
     Set-Variable ArtifactsLocationSasTokenName '_artifactsLocationSasToken' -Option ReadOnly -Force
 
     $OptionalParameters.Add($ArtifactsLocationName,         $null)
-    $OptionalParameters.Add($ArtifactsLocationSasTokenName, $null)
+#   $OptionalParameters.Add($ArtifactsLocationSasTokenName, $null)
 
     # Parse the parameter file and update the values of artifacts location and artifacts location SAS token if they are present
     $JsonContent = Get-Content $TemplateParametersFile -Raw | ConvertFrom-Json
@@ -108,7 +103,7 @@ if ($UploadArtifacts) {
 
 
 
-    # Create (or skip if already created) containers for all the files we need to upload
+    # Copy files from the local storage staging location to the storage account container
     New-AzureStorageContainer -Name $StorageContainerName       -Context $StorageAccountContext -Permission Container -ErrorAction SilentlyContinue 
     New-AzureStorageContainer -Name $StorageContainerNameCommon -Context $StorageAccountContext -Permission Container -ErrorAction SilentlyContinue 
 
@@ -127,26 +122,6 @@ if ($UploadArtifacts) {
 	    $BlobName = $SourcePath.Substring($TemplatesFolderCommon.length + 1) 
         Set-AzureStorageBlobContent -File $SourcePath -Blob $BlobName -Container $StorageContainerNameCommon -Context $StorageAccountContext -Force >$null
     }
-
-#	# Copy CSE files from THIS PROJECT to the storage account container
-#   if (Test-Path $CSESourceFolder) {
-#		$ArtifactFilePaths = Get-ChildItem $CSESourceFolder -Recurse -File | ForEach-Object -Process {$_.FullName} 
-#		foreach ($SourcePath in $ArtifactFilePaths) {
-#			Write-Host -BackgroundColor DarkCyan $SourcePath
-#			$BlobName = $SourcePath.Substring($CSESourceFolder.length + 1) 
-#			Set-AzureStorageBlobContent -File $SourcePath -Blob $BlobName -Container $StorageContainerNameCommon -Context $StorageAccountContext -Force >$null
-#		}
-#   }
-
-#	# Copy CSE files from the COMMON PROJECT to the storage account container
-#   if (Test-Path $CSESourceFolderCommon) {
-#		$ArtifactFilePaths = Get-ChildItem $CSESourceFolderCommon -Recurse -File | ForEach-Object -Process {$_.FullName} 
-#		foreach ($SourcePath in $ArtifactFilePaths) {
-#			Write-Host -BackgroundColor DarkCyan $SourcePath
-#			$BlobName = $SourcePath.Substring($CSESourceFolderCommon.length + 1) 
-#			Set-AzureStorageBlobContent -File $SourcePath -Blob $BlobName -Container $StorageContainerNameCommon -Context $StorageAccountContext -Force >$null
-#		}
-#    }
 
 	# Copy application files from the COMMON PROJECT to the storage account container
     $ArtifactFilePaths = Get-ChildItem $AppSourceFolderCommon -Recurse -File | ForEach-Object -Process {$_.FullName} 
@@ -181,13 +156,14 @@ if ($UploadArtifacts) {
 
 
 
+
     # Generate the value for artifacts location SAS token if it is not provided in the parameter file
     $ArtifactsLocationSasToken = $OptionalParameters[$ArtifactsLocationSasTokenName]
     if ($ArtifactsLocationSasToken -eq $null) {
         # Create a SAS token for the storage container - this gives temporary read-only access to the container
         $ArtifactsLocationSasToken = New-AzureStorageContainerSASToken -Container $StorageContainerName -Context $StorageAccountContext -Permission r -ExpiryTime (Get-Date).AddHours(4)
         $ArtifactsLocationSasToken = ConvertTo-SecureString $ArtifactsLocationSasToken -AsPlainText -Force
-        $OptionalParameters[$ArtifactsLocationSasTokenName] = $ArtifactsLocationSasToken
+#       $OptionalParameters[$ArtifactsLocationSasTokenName] = $ArtifactsLocationSasToken
     }
 
 

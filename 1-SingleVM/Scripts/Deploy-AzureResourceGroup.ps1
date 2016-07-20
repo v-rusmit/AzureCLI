@@ -74,7 +74,7 @@ if ($UploadArtifacts) {
     Set-Variable ArtifactsLocationSasTokenName '_artifactsLocationSasToken' -Option ReadOnly -Force
 
     $OptionalParameters.Add($ArtifactsLocationName,         $null)
-    $OptionalParameters.Add($ArtifactsLocationSasTokenName, $null)
+#   $OptionalParameters.Add($ArtifactsLocationSasTokenName, $null)
 
     # Parse the parameter file and update the values of artifacts location and artifacts location SAS token if they are present
     $JsonContent = Get-Content $TemplateParametersFile -Raw | ConvertFrom-Json
@@ -163,7 +163,7 @@ if ($UploadArtifacts) {
         # Create a SAS token for the storage container - this gives temporary read-only access to the container
         $ArtifactsLocationSasToken = New-AzureStorageContainerSASToken -Container $StorageContainerName -Context $StorageAccountContext -Permission r -ExpiryTime (Get-Date).AddHours(4)
         $ArtifactsLocationSasToken = ConvertTo-SecureString $ArtifactsLocationSasToken -AsPlainText -Force
-        $OptionalParameters[$ArtifactsLocationSasTokenName] = $ArtifactsLocationSasToken
+#       $OptionalParameters[$ArtifactsLocationSasTokenName] = $ArtifactsLocationSasToken
     }
 
 

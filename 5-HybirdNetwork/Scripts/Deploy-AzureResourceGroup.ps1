@@ -20,7 +20,8 @@ Param(
     [string] $TemplatesFolderCommon = '..\..\0-Common\Templates',
 
     [string] $DSCSourceFolder       = '..\DSC',
-    [string] $DSCSourceFolderCommon = '..\..\0-Common\DSC'
+    [string] $DSCSourceFolderCommon = '..\..\0-Common\DSC',
+    [string] $AppSourceFolderCommon = '..\..\0-Common\SampleApp'
 )
 
 Import-Module Azure -ErrorAction SilentlyContinue
@@ -65,6 +66,7 @@ if ($UploadArtifacts) {
     $ArtifactStagingDirectory = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $ArtifactStagingDirectory))
     $DSCSourceFolder          = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $DSCSourceFolder))
     $DSCSourceFolderCommon    = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $DSCSourceFolderCommon))
+    $AppSourceFolderCommon    = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $AppSourceFolderCommon))
     $TemplatesFolder          = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $TemplatesFolder))
     $TemplatesFolderCommon    = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $TemplatesFolderCommon))
 
@@ -72,7 +74,7 @@ if ($UploadArtifacts) {
     Set-Variable ArtifactsLocationSasTokenName '_artifactsLocationSasToken' -Option ReadOnly -Force
 
     $OptionalParameters.Add($ArtifactsLocationName,         $null)
-    $OptionalParameters.Add($ArtifactsLocationSasTokenName, $null)
+#   $OptionalParameters.Add($ArtifactsLocationSasTokenName, $null)
 
     # Parse the parameter file and update the values of artifacts location and artifacts location SAS token if they are present
     $JsonContent = Get-Content $TemplateParametersFile -Raw | ConvertFrom-Json
@@ -121,6 +123,13 @@ if ($UploadArtifacts) {
         Set-AzureStorageBlobContent -File $SourcePath -Blob $BlobName -Container $StorageContainerNameCommon -Context $StorageAccountContext -Force >$null
     }
 
+	# Copy application files from the COMMON PROJECT to the storage account container
+    $ArtifactFilePaths = Get-ChildItem $AppSourceFolderCommon -Recurse -File | ForEach-Object -Process {$_.FullName} 
+    foreach ($SourcePath in $ArtifactFilePaths) {
+	    Write-Host -BackgroundColor DarkCyan $SourcePath
+	    $BlobName = $SourcePath.Substring($AppSourceFolderCommon.length + 1) 
+        Set-AzureStorageBlobContent -File $SourcePath -Blob $BlobName -Container $StorageContainerNameCommon -Context $StorageAccountContext -Force >$null
+    }
 
 	# Create DSC configuration archive from THIS PROJECT
     if (Test-Path $DSCSourceFolder) {
@@ -154,7 +163,7 @@ if ($UploadArtifacts) {
         # Create a SAS token for the storage container - this gives temporary read-only access to the container
         $ArtifactsLocationSasToken = New-AzureStorageContainerSASToken -Container $StorageContainerName -Context $StorageAccountContext -Permission r -ExpiryTime (Get-Date).AddHours(4)
         $ArtifactsLocationSasToken = ConvertTo-SecureString $ArtifactsLocationSasToken -AsPlainText -Force
-        $OptionalParameters[$ArtifactsLocationSasTokenName] = $ArtifactsLocationSasToken
+#       $OptionalParameters[$ArtifactsLocationSasTokenName] = $ArtifactsLocationSasToken
     }
 
 
