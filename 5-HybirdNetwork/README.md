@@ -29,7 +29,7 @@ Prescriptive  guidance plus considerations for availability, manageability, and 
 ## Deployment
 
 ### Deploy using the Azure Portal
-[![Deploy to Azure](../images/azurebtn.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FValoremConsulting%2FAzureCLI%2Fmaster%2F5-HybirdNetwork%2FTemplates%2FazuredeployGitHub.json%3Ftoken%3DAMnPKiWCOAM-W-QC7kAWoQimIc9T4Sp4ks5Xl8inwA%253D%253D)
+[![Deploy to Azure](../images/azurebtn.png)](https://valoremconsulting.github.io/AzureCLI/redirect.html)
 
 You will need to be logged into the Azure portal under the subscription you would like to use.
 

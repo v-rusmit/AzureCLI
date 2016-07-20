@@ -9,7 +9,7 @@
         "username":                   { "type": "string",       "defaultValue": "demoUser",                                   "metadata": { "description": "Username for the Virtual Machine."                                                               } },
         "password":                   { "type": "securestring", "defaultValue": "P@ssw0rd1234",                               "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } },
         "domain":                     { "type": "string",       "defaultValue": "DomainOrDie.biz",                            "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } },
-        "GitHubRepository":           { "type": "string",       "defaultValue": "ValoremConsulting/AzureCLI",                 "metadata": { "description": "The GitHub repository that is hosting the Template files"                                                               } }
+        "GitHubAccount":           { "type": "string",       "defaultValue": "ValoremConsulting",                          "metadata": { "description": "The GitHub account that is hosting the Template files"                                                               } }
     },
   
     "variables": {
@@ -17,8 +17,8 @@
         "commonSettings": {
             "resourceApiVersion": "2016-02-01",
             "deploySwitch":              "[    parameters('deploySwitch')                                ]",
-            "commonLocation":            "[uri(concat('https://raw.githubusercontent.com/', parameters('GitHubRepository') ,'/master/0-Common/Templates'), '') ]",
-            "baseLocation":              "[uri(concat('https://raw.githubusercontent.com/', parameters('GitHubRepository') ,'/master'), '') ]",
+            "commonLocation":            "[uri(concat('https://raw.githubusercontent.com/', parameters('GitHubAccount') ,'/AzureCLI/master/0-Common/Templates'), '') ]",
+            "baseLocation":              "[uri(concat('https://raw.githubusercontent.com/', parameters('GitHubAccount') ,'/AzureCLI/master'), '') ]",
             "defaultUsername":           "[    parameters('username')                                    ]",
             "defaultPassword":           "[    parameters('password')                                    ]",
             "domain":                    "[    parameters('domain')                                      ]"

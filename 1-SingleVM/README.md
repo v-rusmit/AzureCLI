@@ -23,10 +23,7 @@ Prescriptive  guidance plus considerations for availability, manageability, and 
 ## Deployment
 
 ### Deploy using the Azure Portal
-[![Deploy to Azure](../images/azurebtn.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FValoremConsulting%2FAzureCLI%2Fmaster%2F1-SingleVM%2FTemplates%2FazuredeployGitHub.json)
-
-
-[![Test Redirect](../images/azurebtn.png)](https://valoremconsulting.github.io/AzureCLI/redirect.html)
+[![Deploy to Azure](../images/azurebtn.png)](https://valoremconsulting.github.io/AzureCLI/redirect.html)
 
 You will need to be logged into the Azure portal under the subscription you would like to use.
 
