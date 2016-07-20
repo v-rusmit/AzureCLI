@@ -4,7 +4,6 @@ Configuration DemoIIS
 	(
        	[Parameter(Mandatory=$true)] [ValidateNotNullorEmpty()]       [string] $domain,
                                                                       [string] $AppName,
-                                                                      [string] $SampleAppLocation,
 		[Parameter(Mandatory=$true)] [ValidateNotNullorEmpty()] [PSCredential] $LocalUserAccount,
 		[Parameter(Mandatory=$true)] [ValidateNotNullorEmpty()] [PSCredential] $DomainUserAccount
     )
@@ -12,11 +11,15 @@ Configuration DemoIIS
 	Import-DscResource -Module xWebAdministration
 	Import-DscResource -Module xPSDesiredStateConfiguration
 
+#	$webzip1 = "FabrikamFiber.Web.zip"
 	$webzip2 = "FabrikamFiber.API.zip"
+#	$bacpac  = "FabrikamFiber.bacpac"
 
 	$stagingFolder  = "C:\Packages"
 	$wwwrootFolder  = "C:\inetpub\wwwroot"
+	$storacct = "https://clijson.blob.core.windows.net/common-stageartifacts/"
 
+#	$wwwrootFolder1 = $wwwrootFolder + '\' + $webzip1.TrimEnd('.zip')
 	$wwwrootFolder2 = $wwwrootFolder + '\' + $webzip2.TrimEnd('.zip')
 
     LocalConfigurationManager
@@ -26,8 +29,8 @@ Configuration DemoIIS
 
 	xRemoteFile WebContent2
 	{  
-		URI             = $SampleAppLocation + '\' + $webzip2
-		DestinationPath =     $stagingFolder + '\' + $webzip2
+		URI             = $storacct + $webzip2
+		DestinationPath = $stagingFolder + '\' + $webzip2
 	} 
 	
 	Archive WebContent2

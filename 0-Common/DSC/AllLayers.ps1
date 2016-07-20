@@ -4,7 +4,6 @@ Configuration DemoAllComponents
 	(
        	[Parameter(Mandatory=$true)] [ValidateNotNullorEmpty()]       [string] $domain,
                                                                       [string] $AppName,
-                                                                      [string] $SampleAppLocation,
 		[Parameter(Mandatory=$true)] [ValidateNotNullorEmpty()] [PSCredential] $LocalUserAccount,
 		[Parameter(Mandatory=$true)] [ValidateNotNullorEmpty()] [PSCredential] $DomainUserAccount
     )
@@ -23,6 +22,7 @@ Configuration DemoAllComponents
 
 		$stagingFolder  = "C:\Packages"
 		$wwwrootFolder  = "C:\inetpub\wwwroot"
+		$storacct = "https://clijson.blob.core.windows.net/common-stageartifacts/"
 
 		$wwwrootFolder1 = $wwwrootFolder + '\' + $webzip1.TrimEnd('.zip')
 		$wwwrootFolder2 = $wwwrootFolder + '\' + $webzip2.TrimEnd('.zip')
@@ -34,55 +34,53 @@ Configuration DemoAllComponents
 		
 		xRemoteFile IISNodeInstaller
 		{
-			URI 		    = $SampleAppLocation + '\' + $iisnode
-			DestinationPath	=     $stagingFolder + '\' + $iisnode
+			URI 		    = $storacct + $iisnode
+			DestinationPath	= $stagingFolder + '\' + $iisnode
 		}
 
-#		Package IISNodeInstaller
-#		{
-#			Ensure     = "Present"
-#			Name       = "iisnode for iis 7.x (x64) full"
-#			ProductId  = "18A31917-64A9-4998-AD54-56CCAEDC0DAB"
-##			Name       = "iisnode for iis 7.x (x64) full"
-##			ProductId  = "6C6CF372-FF11-4E05-B343-6586B3BC41E2"
-#			Path       = $stagingFolder + '\' + $iisnode
-#			Arguments  = "/passive"
-#			ReturnCode = 1603
-#			DependsOn  = "[xRemoteFile]IISNodeInstaller"
-#			LogPath = $stagingFolder + "\install.log"
-#		}
+		Package IISNodeInstaller
+        {
+            Ensure     = "Present"
+            Name       = "iisnode for iis 7.x (x64) full"
+            Path       = $stagingFolder + '\' + $iisnode
+            ProductId  = "6C6CF372-FF11-4E05-B343-6586B3BC41E2"
+			Arguments  = "/passive"
+			ReturnCode = 1603
+			DependsOn  = "[xRemoteFile]IISNodeInstaller"
+			LogPath = $stagingFolder + "\install.log"
+        }
 		
 		xRemoteFile URLReWriteInstaller
 		{
-			URI 		    = $SampleAppLocation + '\' + $urlrewrite
-			DestinationPath	=     $stagingFolder + '\' + $urlrewrite
+			URI 		    = $storacct + $urlrewrite
+			DestinationPath	= $stagingFolder + '\' + $urlrewrite
 		}
 
 		#Package URLReWriteInstaller
-#		{
-#			Ensure = 'Present'
-#			Name   = 'IIS URL Rewrite Module 2'
-#			Path   = $stagingFolder + '\' + $urlrewrite
-#			ProductId = "08F0318A-D113-4CF0-993E-50F191D397AD"
-#			DependsOn = "[xRemoteFile]URLReWriteInstaller"
-#	}
+  #      {
+  #          Ensure = 'Present'
+  #          Name   = 'IIS URL Rewrite Module 2'
+  #          Path   = $stagingFolder + '\' + $urlrewrite
+  #          ProductId = "08F0318A-D113-4CF0-993E-50F191D397AD"
+		#	DependsOn = "[xRemoteFile]URLReWriteInstaller"
+  #      }
 		
 		xRemoteFile WebContent1
 		{  
-			URI             = $SampleAppLocation + '\' + $webzip1
-			DestinationPath =     $stagingFolder + '\' + $webzip1
+			URI             = $storacct + $webzip1
+			DestinationPath = $stagingFolder + '\' + $webzip1
 		}         
 
 		xRemoteFile WebContent2
 		{  
-			URI             = $SampleAppLocation + '\' + $webzip2
-			DestinationPath =     $stagingFolder + '\' + $webzip2
+			URI             = $storacct + $webzip2
+			DestinationPath = $stagingFolder + '\' + $webzip2
 		}         
 
 		xRemoteFile GetBacpac
 		{  
-			URI             = $SampleAppLocation + '\' + $bacpac
-			DestinationPath =     $stagingFolder + '\' + $bacpac
+			URI             = $storacct + $bacpac
+			DestinationPath = $stagingFolder + '\' + $bacpac
 		}         
 
 		Archive WebContent1

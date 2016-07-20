@@ -6,7 +6,7 @@
         "deploySwitch":               { "type": "int",          "defaultValue": 0,       "allowedValues": [ 0,1 ],                  "metadata": { "description": "Switch driving SAMPLE APP deployment"                                                            } },
         "appName":                    { "type": "string",       "defaultValue": "myapp",                                            "metadata": { "description": "Name of Application"                                                                             } },
         "appEnvironment":             { "type": "string",       "defaultValue": "dev",   "allowedValues": [ "dev", "qa", "prod" ],  "metadata": { "description": "Environment for Application"                                                                     } },
-        "GitHubRepository":           { "type": "string",       "defaultValue": "ValoremConsulting/AzureCLI",                       "metadata": { "description": "The GitHub repository that is hosting the Template files"                                        } }       
+        "GitHubAccount":              { "type": "string",       "defaultValue": "ValoremConsulting",                                "metadata": { "description": "The GitHub account that is hosting the Template files"                                        } }       
      }, 
   
     "variables": {
@@ -14,8 +14,8 @@
         "commonSettings": {
             "resourceApiVersion": "2016-02-01",       // all tempaltes in this hierarchical project use this value for  "type": "Microsoft.Resources/deployments",
             "deploySwitch":              "[    parameters('deploySwitch')                                ]",
-            "commonLocation":            "[uri(concat('https://raw.githubusercontent.com/', parameters('GitHubRepository') ,'/master/0-Common/Templates'), '') ]",
-            "baseLocation":              "[uri(concat('https://raw.githubusercontent.com/', parameters('GitHubRepository') ,'/master'), '') ]",
+            "commonLocation":            "[uri(concat('https://raw.githubusercontent.com/', parameters('GitHubAccount') ,'/AzureCLI/master/0-Common/Templates'), '') ]",
+            "baseLocation":              "[uri(concat('https://raw.githubusercontent.com/', parameters('GitHubAccount') ,'/AzureCLI/master'), '') ]",
         },
     
         "virtualNetworkParameters": {

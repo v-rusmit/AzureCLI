@@ -4,7 +4,6 @@ Configuration DemoIIS
 	(
        	[Parameter(Mandatory=$true)] [ValidateNotNullorEmpty()]       [string] $domain,
                                                                       [string] $AppName,
-                                                                      [string] $SampleAppLocation,
 		[Parameter(Mandatory=$true)] [ValidateNotNullorEmpty()] [PSCredential] $LocalUserAccount,
 		[Parameter(Mandatory=$true)] [ValidateNotNullorEmpty()] [PSCredential] $DomainUserAccount
     )
