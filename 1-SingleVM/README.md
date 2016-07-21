@@ -37,8 +37,8 @@ New-AzureRmResourceGroupDeployment -ResourceGroupName JJJJJ -TemplateUri "https:
 
 ### CLI
 ```
-1. azure group create -n "JJJJJ" -l "Central US"
-2. azure group deployment create -f "https://clijsonpublic.blob.core.windows.net/svm-stageartifacts/azuredeploy.json" -e "https://clijsonpublic.blob.core.windows.net/svm-stageartifacts/azuredeploy.parameters.json" JJJJJ testSingleDeploy
+azure group create -n "JJJJJ" -l "Central US"
+azure group deployment create -f "https://clijsonpublic.blob.core.windows.net/svm-stageartifacts/azuredeploy.json" -e "https://clijsonpublic.blob.core.windows.net/svm-stageartifacts/azuredeploy.parameters.json" JJJJJ testSingleDeploy
 ```
 [Install and Configure the Azure Cross-Platform Command-Line Interface](https://azure.microsoft.com/en-us/documentation/articles/xplat-cli-install/)
 
