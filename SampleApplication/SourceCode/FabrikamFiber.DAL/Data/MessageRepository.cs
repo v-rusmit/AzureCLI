@@ -32,7 +32,7 @@ namespace FabrikamFiber.DAL.Data
     public class MessageRepository : IMessageRepository
     {
 
-        private readonly Uri _baseAddress = new Uri("http://localhost:3000/api/");
+        private readonly Uri _baseAddress = new Uri(System.Configuration.ConfigurationManager.AppSettings["ApiBaseUrl"]);
 
         public IQueryable<Message> All
         {
