@@ -13,3 +13,7 @@
 8. In the Configuration for Network Group: Default Vsites click on the Routes tab.
 9.	In the section labeled Interface Routes click on “Add Interface Route”.  
 ![GitHub Logo](./BarracudaImages/AdvancedNetworking.png)  
+10.	In the dialog box that appears fill in the IP subnet for the backend web services.  
+![GitHub Logo](./BarracudaImages/InterfaceRoute.png)  
+![GitHub Logo](./BarracudaImages/InterfaceRoute2.png)  
+This Completes the Barracuda WAF deployment.
