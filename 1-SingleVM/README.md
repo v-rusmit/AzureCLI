@@ -29,8 +29,8 @@ You will need to be logged into the Azure portal under the subscription you woul
 
 ### PowerShell
 ```PowerShell
-1. New-AzureRmResourceGroup -ResourceGroupName JJJJJ -location "Central US"
-2. New-AzureRmResourceGroupDeployment -ResourceGroupName JJJJJ -TemplateUri "https://clijsonpublic.blob.core.windows.net/svm-stageartifacts/azuredeploy.json" -TemplateParameterUri "https://clijsonpublic.blob.core.windows.net/svm-stageartifacts/azuredeploy.parameters.json"
+New-AzureRmResourceGroup -ResourceGroupName JJJJJ -location "Central US"
+New-AzureRmResourceGroupDeployment -ResourceGroupName JJJJJ -TemplateUri "https://clijsonpublic.blob.core.windows.net/svm-stageartifacts/azuredeploy.json" -TemplateParameterUri "https://clijsonpublic.blob.core.windows.net/svm-stageartifacts/azuredeploy.parameters.json"
 
 ```
 [Install and configure Azure PowerShell](https://azure.microsoft.com/en-us/documentation/articles/powershell-install-configure/)
