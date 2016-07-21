@@ -1,3 +1,5 @@
+##Configure Barracuda WAF to pass traffic from the internet to the backend Web Server
+
 1.	Login to Azure after you have deployed the template.
 2.	Locate both of the Barracuda NVA Virtual Machines private IP addresses in the Azure portal. If no changes were made to the template the IP addresses should be 10.0.1.4 and 10.0.1.5
 3.	RDP into the management box which should be labeled in Azure as myapp-qa-mgmt-vm
