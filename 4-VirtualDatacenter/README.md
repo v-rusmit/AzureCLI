@@ -49,6 +49,10 @@ By clicking “Purchase”, I (a) agree to the legal terms and privacy statement
 **Post Deployment Configuration**
 In order to get web traffic to make it from the internet to the backend web service areas, please follow the instructions listed in this document. [Post Deployment Configuration Documentation ](https://github.com/ValoremConsulting/AzureCLI/blob/master/4-VirtualDatacenter/Post%20Deployment%20Configuration%20-%20Barracuda.docx?raw=true)
 
+##Barracuda NVA
+
+Any troubleshooting related to the NVA should go through Barracuda at [https://www.barracuda.com/support](https://www.barracuda.com/support)
+
 ## Deployment
 
 ### Deploy using the Azure Portal
