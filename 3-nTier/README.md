@@ -31,16 +31,16 @@ You will need to be logged into the Azure portal under the subscription you woul
 
 ### PowerShell
 ```PowerShell
-1. New-AzureRmResourceGroup -ResourceGroupName LLLLL -location "Central US"
-2. New-AzureRmResourceGroupDeployment -ResourceGroupName LLLLL -TemplateUri "https://clijsonpublic.blob.core.windows.net/ntier-stageartifacts/azuredeploy.json" -TemplateParameterUri "https://clijsonpublic.blob.core.windows.net/ntier-stageartifacts/azuredeploy.parameters.json"
+New-AzureRmResourceGroup -ResourceGroupName LLLLL -location "Central US"
+New-AzureRmResourceGroupDeployment -ResourceGroupName LLLLL -TemplateUri "https://clijsonpublic.blob.core.windows.net/ntier-stageartifacts/azuredeploy.json" -TemplateParameterUri "https://clijsonpublic.blob.core.windows.net/ntier-stageartifacts/azuredeploy.parameters.json"
 
 ```
 [Install and configure Azure PowerShell](https://azure.microsoft.com/en-us/documentation/articles/powershell-install-configure/)
 
 ### CLI
 ```
-azure config mode arm
-azure group deployment create <my-resource-group> <my-deployment-name> --template-uri <template-uri>
+1. azure config mode arm
+2. azure group deployment create <my-resource-group> <my-deployment-name> --template-uri <template-uri>
 ```
 [Install and Configure the Azure Cross-Platform Command-Line Interface](https://azure.microsoft.com/en-us/documentation/articles/xplat-cli-install/)
 
