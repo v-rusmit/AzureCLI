@@ -8,4 +8,6 @@
 6.	At the barracuda login use this info to login.
  1.	Username: admin
  2.	Password: Sw!mmingP00l
-7.	Once logged in click on the Advanced Tab>Advanced Networking
+7.	Once logged in click on the Advanced Tab>Advanced Networking  
+![GitHub Logo](./BarracudaImages/Barracuda.png)  
+8. more text
