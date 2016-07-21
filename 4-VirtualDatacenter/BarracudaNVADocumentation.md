@@ -4,6 +4,6 @@
 4.	Once logged into the mgmt. system go to Server Manager and under local server turn off “IE Enhanced Security Configuration”
 5.	From the Jump Box open a web browser and go to http://privateIP:8000
 6.	At the barracuda login use this info to login.
- a.	Username: admin
- b.	Password: Sw!mmingP00l
+ 1.	Username: admin
+ 2.	Password: Sw!mmingP00l
 7.	Once logged in click on the Advanced Tab>Advanced Networking
