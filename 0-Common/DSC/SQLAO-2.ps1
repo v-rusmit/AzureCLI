@@ -14,7 +14,10 @@ Configuration DemoSQL
 		   [Int]$RetryCount         = 20,
            [Int]$RetryIntervalSec   = 30
     )
-	
+
+	Import-DscResource -Module xPSDesiredStateConfiguration
+	Import-DscResource -Module xDatabase
+
 	Import-DscResource -Module xStorage
 	Import-DscResource -Module cDisk
 	Import-DscResource -Module xComputerManagement
@@ -28,14 +31,11 @@ Configuration DemoSQL
 
 	$SQLServiceAccount  = "PuppyDog"
 
-
     [System.Management.Automation.PSCredential]$SQLServiceCreds = New-Object System.Management.Automation.PSCredential ("${DomainNetbiosName}\$SQLServiceAccount", $DomainUserAccount.Password)
 	
 	$bacpac = "FabrikamFiber.bacpac"
 	$stagingFolder  = "C:\Packages"
 	
-#	WaitForSqlSetup
-
 	Node localhost
 	{
 		LocalConfigurationManager
@@ -180,6 +180,38 @@ Configuration DemoSQL
         }
 
 
+
+		xRemoteFile GetBacpac
+		{  
+			URI             = $SampleAppLocation + '\' + $bacpac
+			DestinationPath =     $stagingFolder + '\' + $bacpac
+		}         
+
+		xDatabaseLogin AppCredw4DB
+		{
+			Ensure           = "Present"
+			LoginName        = "sqlbat"
+			LoginPassword    = "Sw!mmingP00l"
+			SqlAuthType      = 'Windows'
+			SqlServer        = "localhost"
+		} 
+
+		xDatabase LoadDB
+		{
+			Ensure           = "Present"
+			SqlServer        = "localhost"
+			SqlServerVersion = "2014"
+			BacPacPath       = $stagingFolder + '\' + $bacpac
+			DatabaseName     = 'FabrikamFiber'
+			DependsOn        = "[xRemoteFile]GetBacpac"
+		} 
+
+
+
+
+
+
+
 	}
 }
 
@@ -199,20 +231,4 @@ function Get-NetBIOSName
         else                           { return $DomainName                 }
     }
 }
-#function WaitForSqlSetup
-#{
-#    # Wait for SQL Server Setup to finish before proceeding.
-#    while ($true)
-#    {
-#        try
-#        {
-#            Get-ScheduledTaskInfo "\ConfigureSqlImageTasks\RunConfigureImage" -ErrorAction Stop
-#            Start-Sleep -Seconds 5
-#        }
-#        catch
-#        {
-#            break
-#        }
-#    }
-#}
  

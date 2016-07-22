@@ -15,26 +15,21 @@ Configuration DemoSQL
 		   [Int]$RetryCount         = 20,
            [Int]$RetryIntervalSec   = 30,
 
-
 		[string]$LBName        = 'lb123',
 		[string]$LBAddress     = '10.0.8.250',
 		[string]$DNSServerName = 'my4appqaadvm0',
 		[string]$DatabaseNames = 'FabrikamFiber'
-
     )
 	
     [string]$LBFQName="${LBName}.${$domain}"
 
-	Import-DscResource -Module xPSDesiredStateConfiguration
-	Import-DscResource -Module xDatabase
-		Import-DscResource -Module xStorage
+	Import-DscResource -Module xStorage
 	Import-DscResource -Module cDisk
 	Import-DscResource -Module xComputerManagement
 	Import-DscResource -Module xActiveDirectory
 	Import-DscResource -Module xNetworking
 	Import-DscResource -Module xSQL
 	Import-DscResource -Module xFailoverCluster
-
 
 	$SQLServiceAccount = "PuppyDog"
 	$ClusterName       = $DomainNetbiosName + 'Cluster'
@@ -45,11 +40,8 @@ Configuration DemoSQL
 
     [System.Management.Automation.PSCredential]$SQLServiceCreds = New-Object System.Management.Automation.PSCredential ("${DomainNetbiosName}\$SQLServiceAccount", $DomainUserAccount.Password)
 	
-	$bacpac = "FabrikamFiber.bacpac"
-	$stagingFolder  = "C:\Packages"
 	
     Enable-CredSSPNTLM -DomainName $domain
-	WaitForSqlSetup
 
 	Node localhost
 	{
@@ -57,39 +49,6 @@ Configuration DemoSQL
 		{
 			RebootNodeIfNeeded = $true
 		}
-
-
-
-
-		xRemoteFile GetBacpac
-		{  
-			URI             = $SampleAppLocation + '\' + $bacpac
-			DestinationPath =     $stagingFolder + '\' + $bacpac
-		}         
-
-		xDatabaseLogin AppCredw4DB
-		{
-			Ensure           = "Present"
-			LoginName        = "sqlbat"
-			LoginPassword    = "Sw!mmingP00l"
-			SqlAuthType      = 'Windows'
-			SqlServer        = "localhost"
-		} 
-
-		xDatabase LoadDB
-		{
-			Ensure           = "Present"
-			SqlServer        = "localhost"
-			SqlServerVersion = "2014"
-			BacPacPath       = $stagingFolder + '\' + $bacpac
-			DatabaseName     = 'FabrikamFiber'
-			DependsOn        = "[xRemoteFile]GetBacpac"
-		} 
-
-
-
-
-
 
 		xWaitforDisk Disk2                               # Make Sure Disk is Ready
 		{
@@ -223,6 +182,7 @@ Configuration DemoSQL
             SqlAdministratorCredential    = $DomainUserAccount
             ServiceCredential             = $SQLServiceCreds
             MaxDegreeOfParallelism        = 1
+			Hadr                          = "Enabled"
             FilePath                      = "F:\DATA"
             LogPath                       = "F:\LOG"
             DomainAdministratorCredential = $DomainUserAccount
@@ -302,8 +262,8 @@ Configuration DemoSQL
 		{
 			SqlAlwaysOnAvailabilityGroupName = $SqlAOAvailGrpName
 			DatabaseNames                    = $DatabaseNames
-			PrimaryReplica                   = $Nodes[1]
-			SecondaryReplica                 = $Nodes[0]
+			PrimaryReplica                   = $Nodes[0]
+			SecondaryReplica                 = $Nodes[1]
 			SqlAdministratorCredential       = $DomainUserAccount
 #			DependsOn                        = "[xSqlAvailabilityGroupListener]SqlAGListener"
 		}
@@ -337,22 +297,6 @@ function Get-NetBIOSName
     }
 }
 
-function WaitForSqlSetup
-{
-    # Wait for SQL Server Setup to finish before proceeding.
-    while ($true)
-    {
-        try
-        {
-            Get-ScheduledTaskInfo "\ConfigureSqlImageTasks\RunConfigureImage" -ErrorAction Stop
-            Start-Sleep -Seconds 5
-        }
-        catch
-        {
-            break
-        }
-    }
-}
  
 function Enable-CredSSPNTLM
 {

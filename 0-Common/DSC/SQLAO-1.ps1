@@ -43,11 +43,15 @@ Configuration DemoSQL
             DriveLetter = "F"
         }
 
+		
+		
 		WindowsFeature ADPS
 		{
 			Name   = "RSAT-AD-PowerShell"
 			Ensure = "Present"
 		}
+
+
 
 		xComputer DomainJoin                              # Join the Domain
 		{
@@ -56,6 +60,7 @@ Configuration DemoSQL
 			Credential = $DomainUserAccount
 		}
 
+		
 		
 		File FSWFolder
 		{
