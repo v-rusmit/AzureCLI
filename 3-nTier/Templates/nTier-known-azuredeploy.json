@@ -78,7 +78,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/nTier-webtier-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').baseLocation,'/3-nTier/Templates/nTier-webtier-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":           { "value": "[parameters('commonSettings')]"           },
@@ -105,7 +105,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/nTier-biztier-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').baseLocation,'/3-nTier/Templates/nTier-biztier-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":           { "value": "[parameters('commonSettings')]"           },
@@ -131,7 +131,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/nTier-sqltier-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').baseLocation,'/3-nTier/Templates/nTier-sqltier-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":           { "value": "[parameters('commonSettings')]"           },
@@ -156,7 +156,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/nTier-mgmttier-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').baseLocation,'/3-nTier/Templates/nTier-mgmttier-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":           { "value": "[parameters('commonSettings')]"           },
