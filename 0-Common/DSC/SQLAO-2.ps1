@@ -9,41 +9,38 @@ Configuration DemoSQL
 		[Parameter(Mandatory=$true)] [ValidateNotNullorEmpty()] [PSCredential] $DomainUserAccount,
 		
 
-        [String]$SQLServiceAccount  = "PuppyDog",
         [String]$DomainNetbiosName  = (Get-NetBIOSName -DomainName $domain),
         [UInt32]$DatabaseEnginePort = 1433,
-		[Int]$RetryCount            = 20,
-        [Int]$RetryIntervalSec      = 30
+		   [Int]$RetryCount         = 20,
+           [Int]$RetryIntervalSec   = 30
     )
 	
 	Import-DscResource -Module xStorage
 	Import-DscResource -Module cDisk
-
 	Import-DscResource -Module xComputerManagement
 	Import-DscResource -Module xActiveDirectory
-
 	Import-DscResource -Module xNetworking
 	Import-DscResource -Module xSQL
-
-
 
 #	Import-DscResource -Module xPSDesiredStateConfiguration
 #	Import-DscResource -Module xDatabase
 #	Import-DscResource -Module xFailoverCluster
 
+	$SQLServiceAccount  = "PuppyDog"
+
+
     [System.Management.Automation.PSCredential]$SQLServiceCreds = New-Object System.Management.Automation.PSCredential ("${DomainNetbiosName}\$SQLServiceAccount", $DomainUserAccount.Password)
 	
 	$bacpac = "FabrikamFiber.bacpac"
-	$storacct = "https://clijson.blob.core.windows.net/common-stageartifacts/"
 	$stagingFolder  = "C:\Packages"
 	
-	WaitForSqlSetup
+#	WaitForSqlSetup
 
 	Node localhost
 	{
 		LocalConfigurationManager
 		{
-			RebootNodeIfNeeded = $false
+			RebootNodeIfNeeded = $true
 		}
 
 		xWaitforDisk Disk2                               # Make Sure Disk is Ready
@@ -136,7 +133,7 @@ Configuration DemoSQL
 
 
 
-        xADUser CreateSqlServerServiceAccount                            # create a sevice account for SQL
+        xADUser CreateSqlServerServiceAccount                            # create a sevice account for SQL  
         {
             DomainAdministratorCredential = $DomainUserAccount
             DomainName                    = $domain
@@ -190,41 +187,32 @@ Configuration DemoSQL
 function Get-NetBIOSName
 { 
     [OutputType([string])]
-    param(
-        [string]$DomainName
-    )
+    param(        [string]$DomainName    )
 
     if ($DomainName.Contains('.')) {
         $length=$DomainName.IndexOf('.')
-        if ( $length -ge 16) {
-            $length=15
-        }
+        if ( $length -ge 16) { $length=15 }
         return $DomainName.Substring(0,$length)
     }
     else {
-        if ($DomainName.Length -gt 15) {
-            return $DomainName.Substring(0,15)
-        }
-        else {
-            return $DomainName
-        }
+        if ($DomainName.Length -gt 15) { return $DomainName.Substring(0,15) }
+        else                           { return $DomainName                 }
     }
 }
-
-function WaitForSqlSetup
-{
-    # Wait for SQL Server Setup to finish before proceeding.
-    while ($true)
-    {
-        try
-        {
-            Get-ScheduledTaskInfo "\ConfigureSqlImageTasks\RunConfigureImage" -ErrorAction Stop
-            Start-Sleep -Seconds 5
-        }
-        catch
-        {
-            break
-        }
-    }
-}
+#function WaitForSqlSetup
+#{
+#    # Wait for SQL Server Setup to finish before proceeding.
+#    while ($true)
+#    {
+#        try
+#        {
+#            Get-ScheduledTaskInfo "\ConfigureSqlImageTasks\RunConfigureImage" -ErrorAction Stop
+#            Start-Sleep -Seconds 5
+#        }
+#        catch
+#        {
+#            break
+#        }
+#    }
+#}
  
