@@ -39,17 +39,17 @@ Configuration DemoAllComponents
 			URI 		    = $SampleAppLocation + '\' + $node
 			DestinationPath	=     $stagingFolder + '\' + $node
 		}
-		Package NodeEngineInstaller
-		{
-			Ensure     = "Present"
-			Name       = "Node.js"
-			ProductId  = "8434AEA1-1294-47E3-9137-848F546CD824"
-			Path       = $stagingFolder + '\' + $node
-			Arguments  = "/passive"
-			ReturnCode = 1603
-			DependsOn  = "[xRemoteFile]NodeEngineInstaller"
-			LogPath = $stagingFolder + "\install.log"
-		}
+#		Package NodeEngineInstaller
+#		{
+#			Ensure     = "Present"
+#			Name       = "Node.js"
+#			ProductId  = "8434AEA1-1294-47E3-9137-848F546CD824"
+#			Path       = $stagingFolder + '\' + $node
+#			Arguments  = "/passive"
+#			ReturnCode = 1603
+#			DependsOn  = "[xRemoteFile]NodeEngineInstaller"
+#			LogPath = $stagingFolder + "\install.log"
+#		}
 		
 		
 		xRemoteFile IISNodeInstaller
@@ -136,7 +136,7 @@ Configuration DemoAllComponents
 
 		xDatabaseLogin AppCredw4DB
 		{
-			Ensure           = "Present"
+#			Ensure           = "Present"
 			LoginName        = "MSFTAzureARM"
 			LoginPassword    = "rQ53uUn3rm"
 			SqlAuthType      = 'SQL'
@@ -170,7 +170,7 @@ Configuration DemoAllComponents
 			BindingInfo  = MSFT_xWebBindingInformation 
 				{
 					Protocol = 'HTTP'
-					Port     = 7777
+					Port     = 3000
 					HostName = '*'
 				}
 			DependsOn       = "[xWebsite]Fabrikam1"
