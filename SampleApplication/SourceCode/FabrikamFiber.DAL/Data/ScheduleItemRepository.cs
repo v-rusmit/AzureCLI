@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Configuration;
 using Newtonsoft.Json;
 
 namespace FabrikamFiber.DAL.Data
@@ -31,7 +32,7 @@ namespace FabrikamFiber.DAL.Data
 
     public class ScheduleItemRepository : IScheduleItemRepository
     {
-        private readonly Uri _baseAddress = new Uri("http://localhost:3000/api/");
+        private readonly Uri _baseAddress = new Uri(System.Configuration.ConfigurationManager.AppSettings["ApiBaseUrl"]);
 
         public IEnumerable<ScheduleItem> All
         {
