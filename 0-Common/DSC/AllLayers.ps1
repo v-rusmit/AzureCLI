@@ -134,6 +134,12 @@ Configuration DemoAllComponents
 			DependsOn        = "[xRemoteFile]GetBacpac"
 		} 
 
+ 
+		xDatabaseServer SetMixedMode
+		{
+			LoginMode        = "Mixed"
+		}  
+
 		xDatabaseLogin AppCredw4DB
 		{
 #			Ensure           = "Present"
