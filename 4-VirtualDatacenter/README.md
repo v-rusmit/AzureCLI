@@ -62,7 +62,9 @@ You will need to be logged into the Azure portal under the subscription you woul
 
 ### PowerShell
 ```PowerShell
-New-AzureRmResourceGroupDeployment -Name <deployment-name> -ResourceGroupName <resource-group-name> -TemplateUri <template-uri>
+New-AzureRmResourceGroup -ResourceGroupName YOURRESOURCEGROUPVDC -location "Central US"
+New-AzureRmResourceGroupDeployment -ResourceGroupName YOURRESOURCEGROUPVDC –TemplateUri "https://clijsonpublic.blob.core.windows.net/virtualdatacenter-stageartifacts/azuredeploy.json" –TemplateParameterUri "https://clijsonpublic.blob.core.windows.net/virtualdatacenter-stageartifacts/azuredeploy.parameters.json"
+
 ```
 [Install and configure Azure PowerShell](https://azure.microsoft.com/en-us/documentation/articles/powershell-install-configure/)
 
@@ -70,8 +72,6 @@ New-AzureRmResourceGroupDeployment -Name <deployment-name> -ResourceGroupName <r
 ```
 1. azure group create            -n "YourResourceGroupVDC" -l "Central US"
 2. azure group deployment create -g "YourResourceGroupVDC" -f "https://raw.githubusercontent.com/ValoremConsulting/AzureCLI/master/4-VirtualDatacenter/Templates/azuredeployGitHub.json"
-
-2. azure group deployment create <my-resource-group> <my-deployment-name> --template-uri <template-uri>
 ```
 [Install and Configure the Azure Cross-Platform Command-Line Interface](https://azure.microsoft.com/en-us/documentation/articles/xplat-cli-install/)
 
