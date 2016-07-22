@@ -41,8 +41,6 @@
     <None Include="DSC\IIS-WEB.ps1" />
     <None Include="DSC\IIS.ps1" />
     <None Include="DSC\SQL.ps1" />
-    <None Include="DSC\SQLAO-First.ps1" />
-    <None Include="DSC\SQLAO-Second.ps1" />
     <None Include="DSC\xActiveDirectory\2.12.0.0\Assert-HADC.ps1" />
     <None Include="DSC\xActiveDirectory\2.12.0.0\Assert-ParentChildDomains.ps1" />
     <None Include="DSC\xActiveDirectory\2.12.0.0\DSCResources\MSFT_xADCommon\MSFT_xADCommon.ps1" />
@@ -379,6 +377,7 @@
     <None Include="SampleApp\FabrikamFiber.bacpac" />
     <None Include="SampleApp\FabrikamFiber.Web.zip" />
     <None Include="SampleApp\iisnode-full-iis7-v0.2.2-x64.msi" />
+    <None Include="SampleApp\node-v4.4.7-x64.msi" />
     <None Include="SampleApp\rewrite_amd64.msi" />
     <None Include="Templates\applyDSC0.json" />
     <None Include="Templates\availability-set.json" />
