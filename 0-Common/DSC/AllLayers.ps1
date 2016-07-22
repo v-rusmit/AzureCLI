@@ -122,14 +122,7 @@ Configuration DemoAllComponents
 			DependsOn   = "[xRemoteFile]WebContent2"
 		}         
 
-		xDatabaseLogin AppCredw4DB
-		{
-			Ensure           = "Present"
-			LoginName        = "sqlbat"
-			LoginPassword    = "Sw!mmingP00l"
-			SqlAuthType      = 'Windows'
-			SqlServer        = "localhost"
-		} 
+
 		
 		xDatabase LoadDB
 		{
@@ -139,6 +132,15 @@ Configuration DemoAllComponents
 			BacPacPath       = $stagingFolder + '\' + $bacpac
 			DatabaseName     = 'FabrikamFiber'
 			DependsOn        = "[xRemoteFile]GetBacpac"
+		} 
+
+		xDatabaseLogin AppCredw4DB
+		{
+			Ensure           = "Present"
+			LoginName        = "MSFTAzureARM"
+			LoginPassword    = "rQ53uUn3rm"
+			SqlAuthType      = 'SQL'
+			SqlServer        = "localhost"
 		} 
 
 		xWebsite DisableDefaultSite
