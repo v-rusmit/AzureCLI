@@ -18,6 +18,7 @@ Configuration DemoAllComponents
 		$webzip1 = "FabrikamFiber.Web.zip"
 		$webzip2 = "FabrikamFiber.API.zip"
 		$bacpac  = "FabrikamFiber.bacpac"
+		$node = "node-v4.4.7-x64.msi"
 		$iisnode = "iisnode-full-iis7-v0.2.2-x64.msi"
 		$urlrewrite = "rewrite_amd64.msi"
 
@@ -32,11 +33,31 @@ Configuration DemoAllComponents
 			RebootNodeIfNeeded = $true
 		}
 		
+#		Install the core Node engine
+		xRemoteFile NodeEngineInstaller
+		{
+			URI 		    = $SampleAppLocation + '\' + $node
+			DestinationPath	=     $stagingFolder + '\' + $node
+		}
+		Package NodeEngineInstaller
+		{
+			Ensure     = "Present"
+			Name       = "Node.js"
+			ProductId  = "8434AEA1-1294-47E3-9137-848F546CD824"
+			Path       = $stagingFolder + '\' + $node
+			Arguments  = "/passive"
+			ReturnCode = 1603
+			DependsOn  = "[xRemoteFile]NodeEngineInstaller"
+			LogPath = $stagingFolder + "\install.log"
+		}
+		
+		
 		xRemoteFile IISNodeInstaller
 		{
 			URI 		    = $SampleAppLocation + '\' + $iisnode
 			DestinationPath	=     $stagingFolder + '\' + $iisnode
 		}
+
 
 #		Package IISNodeInstaller
 #		{
