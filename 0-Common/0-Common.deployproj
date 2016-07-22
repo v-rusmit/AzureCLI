@@ -41,6 +41,9 @@
     <None Include="DSC\IIS-WEB.ps1" />
     <None Include="DSC\IIS.ps1" />
     <None Include="DSC\SQL.ps1" />
+    <None Include="DSC\SQLAO-1.ps1" />
+    <None Include="DSC\SQLAO-2.ps1" />
+    <None Include="DSC\SQLAO-3.ps1" />
     <None Include="DSC\xActiveDirectory\2.12.0.0\Assert-HADC.ps1" />
     <None Include="DSC\xActiveDirectory\2.12.0.0\Assert-ParentChildDomains.ps1" />
     <None Include="DSC\xActiveDirectory\2.12.0.0\DSCResources\MSFT_xADCommon\MSFT_xADCommon.ps1" />
@@ -282,6 +285,9 @@
     <None Include="DSC\xPSDesiredStateConfiguration\3.11.0.0\Tests\Unit\MSFT_xWindowsFeature.Tests.ps1" />
     <None Include="DSC\xPSDesiredStateConfiguration\3.11.0.0\Tests\Unit\MSFT_xWindowsOptionalFeature.Tests.ps1" />
     <None Include="DSC\xPSDesiredStateConfiguration\3.11.0.0\xPSDesiredStateConfiguration.psd1" />
+    <None Include="DSC\xSmbShare\DscResources\MSFT_xSmbShare\MSFT_xSmbShare.psm1" />
+    <None Include="DSC\xSmbShare\DscResources\MSFT_xSmbShare\MSFT_xSmbShare.schema.mof" />
+    <None Include="DSC\xSmbShare\xSmbShare.psd1" />
     <None Include="DSC\xSQL\DSCResources\MicrosoftAzure_xSqlAvailabilityGroupListener\MicrosoftAzure_xSqlAvailabilityGroupListener.psm1" />
     <None Include="DSC\xSQL\DSCResources\MicrosoftAzure_xSqlAvailabilityGroupListener\MicrosoftAzure_xSqlAvailabilityGroupListener.schema.mof" />
     <None Include="DSC\xSQL\DSCResources\MicrosoftAzure_xSqlAvailabilityGroup\MicrosoftAzure_xSqlAvailabilityGroup.psm1" />
