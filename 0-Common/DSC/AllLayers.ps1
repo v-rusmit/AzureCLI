@@ -18,6 +18,7 @@ Configuration DemoAllComponents
 		$webzip1 = "FabrikamFiber.Web.zip"
 		$webzip2 = "FabrikamFiber.API.zip"
 		$bacpac  = "FabrikamFiber.bacpac"
+
 		$node = "node-v4.4.7-x64.msi"
 		$iisnode = "iisnode-full-iis7-v0.2.2-x64.msi"
 		$urlrewrite = "rewrite_amd64.msi"
@@ -39,6 +40,7 @@ Configuration DemoAllComponents
 			URI 		    = $SampleAppLocation + '\' + $node
 			DestinationPath	=     $stagingFolder + '\' + $node
 		}
+
 #		Package NodeEngineInstaller
 #		{
 #			Ensure     = "Present"
@@ -51,14 +53,13 @@ Configuration DemoAllComponents
 #			LogPath = $stagingFolder + "\install.log"
 #		}
 		
-		
+
+
 		xRemoteFile IISNodeInstaller
 		{
 			URI 		    = $SampleAppLocation + '\' + $iisnode
 			DestinationPath	=     $stagingFolder + '\' + $iisnode
 		}
-
-
 #		Package IISNodeInstaller
 #		{
 #			Ensure     = "Present"
@@ -73,6 +74,8 @@ Configuration DemoAllComponents
 #			LogPath = $stagingFolder + "\install.log"
 #		}
 		
+
+
 		xRemoteFile URLReWriteInstaller
 		{
 			URI 		    = $SampleAppLocation + '\' + $urlrewrite
@@ -87,6 +90,11 @@ Configuration DemoAllComponents
 #			ProductId = "08F0318A-D113-4CF0-993E-50F191D397AD"
 #			DependsOn = "[xRemoteFile]URLReWriteInstaller"
 #	}
+
+
+
+
+
 		
 		xRemoteFile WebContent1
 		{  
@@ -121,8 +129,6 @@ Configuration DemoAllComponents
 			Destination = "$wwwrootFolder"
 			DependsOn   = "[xRemoteFile]WebContent2"
 		}         
-
-
 		
 		xDatabase LoadDB
 		{
@@ -134,20 +140,25 @@ Configuration DemoAllComponents
 			DependsOn        = "[xRemoteFile]GetBacpac"
 		} 
 
- 
 		xDatabaseServer SetMixedMode
 		{
 			LoginMode        = "Mixed"
 		}  
 
-		xDatabaseLogin AppCredw4DB
-		{
-#			Ensure           = "Present"
-			LoginName        = "MSFTAzureARM"
-			LoginPassword    = "rQ53uUn3rm"
-			SqlAuthType      = 'SQL'
-			SqlServer        = "localhost"
-		} 
+#		xDatabaseLogin AppCredw4DB
+#		{
+##			Ensure           = "Present"
+#			LoginName        = "MSFTAzureARM"
+#			LoginPassword    = "rQ53uUn3rm"
+#			SqlAuthType      = 'SQL'
+#			SqlServer        = "localhost"
+#		} 
+
+
+
+
+
+
 
 		xWebsite DisableDefaultSite
 		{  
@@ -181,6 +192,9 @@ Configuration DemoAllComponents
 				}
 			DependsOn       = "[xWebsite]Fabrikam1"
 		}  
+
+
+
 
 		WindowsFeature IIS
 		{
