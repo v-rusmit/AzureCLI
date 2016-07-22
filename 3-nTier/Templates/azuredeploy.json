@@ -115,7 +115,7 @@
                              "sqlVmNameRoot": { "value": "[ variables(         'sqlVmNameRoot')]" },
 
                          "mgmtInstanceCount": { "value": "[parameters(     'mgmtInstanceCount')]" },
-                                "mgmtVmName": { "value": "[ variables(            'mgmtVmName')]" },
+                                "mgmtVmName": { "value": "[ variables(            'mgmtVmName')]" }
                }
             }
         }
