@@ -23,7 +23,7 @@
         "commonSettings": {
             "resourceApiVersion": "2016-02-01",                                         // all tempaltes in this hierarchical project use this value for  "type": "Microsoft.Resources/deployments",
             "deploySwitch":              "[    parameters('deploySwitch')                                ]",
-            "commonLocation":            "[uri(concat('https://raw.githubusercontent.com/', parameters('GitHubAccount') ,'/AzureCLI/master/0-Common/Templates'), '') ]",
+            "commonLocation":            "[uri(concat('https://clijsonpublic.blob.core.windows.net/', 'common-stageartifacts'), '') ]",
             "baseLocation":              "[uri(concat('https://raw.githubusercontent.com/', parameters('GitHubAccount') ,'/AzureCLI/master'), '') ]",
             "defaultUsername":           "[    parameters('username')                                    ]",
             "defaultPassword":           "[    parameters('password')                                    ]",
