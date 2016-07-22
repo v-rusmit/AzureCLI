@@ -92,7 +92,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('baseLocation').artifactsLocation,'/2-MultiVM/Templates/multivm-known-loop-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').baseLocation,'/2-MultiVM/Templates/multivm-known-loop-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":         { "value": "[parameters('commonSettings')]"         },
