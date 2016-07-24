@@ -18,7 +18,7 @@
             "deploySwitch":              "[    parameters('deploySwitch')                                ]",
             "artifactsLocation":         "[    parameters('_artifactsLocation')                          ]",
 //          "artifactsLocationSasToken": "[    parameters('_artifactsLocationSasToken')                  ]",
-			"commonLocation":            "[uri(parameters('_artifactsLocation'),'common-stageartifacts') ]"
+			      "commonLocation":            "[uri(parameters('_artifactsLocation'),'common-stageartifacts') ]"
         },
     
         "virtualNetworkParameters": {

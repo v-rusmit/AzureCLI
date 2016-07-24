@@ -15,7 +15,8 @@
         "username":                   { "type": "string",       "defaultValue": "demoUser",                                         "metadata": { "description": "Username for the Virtual Machine."                                                               } },
         "password":                   { "type": "securestring", "defaultValue": "P@ssw0rd1234",                                     "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } },
         "domain":                     { "type": "string",       "defaultValue": "DomainOrDie.biz",                                  "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } },
-        "GitHubAccount":              { "type": "string",       "defaultValue": "ValoremConsulting",                                "metadata": { "description": "The GitHub account that is hosting the Template files"                                              } }   
+        "GitHubAccount":              { "type": "string",       "defaultValue": "ValoremConsulting",                                "metadata": { "description": "The GitHub account that is hosting the Template files"                                              } },   
+        "GitHubBranch":               { "type": "string",       "defaultValue": "master",                                           "metadata": { "description": "The GitHub account that is hosting the Template files"                                              } }   
     },
 
     "variables": {
@@ -23,8 +24,8 @@
         "commonSettings": {
             "resourceApiVersion": "2016-02-01",       
             "deploySwitch":              "[    parameters('deploySwitch')                                ]",
-            "commonLocation":            "[uri(concat('https://clijsonpublic.blob.core.windows.net/', 'common-stageartifacts'), '') ]",
-            "baseLocation":              "[uri(concat('https://raw.githubusercontent.com/', parameters('GitHubAccount') ,'/AzureCLI/master'), '') ]",
+            "commonLocation":            "[uri(concat('https://raw.githubusercontent.com/', parameters('GitHubAccount') ,'/AzureCLI/', parameters('GitHubBranch'), '/0-Common/Templates'), '') ]",
+            "artifactsLocation":         "[uri(concat('https://raw.githubusercontent.com/', parameters('GitHubAccount') ,'/AzureCLI/', parameters('GitHubBranch'), '/4-VirtualDatacenter/Templates'), '') ]",
             "defaultUsername":           "[    parameters('username')                                    ]",
             "defaultPassword":           "[    parameters('password')                                    ]",
             "domain":                    "[    parameters('domain')                                      ]"
@@ -77,7 +78,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(variables('commonSettings').baseLocation,'/4-VirtualDatacenter/Templates/vdc-shared-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(variables('commonSettings').artifactsLocation,'/vdc-shared-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":           { "value": "[variables('commonSettings')]"           },
@@ -98,7 +99,7 @@
 
             "properties": {
                 "mode": "incremental",
-              "templateLink": { "uri": "[concat(variables('commonSettings').baseLocation,'/4-VirtualDatacenter/Templates/vdc-known-azuredeploy.json')]" },
+              "templateLink": { "uri": "[concat(variables('commonSettings').artifactsLocation,'/vdc-known-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":           { "value": "[variables('commonSettings')]"           },
