@@ -84,7 +84,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').baseLocation,'/4-VirtualDatacenter/Templates/vdc-adtier-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/vdc-adtier-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":           { "value": "[parameters('commonSettings')]"                      },
@@ -109,7 +109,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').baseLocation,'/4-VirtualDatacenter/Templates/vdc-dmztier-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/vdc-dmztier-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":           { "value": "[parameters('commonSettings')]"                       },
@@ -136,7 +136,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').baseLocation,'/4-VirtualDatacenter/Templates/vdc-sqltier-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/vdc-sqltier-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":           { "value": "[parameters('commonSettings')]"                       },
@@ -162,7 +162,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').baseLocation,'/4-VirtualDatacenter/Templates/vdc-biztier-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/vdc-biztier-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":           { "value": "[parameters('commonSettings')]"                               },
@@ -190,7 +190,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').baseLocation,'/4-VirtualDatacenter/Templates/vdc-biztier-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/vdc-biztier-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":           { "value": "[parameters('commonSettings')]"                               },
@@ -218,7 +218,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').baseLocation,'/4-VirtualDatacenter/Templates/vdc-mgmttier-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/vdc-mgmttier-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":           { "value": "[parameters('commonSettings')]"            },
