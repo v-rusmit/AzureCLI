@@ -31,16 +31,16 @@ You will need to be logged into the Azure portal under the subscription you woul
 
 ### PowerShell
 ```PowerShell
-New-AzureRmResourceGroup -ResourceGroupName yourresourcegroupnTier -location "Central US"
-New-AzureRmResourceGroupDeployment -ResourceGroupName yourresourcegroupnTier -TemplateUri "https://clijsonpublic.blob.core.windows.net/ntier-stageartifacts/azuredeploy.json" -TemplateParameterUri "https://clijsonpublic.blob.core.windows.net/ntier-stageartifacts/azuredeploy.parameters.json"
+New-AzureRmResourceGroup           -ResourceGroupName YourResourceGroup3 -location "Central US"
+New-AzureRmResourceGroupDeployment -ResourceGroupName YourResourceGroup3 -TemplateUri "https://clijsonpublic.blob.core.windows.net/ntier-stageartifacts/azuredeploy.json" -TemplateParameterUri "https://clijsonpublic.blob.core.windows.net/ntier-stageartifacts/azuredeploy.parameters.json"
 
 ```
 [Install and configure Azure PowerShell](https://azure.microsoft.com/en-us/documentation/articles/powershell-install-configure/)
 
 ### CLI
 ```
-1. zure group create     -n "YourResourceGroup3" -l "Central US"
-2. azure group deployment create -g "YourResourceGroup3" -f "https://raw.githubusercontent.com/ValoremConsulting/AzureCLI/master/3-nTier/Templates/azuredeployGitHub.json "
+azure group create     -n "YourResourceGroup3" -l "Central US"
+azure group deployment create -g "YourResourceGroup3" -f "https://raw.githubusercontent.com/ValoremConsulting/AzureCLI/master/3-nTier/Templates/azuredeployGitHub.json "
 
 ```
 [Install and Configure the Azure Cross-Platform Command-Line Interface](https://azure.microsoft.com/en-us/documentation/articles/xplat-cli-install/)
