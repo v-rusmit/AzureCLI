@@ -47,7 +47,7 @@
 
             "properties": {
                 "mode": "incremental",
-              "templateLink": { "uri": "[concat(variables('commonSettings').baseLocation,'/multivm-shared-azuredeploy.json')]" },
+              "templateLink": { "uri": "[concat(variables('commonSettings').artifactsLocation,'/multivm-shared-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":     { "value": "[variables('commonSettings')]"     },
@@ -68,7 +68,7 @@
            
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(variables('commonSettings').baseLocation,'/2-MultiVM/Templates/multivm-known-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(variables('commonSettings').artifactsLocation,'/multivm-known-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":         { "value": "[ variables('commonSettings')]"           },

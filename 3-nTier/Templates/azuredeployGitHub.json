@@ -67,7 +67,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(variables('commonSettings').baseLocation,'/nTier-shared-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(variables('commonSettings').artifactsLocation,'/nTier-shared-azuredeploy.json')]" },
                 "parameters": {
                     "commonSettings":           { "value": "[variables('commonSettings')]"           },
                     "virtualNetworkParameters": { "value": "[variables('virtualNetworkParameters')]" },
@@ -87,7 +87,7 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(variables('commonSettings').baseLocation,'/nTier-known-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(variables('commonSettings').artifactsLocation,'/nTier-known-azuredeploy.json')]" },
                 "parameters": {
                     "commonSettings":           { "value": "[variables('commonSettings')]"           },
                     "virtualNetworkParameters": { "value": "[variables('virtualNetworkParameters')]" },
