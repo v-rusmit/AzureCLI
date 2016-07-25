@@ -119,7 +119,7 @@ function Set-TargetResource
         try
         {
             # Create login if it does not already exist.
-            [string]$SqlQuery = "if not exists(SELECT name FROM sys.sql_logins WHERE name='$LoginName') Begin create login $LoginName with password='$LoginPassword' END"
+            [string]$SqlQuery = "if not exists(SELECT name FROM sys.sql_logins WHERE name='$LoginName') Begin create login $LoginName with password='$LoginPassword' END ELSE Begin alter login $LoginName with password='$LoginPassword' END"
 
             $supressReturn = ExecuteSqlQuery -sqlConnection $connection -SqlQuery $SqlQuery
 
@@ -192,43 +192,45 @@ function Test-TargetResource #Not yet working
         $SqlServer
     )
 
-        try
-        {
-            if($SqlAuthType -eq "SQL")
-        {
-                $Connection = Construct-SqlConnection -credentials $SqlConnectionCredential -sqlServer $SqlServer
-        }
-        else
-        {
-                $Connection = Construct-SqlConnection -sqlServer $SqlServer
-        }
+	return $false
+
+    #    try
+    #    {
+    #        if($SqlAuthType -eq "SQL")
+    #    {
+    #            $Connection = Construct-SqlConnection -credentials $SqlConnectionCredential -sqlServer $SqlServer
+    #    }
+    #    else
+    #    {
+    #            $Connection = Construct-SqlConnection -sqlServer $SqlServer
+    #    }
         
-        [string]$SqlQuery = "SELECT * from sys.sql_logins where name='$LoginName'"
+    #    [string]$SqlQuery = "SELECT * from sys.sql_logins where name='$LoginName'"
         
-        $LoginsReturnedByQuery = (ReturnSqlQuery -sqlConnection $connection -SqlQuery $SqlQuery)[0]
+    #    $LoginsReturnedByQuery = (ReturnSqlQuery -sqlConnection $connection -SqlQuery $SqlQuery)[0]
 
-        if((($LoginsReturnedByQuery -gt 0) -and ($Ensure -eq "Present")) -or (($LoginsReturnedByQuery -eq 0) -and ($Ensure -eq "absent")))
-        {
-            $result = $true
-        }
-        else
-        {
-            $result = $false
-        }
+    #    if((($LoginsReturnedByQuery -gt 0) -and ($Ensure -eq "Present")) -or (($LoginsReturnedByQuery -eq 0) -and ($Ensure -eq "absent")))
+    #    {
+    #        $result = $true
+    #    }
+    #    else
+    #    {
+    #        $result = $false
+    #    }
 
-        return $result
+    #    return $result
 
-    }
-    catch
-    {
-        $errorId = "TestDatabaseLogin";
-        $errorCategory = [System.Management.Automation.ErrorCategory]::InvalidResult
-        $errorMessage = $($LocalizedData.TestDatabaseLoginError -f ${LoginName})
-        $exception = New-Object System.InvalidOperationException $errorMessage 
-        $errorRecord = New-Object System.Management.Automation.ErrorRecord $exception, $errorId, $errorCategory, $null
+    #}
+    #catch
+    #{
+    #    $errorId = "TestDatabaseLogin";
+    #    $errorCategory = [System.Management.Automation.ErrorCategory]::InvalidResult
+    #    $errorMessage = $($LocalizedData.TestDatabaseLoginError -f ${LoginName})
+    #    $exception = New-Object System.InvalidOperationException $errorMessage 
+    #    $errorRecord = New-Object System.Management.Automation.ErrorRecord $exception, $errorId, $errorCategory, $null
 
-        $PSCmdlet.ThrowTerminatingError($errorRecord);
-    }
+    #    $PSCmdlet.ThrowTerminatingError($errorRecord);
+    #}
 
 }
 

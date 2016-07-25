@@ -12,6 +12,7 @@ Configuration DemoAllComponents
 	Import-DscResource -Module xPSDesiredStateConfiguration
 	Import-DscResource -Module xWebAdministration
 	Import-DscResource -Module xDatabase
+	Import-DscResource -Module xSQL
 
     Node 'localhost'
     { 
@@ -154,6 +155,15 @@ Configuration DemoAllComponents
 
 
 
+		xDatabaseLogin AppCred
+		{
+			Ensure                  = "Present"
+			LoginName               = "MSFTAzureARM"
+			LoginPassword           = "rQ53uUn3rm"
+			SQLAuthType             = "Windows"
+			SQLServer               = "localhost"
+			DependsOn               = "[xDatabase]LoadDB"
+		} 
 
 
 
