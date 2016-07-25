@@ -121,16 +121,16 @@ Configuration DemoAllComponents
 		Archive WebContent1
 		{  
 			Ensure      = "Present"
-			Path        = $stagingFolder + '\' + $webzip1
-			Destination = "$wwwrootFolder"
+			Path        =  $stagingFolder  + '\' + $webzip1
+			Destination = "$wwwrootFolder" + '\' + $webzip1.TrimEnd('.zip')
 			DependsOn   = "[xRemoteFile]WebContent1"
 		}         
 
 		Archive WebContent2
 		{  
 			Ensure      = "Present"
-			Path        = $stagingFolder + '\' + $webzip2
-			Destination = "$wwwrootFolder"
+			Path        = $stagingFolder   + '\' + $webzip2
+			Destination = "$wwwrootFolder" 
 			DependsOn   = "[xRemoteFile]WebContent2"
 		}         
 		
