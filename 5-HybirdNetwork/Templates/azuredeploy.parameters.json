@@ -6,6 +6,5 @@
 		           "appName": { "value": "hybridnetwork" },
 		    "appEnvironment": { "value": "dev" },
 		"_artifactsLocation": { "value": "https://clijsonpublic.blob.core.windows.net/hn-stageartifacts" }
-
 	}
 }
