@@ -2,7 +2,7 @@
     "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-		"deploySwitch":       { "value": 0              },
+		"deploySwitch":       { "value": 1              },
         "appName":            { "value": "my2app"       },
         "appEnvironment":     { "value": "qa"           },
         "instanceCount":      { "value": 3              },
