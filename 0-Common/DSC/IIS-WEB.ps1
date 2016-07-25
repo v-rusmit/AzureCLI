@@ -44,26 +44,6 @@ Configuration DemoIIS
 
 
 
-		xWebsite DisableDefaultSite
-		{  
-			Ensure          = "Present"
-			Name            = "Default Web Site"
-			State           = "Stopped"
-			PhysicalPath    = $wwwrootFolder
-			DependsOn       = "[WindowsFeature]IIS"
-		}  
-
-		xWebsite Fabrikam1
-		{  
-			Ensure          = "Present"
-			Name            = "Sample Application" 
-			State           = "Started"
-			PhysicalPath    =  $wwwrootFolder + '\' + $webzip1.TrimEnd('.zip')
-			DependsOn       = "[Archive]WebContent1"
-		}  
-
-
-
 		WindowsFeature IIS
 		{
 			Name   = "Web-Server"
@@ -119,6 +99,27 @@ Configuration DemoIIS
 			Ensure               = "Present"
 			IncludeAllSubFeature = $true
 			DependsOn            = "[WindowsFeature]IIS"
+		}  
+
+
+
+
+		xWebsite DisableDefaultSite
+		{  
+			Ensure          = "Present"
+			Name            = "Default Web Site"
+			State           = "Stopped"
+			PhysicalPath    = $wwwrootFolder
+			DependsOn       = "[WindowsFeature]IIS"
+		}  
+
+		xWebsite Fabrikam1
+		{  
+			Ensure          = "Present"
+			Name            = "Sample Application" 
+			State           = "Started"
+			PhysicalPath    =  $wwwrootFolder + '\' + $webzip1.TrimEnd('.zip')
+			DependsOn       = @("[Archive]WebContent1","[xWebsite]DisableDefaultSite")
 		}  
 	}
 } 
