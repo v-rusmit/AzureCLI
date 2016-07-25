@@ -15,29 +15,23 @@ Configuration DemoIIS
     Node 'localhost'
     { 
 		$webzip1 = "FabrikamFiber.Web.zip"
-		$webzip2 = "FabrikamFiber.API.zip"
 
 		$stagingFolder  = "C:\Packages"
 		$wwwrootFolder  = "C:\inetpub\wwwroot"
 
 		$wwwrootFolder1 = $wwwrootFolder + '\' + $webzip1.TrimEnd('.zip')
-		$wwwrootFolder2 = $wwwrootFolder + '\' + $webzip2.TrimEnd('.zip')
 
 		LocalConfigurationManager
 		{
 			RebootNodeIfNeeded = $true
 		}
 		
+
+
 		xRemoteFile WebContent1
 		{  
 			URI             = $SampleAppLocation + '\' + $webzip1
 			DestinationPath =     $stagingFolder + '\' + $webzip1
-		}         
-
-		xRemoteFile WebContent2
-		{  
-			URI             = $SampleAppLocation + '\' + $webzip2
-			DestinationPath =     $stagingFolder + '\' + $webzip2
 		}         
 
 		Archive WebContent1
@@ -48,13 +42,7 @@ Configuration DemoIIS
 			DependsOn   = "[xRemoteFile]WebContent1"
 		}         
 
-		Archive WebContent2
-		{  
-			Ensure      = "Present"
-			Path        = $stagingFolder + '\' + $webzip2
-			Destination = "$wwwrootFolder"
-			DependsOn   = "[xRemoteFile]WebContent2"
-		}         
+
 
 		xWebsite DisableDefaultSite
 		{  
@@ -74,20 +62,7 @@ Configuration DemoIIS
 			DependsOn       = "[Archive]WebContent1"
 		}  
 
-		xWebsite Fabrikam2
-		{  
-			Ensure          = "Present"
-			Name            = "Sample Application2" 
-			State           = "Started"
-			PhysicalPath    = $wwwrootFolder + '\' + $webzip2.TrimEnd('.zip')
-			BindingInfo  = MSFT_xWebBindingInformation 
-				{
-					Protocol = 'HTTP'
-					Port     = 7777
-					HostName = '*'
-				}
-			DependsOn       = "[xWebsite]Fabrikam1"
-		}  
+
 
 		WindowsFeature IIS
 		{

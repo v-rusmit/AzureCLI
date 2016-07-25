@@ -34,65 +34,69 @@ Configuration DemoAllComponents
 			RebootNodeIfNeeded = $true
 		}
 		
-#		Install the core Node engine
-		xRemoteFile NodeEngineInstaller
+
+		xRemoteFile NodeEngineInstaller                    # Install the core Node engine
 		{
 			URI 		    = $SampleAppLocation + '\' + $node
 			DestinationPath	=     $stagingFolder + '\' + $node
 		}
 
-#		Package NodeEngineInstaller
-#		{
-#			Ensure     = "Present"
-#			Name       = "Node.js"
-#			ProductId  = "8434AEA1-1294-47E3-9137-848F546CD824"
-#			Path       = $stagingFolder + '\' + $node
-#			Arguments  = "/passive"
-#			ReturnCode = 1603
-#			DependsOn  = "[xRemoteFile]NodeEngineInstaller"
-#			LogPath = $stagingFolder + "\install.log"
-#		}
+		Package NodeEngineInstaller
+		{
+			Ensure     = "Present"
+			Name       = "Node.js"
+			ProductId  = "8434AEA1-1294-47E3-9137-848F546CD824"
+			Path       = $stagingFolder + '\' + $node
+			Arguments  = "/passive"
+			ReturnCode = 0
+			DependsOn  = "[xRemoteFile]NodeEngineInstaller"
+			LogPath    = $stagingFolder + "\install-1.log"
+		}
 		
 
 
-		xRemoteFile IISNodeInstaller
+		xRemoteFile IISNodeInstaller                       # Install some other Node component
 		{
 			URI 		    = $SampleAppLocation + '\' + $iisnode
 			DestinationPath	=     $stagingFolder + '\' + $iisnode
 		}
-#		Package IISNodeInstaller
-#		{
-#			Ensure     = "Present"
+		Package IISNodeInstaller
+		{
+			Ensure     = "Present"
+			Name       = "iisnode for iis 7.x (x64) full"
+			ProductId  = "18A31917-64A9-4998-AD54-56CCAEDC0DAB"
 #			Name       = "iisnode for iis 7.x (x64) full"
-#			ProductId  = "18A31917-64A9-4998-AD54-56CCAEDC0DAB"
-##			Name       = "iisnode for iis 7.x (x64) full"
-##			ProductId  = "6C6CF372-FF11-4E05-B343-6586B3BC41E2"
-#			Path       = $stagingFolder + '\' + $iisnode
-#			Arguments  = "/passive"
-#			ReturnCode = 1603
-#			DependsOn  = "[xRemoteFile]IISNodeInstaller"
-#			LogPath = $stagingFolder + "\install.log"
-#		}
+#			ProductId  = "6C6CF372-FF11-4E05-B343-6586B3BC41E2"
+			Path       = $stagingFolder + '\' + $iisnode
+			Arguments  = "/passive"
+			ReturnCode = 0
+			DependsOn  = "[xRemoteFile]IISNodeInstaller"
+			LogPath    = $stagingFolder + "\install-2.log"
+		}
 		
 
 
-		xRemoteFile URLReWriteInstaller
+		xRemoteFile URLReWriteInstaller                   # Install rewerite
 		{
 			URI 		    = $SampleAppLocation + '\' + $urlrewrite
 			DestinationPath	=     $stagingFolder + '\' + $urlrewrite
 		}
 
-		#Package URLReWriteInstaller
-#		{
-#			Ensure = 'Present'
-#			Name   = 'IIS URL Rewrite Module 2'
-#			Path   = $stagingFolder + '\' + $urlrewrite
-#			ProductId = "08F0318A-D113-4CF0-993E-50F191D397AD"
-#			DependsOn = "[xRemoteFile]URLReWriteInstaller"
-#	}
+		Package URLReWriteInstaller
+		{
+			Ensure     = 'Present'
+			Name       = 'IIS URL Rewrite Module 2'
+			ProductId  = "08F0318A-D113-4CF0-993E-50F191D397AD"
+			Path       = $stagingFolder + '\' + $urlrewrite
+			Arguments  = "/passive"
+			ReturnCode = 0
+			DependsOn  = @("[xRemoteFile]URLReWriteInstaller","[WindowsFeature]IIS")
+			LogPath    = $stagingFolder + "\install-3.log"
+		}
 
 
 
+			#	DependsOn                  = @("[xSqlAvailabilityGroup]SqlAG","[xSQLAddListenerIPToDNS]UpdateDNSServer")
 
 
 		
@@ -114,6 +118,9 @@ Configuration DemoAllComponents
 			DestinationPath =     $stagingFolder + '\' + $bacpac
 		}         
 
+
+
+
 		Archive WebContent1
 		{  
 			Ensure      = "Present"
@@ -130,6 +137,9 @@ Configuration DemoAllComponents
 			DependsOn   = "[xRemoteFile]WebContent2"
 		}         
 		
+
+
+
 		xDatabase LoadDB
 		{
 			Ensure           = "Present"
@@ -144,17 +154,6 @@ Configuration DemoAllComponents
 		{
 			LoginMode        = "Mixed"
 		}  
-
-#		xDatabaseLogin AppCredw4DB
-#		{
-##			Ensure           = "Present"
-#			LoginName        = "MSFTAzureARM"
-#			LoginPassword    = "rQ53uUn3rm"
-#			SqlAuthType      = 'SQL'
-#			SqlServer        = "localhost"
-#		} 
-
-
 
 
 
