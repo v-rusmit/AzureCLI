@@ -35,71 +35,24 @@ Configuration DemoAllComponents
 		}
 		
 
-		xRemoteFile NodeEngineInstaller                    # Install the core Node engine
+		xRemoteFile NodeEngineInstaller                    # Download the core Node engine
 		{
 			URI 		    = $SampleAppLocation + '\' + $node
 			DestinationPath	=     $stagingFolder + '\' + $node
 		}
 
-		Package NodeEngineInstaller
-		{
-			Ensure     = "Present"
-			Name       = "Node.js"
-			ProductId  = "8434AEA1-1294-47E3-9137-848F546CD824"
-			Path       = $stagingFolder + '\' + $node
-			Arguments  = "/passive"
-			ReturnCode = 0
-			DependsOn  = "[xRemoteFile]NodeEngineInstaller"
-			LogPath    = $stagingFolder + "\install-1.log"
-		}
-		
-
-
-		xRemoteFile IISNodeInstaller                       # Install some other Node component
+		xRemoteFile IISNodeInstaller                       # Download IISNode component
 		{
 			URI 		    = $SampleAppLocation + '\' + $iisnode
 			DestinationPath	=     $stagingFolder + '\' + $iisnode
 		}
-		Package IISNodeInstaller
-		{
-			Ensure     = "Present"
-			Name       = "iisnode for iis 7.x (x64) full"
-			ProductId  = "18A31917-64A9-4998-AD54-56CCAEDC0DAB"
-#			Name       = "iisnode for iis 7.x (x64) full"
-#			ProductId  = "6C6CF372-FF11-4E05-B343-6586B3BC41E2"
-			Path       = $stagingFolder + '\' + $iisnode
-			Arguments  = "/passive"
-			ReturnCode = 0
-			DependsOn  = "[xRemoteFile]IISNodeInstaller"
-			LogPath    = $stagingFolder + "\install-2.log"
-		}
-		
 
-
-		xRemoteFile URLReWriteInstaller                   # Install rewerite
+		xRemoteFile URLReWriteInstaller                   # Download rewerite
 		{
 			URI 		    = $SampleAppLocation + '\' + $urlrewrite
 			DestinationPath	=     $stagingFolder + '\' + $urlrewrite
 		}
 
-		Package URLReWriteInstaller
-		{
-			Ensure     = 'Present'
-			Name       = 'IIS URL Rewrite Module 2'
-			ProductId  = "08F0318A-D113-4CF0-993E-50F191D397AD"
-			Path       = $stagingFolder + '\' + $urlrewrite
-			Arguments  = "/passive"
-			ReturnCode = 0
-			DependsOn  = @("[xRemoteFile]URLReWriteInstaller","[WindowsFeature]IIS")
-			LogPath    = $stagingFolder + "\install-3.log"
-		}
-
-
-
-			#	DependsOn                  = @("[xSqlAvailabilityGroup]SqlAG","[xSQLAddListenerIPToDNS]UpdateDNSServer")
-
-
-		
 		xRemoteFile WebContent1
 		{  
 			URI             = $SampleAppLocation + '\' + $webzip1
@@ -117,6 +70,50 @@ Configuration DemoAllComponents
 			URI             = $SampleAppLocation + '\' + $bacpac
 			DestinationPath =     $stagingFolder + '\' + $bacpac
 		}         
+
+
+
+		Package NodeEngineInstaller                        # Install the core Node engine
+		{
+			Ensure     = "Present"
+			Name       = "Node.js"
+			ProductId  = "8434AEA1-1294-47E3-9137-848F546CD824"
+			Path       = $stagingFolder + '\' + $node
+			Arguments  = "/passive"
+			ReturnCode = 0
+			DependsOn  = "[xRemoteFile]NodeEngineInstaller"
+			LogPath    = $stagingFolder + "\install-1.log"
+		}
+
+		Package IISNodeInstaller                           # Install IISNode component
+		{
+			Ensure     = "Present"
+			Name       = "iisnode for iis 7.x (x64) full"
+			ProductId  = "18A31917-64A9-4998-AD54-56CCAEDC0DAB"
+#			Name       = "iisnode for iis 7.x (x64) full"
+#			ProductId  = "6C6CF372-FF11-4E05-B343-6586B3BC41E2"
+			Path       = $stagingFolder + '\' + $iisnode
+			Arguments  = "/passive"
+			ReturnCode = 0
+			DependsOn  = @("[xRemoteFile]IISNodeInstaller","[WindowsFeature]IIS")
+			LogPath    = $stagingFolder + "\install-2.log"
+		}
+
+		Package URLReWriteInstaller                        # Install rewerite
+		{
+			Ensure     = 'Present'
+			Name       = 'IIS URL Rewrite Module 2'
+			ProductId  = "08F0318A-D113-4CF0-993E-50F191D397AD"
+			Path       = $stagingFolder + '\' + $urlrewrite
+			Arguments  = "/passive"
+			ReturnCode = 0
+			DependsOn  = @("[xRemoteFile]URLReWriteInstaller","[WindowsFeature]IIS")
+			LogPath    = $stagingFolder + "\install-3.log"
+		}
+
+
+
+	
 
 
 
@@ -158,39 +155,6 @@ Configuration DemoAllComponents
 
 
 
-
-		xWebsite DisableDefaultSite
-		{  
-			Ensure          = "Present"
-			Name            = "Default Web Site"
-			State           = "Stopped"
-			PhysicalPath    = $wwwrootFolder
-			DependsOn       = "[WindowsFeature]IIS"
-		}  
-
-		xWebsite Fabrikam1
-		{  
-			Ensure          = "Present"
-			Name            = "Sample Application" 
-			State           = "Started"
-			PhysicalPath    =  $wwwrootFolder + '\' + $webzip1.TrimEnd('.zip')
-			DependsOn       = "[Archive]WebContent1"
-		}  
-
-		xWebsite Fabrikam2
-		{  
-			Ensure          = "Present"
-			Name            = "Sample Application2" 
-			State           = "Started"
-			PhysicalPath    = $wwwrootFolder + '\' + $webzip2.TrimEnd('.zip')
-			BindingInfo  = MSFT_xWebBindingInformation 
-				{
-					Protocol = 'HTTP'
-					Port     = 3000
-					HostName = '*'
-				}
-			DependsOn       = "[xWebsite]Fabrikam1"
-		}  
 
 
 
@@ -251,6 +215,46 @@ Configuration DemoAllComponents
 			IncludeAllSubFeature = $true
 			DependsOn            = "[WindowsFeature]IIS"
 		}  
+
+
+
+
+		xWebsite DisableDefaultSite
+		{  
+			Ensure          = "Present"
+			Name            = "Default Web Site"
+			State           = "Stopped"
+			PhysicalPath    = $wwwrootFolder
+			DependsOn       = "[WindowsFeature]IIS"
+		}  
+
+		xWebsite Fabrikam1
+		{  
+			Ensure          = "Present"
+			Name            = "Sample Application" 
+			State           = "Started"
+			PhysicalPath    =  $wwwrootFolder + '\' + $webzip1.TrimEnd('.zip')
+			DependsOn       = "[Archive]WebContent1"
+		}  
+
+		xWebsite Fabrikam2
+		{  
+			Ensure          = "Present"
+			Name            = "Sample Application2" 
+			State           = "Started"
+			PhysicalPath    = $wwwrootFolder + '\' + $webzip2.TrimEnd('.zip')
+			BindingInfo  = MSFT_xWebBindingInformation 
+				{
+					Protocol = 'HTTP'
+					Port     = 3000
+					HostName = '*'
+				}
+			DependsOn       = "[xWebsite]Fabrikam1"
+		}  
+
+
+
+
 	}
 } 
 
