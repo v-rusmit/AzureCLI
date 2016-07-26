@@ -54,19 +54,19 @@ Configuration DemoAllComponents
 			DestinationPath	=     $stagingFolder + '\' + $urlrewrite
 		}
 
-		xRemoteFile WebContent1
+		xRemoteFile WebContent1                            # Download presentation layer of Sample App
 		{  
 			URI             = $SampleAppLocation + '\' + $webzip1
 			DestinationPath =     $stagingFolder + '\' + $webzip1
 		}         
 
-		xRemoteFile WebContent2
+		xRemoteFile WebContent2                            # Download middle tier of Sample App
 		{  
 			URI             = $SampleAppLocation + '\' + $webzip2
 			DestinationPath =     $stagingFolder + '\' + $webzip2
 		}         
 
-		xRemoteFile GetBacpac
+		xRemoteFile GetBacpac                              # Download bacpac of database for SampleApp
 		{  
 			URI             = $SampleAppLocation + '\' + $bacpac
 			DestinationPath =     $stagingFolder + '\' + $bacpac
@@ -119,7 +119,7 @@ Configuration DemoAllComponents
 
 
 
-		Archive WebContent1
+		Archive WebContent1                                # Unzip presentatin layer
 		{  
 			Ensure      = "Present"
 			Path        =  $stagingFolder  + '\' + $webzip1
@@ -127,7 +127,7 @@ Configuration DemoAllComponents
 			DependsOn   = "[xRemoteFile]WebContent1"
 		}         
 
-		Archive WebContent2
+		Archive WebContent2                                # Unzip middle tier
 		{  
 			Ensure      = "Present"
 			Path        = $stagingFolder   + '\' + $webzip2
@@ -138,7 +138,7 @@ Configuration DemoAllComponents
 
 
 
-		xDatabase LoadDB
+		xDatabase LoadDB                                   # Load bacpac, which also creates login for db user
 		{
 			Ensure           = "Present"
 			SqlServer        = "localhost"
@@ -148,14 +148,14 @@ Configuration DemoAllComponents
 			DependsOn        = "[xRemoteFile]GetBacpac"
 		} 
 
-		xDatabaseServer SetMixedMode
+		xDatabaseServer SetMixedMode                       # We need mixed auto mode on SQL
 		{
 			LoginMode        = "Mixed"
 		}  
 
 
 
-		xDatabaseLogin AppCred
+		xDatabaseLogin AppCred                             # We need to set the password for the login (bacpac provides login but no password)
 		{
 			Ensure                  = "Present"
 			LoginName               = "MSFTAzureARM"

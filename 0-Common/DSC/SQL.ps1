@@ -26,16 +26,8 @@ Configuration DemoSQL
 		DestinationPath =     $stagingFolder + '\' + $bacpac
 	}         
 
-	xDatabaseLogin AppCredw4DB
-	{
-		Ensure           = "Present"
-		LoginName        = "sqlbat"
-		LoginPassword    = "Sw!mmingP00l"
-		SqlAuthType      = 'Windows'
-		SqlServer        = "localhost"
-	} 
 
-	xDatabase LoadDB
+	xDatabase LoadDB                                   # Load bacpac, which also creates login for db user
 	{
 		Ensure           = "Present"
 		SqlServer        = "localhost"
@@ -44,4 +36,23 @@ Configuration DemoSQL
 		DatabaseName     = 'FabrikamFiber'
 		DependsOn        = "[xRemoteFile]GetBacpac"
 	} 
+
+	xDatabaseServer SetMixedMode                       # We need mixed auto mode on SQL
+	{
+		LoginMode        = "Mixed"
+	}  
+
+
+
+	xDatabaseLogin AppCred                             # We need to set the password for the login (bacpac provides login but no password)
+	{
+		Ensure                  = "Present"
+		LoginName               = "MSFTAzureARM"
+		LoginPassword           = "rQ53uUn3rm"
+		SQLAuthType             = "Windows"
+		SQLServer               = "localhost"
+		DependsOn               = "[xDatabase]LoadDB"
+	} 
+
+
 } 

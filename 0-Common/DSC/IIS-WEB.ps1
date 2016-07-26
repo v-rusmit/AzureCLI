@@ -34,13 +34,13 @@ Configuration DemoIIS
 			DestinationPath =     $stagingFolder + '\' + $webzip1
 		}         
 
-		Archive WebContent1
+		Archive WebContent1                                # Unzip presentatin layer
 		{  
 			Ensure      = "Present"
-			Path        = $stagingFolder + '\' + $webzip1
-			Destination = "$wwwrootFolder"
+			Path        =  $stagingFolder  + '\' + $webzip1
+			Destination = "$wwwrootFolder" + '\' + $webzip1.TrimEnd('.zip')
 			DependsOn   = "[xRemoteFile]WebContent1"
-		}         
+		}      
 
 
 
