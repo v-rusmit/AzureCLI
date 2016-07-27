@@ -40,7 +40,7 @@ New-AzureRmResourceGroupDeployment -ResourceGroupName YourResourceGroup3 -Templa
 ### CLI
 ```
 azure group create            -n "YourResourceGroup3" -l "Central US"
-azure group deployment create -g "YourResourceGroup3" -f "https://raw.githubusercontent.com/ValoremConsulting/AzureCLI/master/3-nTier/Templates/azuredeployGitHub.json"
+azure group deployment create -g "YourResourceGroup3" -f "https://raw.githubusercontent.com/ValoremConsulting/AzureCLI/master/3-nTier/Templates/azuredeployGitHub.json" -p "{\"deploySwitch\":{\"value\":1}}"
 
 ```
 [Install and Configure the Azure Cross-Platform Command-Line Interface](https://azure.microsoft.com/en-us/documentation/articles/xplat-cli-install/)
