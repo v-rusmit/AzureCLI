@@ -107,7 +107,7 @@ Configuration DemoIIS
 	{  
 		Ensure      = "Present"
 		Path        = $stagingFolder + '\' + $webzip2
-		Destination = "$wwwrootFolder"
+		Destination = $wwwrootFolder + '\' + $webzip2.TrimEnd('.zip')
 		DependsOn   = "[xRemoteFile]WebContent2"
 	} 
 

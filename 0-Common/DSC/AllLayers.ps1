@@ -122,16 +122,16 @@ Configuration DemoAllComponents
 		Archive WebContent1                                # Unzip presentatin layer
 		{  
 			Ensure      = "Present"
-			Path        =  $stagingFolder  + '\' + $webzip1
-			Destination = "$wwwrootFolder" + '\' + $webzip1.TrimEnd('.zip')
+			Path        = $stagingFolder + '\' + $webzip1
+			Destination = $wwwrootFolder + '\' + $webzip1.TrimEnd('.zip')
 			DependsOn   = "[xRemoteFile]WebContent1"
 		}         
 
 		Archive WebContent2                                # Unzip middle tier
 		{  
 			Ensure      = "Present"
-			Path        = $stagingFolder   + '\' + $webzip2
-			Destination = "$wwwrootFolder" 
+			Path        = $stagingFolder + '\' + $webzip2
+			Destination = $wwwrootFolder + '\' + $webzip2.TrimEnd('.zip')
 			DependsOn   = "[xRemoteFile]WebContent2"
 		}         
 		
