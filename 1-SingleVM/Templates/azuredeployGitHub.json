@@ -6,9 +6,8 @@
         "deploySwitch":               { "type": "int",    "defaultValue": 0,       "allowedValues": [ 0,1 ],                  "metadata": { "description": "Deploy infrastructure only (0) or infrastructure and the Sample App (1)"                         } },
         "appName":                    { "type": "string", "defaultValue": "myapp",                                            "metadata": { "description": "Name of Application"                                                                             } },
         "appEnvironment":             { "type": "string", "defaultValue": "dev",   "allowedValues": [ "dev", "qa", "prod" ],  "metadata": { "description": "Environment for Application"                                                                     } },
-        "username":                   { "type": "string",       "defaultValue": "demoUser",                                   "metadata": { "description": "Username for the Virtual Machine."                                                               } },
+        "username":                   { "type": "string",       "defaultValue": "AzureAdmin",                                 "metadata": { "description": "Username for the Virtual Machine."                                                               } },
         "password":                   { "type": "securestring", "defaultValue": "Sw!mmingP00l",                               "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } },
-        "domain":                     { "type": "string",       "defaultValue": "Contoso.com",                                "metadata": { "description": "The default domain."                                                                             } },
         "GitHubAccount":              { "type": "string",       "defaultValue": "ValoremConsulting",                          "metadata": { "description": "The GitHub account that is hosting the Template files"                                           } },
         "GitHubBranch":               { "type": "string",       "defaultValue": "master",                                     "metadata": { "description": "The GitHub account that is hosting the Template files"                                           } }   
     },
@@ -22,7 +21,7 @@
             "artifactsLocation":         "[uri(concat('https://raw.githubusercontent.com/', parameters('GitHubAccount') ,'/AzureCLI/', parameters('GitHubBranch'), '/1-SingleVM/Templates'), '') ]",
             "defaultUsername":           "[    parameters('username')                                    ]",
             "defaultPassword":           "[    parameters('password')                                    ]",
-            "domain":                    "[    parameters('domain')                                      ]"
+            "domain":                    "NotUsedInThisProject"
         },
 
           "diskStorageAccountName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'disk'))]",

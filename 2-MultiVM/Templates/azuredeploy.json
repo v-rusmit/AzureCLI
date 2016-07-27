@@ -9,9 +9,9 @@
         "instanceCount":              { "type": "int",    "defaultValue": 2,                                                  "metadata": { "description": "Number of Instances to create"                                                                   } },
         "_artifactsLocation":         { "type": "string",                                                                     "metadata": { "description": "Auto-generated container in staging storage account to receive post-build staging folder upload" } },
 //      "_artifactsLocationSasToken": { "type": "securestring",                                                               "metadata": { "description": "Auto-generated token to access _artifactsLocation"                                               } },
-        "username":                   { "type": "string",       "defaultValue": "demoUser",                                   "metadata": { "description": "Username for the Virtual Machine."                                                               } },
-        "password":                   { "type": "securestring", "defaultValue": "P@ssw0rd1234",                               "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } },
-        "domain":                     { "type": "string",       "defaultValue": "DomainOrDie.biz",                            "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } }
+        "username":                   { "type": "string",       "defaultValue": "generic",                                    "metadata": { "description": "Username for the Virtual Machine."                                                               } },
+        "password":                   { "type": "securestring", "defaultValue": "generic",                                    "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } },
+        "domain":                     { "type": "string",       "defaultValue": "generic",                                    "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } }
      },
 
 

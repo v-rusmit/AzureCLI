@@ -7,9 +7,8 @@
         "appName":                    { "type": "string", "defaultValue": "myapp",                                            "metadata": { "description": "Name of Application"                                                                             } },
         "appEnvironment":             { "type": "string", "defaultValue": "dev",   "allowedValues": [ "dev", "qa", "prod" ],  "metadata": { "description": "Environment for Application"                                                                     } },
         "instanceCount":              { "type": "int",    "defaultValue": 2,                                                  "metadata": { "description": "Number of Instances to create"                                                                   } },
-        "username":                   { "type": "string",       "defaultValue": "demoUser",                                   "metadata": { "description": "Username for the Virtual Machine."                                                               } },
-        "password":                   { "type": "securestring", "defaultValue": "P@ssw0rd1234",                               "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } },
-        "domain":                     { "type": "string",       "defaultValue": "DomainOrDie.biz",                            "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } },
+        "username":                   { "type": "string",       "defaultValue": "AzureAdmin",                                 "metadata": { "description": "Username for the Virtual Machine."                                                               } },
+        "password":                   { "type": "securestring", "defaultValue": "Sw!mmingP00l",                               "metadata": { "description": "Passw0rd for the Virtual Machine."                                                               } },
         "GitHubAccount":              { "type": "string",       "defaultValue": "ValoremConsulting",                          "metadata": { "description": "The GitHub account that is hosting the Template files"                                           } },   
         "GitHubBranch":               { "type": "string",       "defaultValue": "master",                                     "metadata": { "description": "The GitHub account that is hosting the Template files"                                     } }   
     },
@@ -24,7 +23,7 @@
             "artifactsLocation":         "[uri(concat('https://raw.githubusercontent.com/', parameters('GitHubAccount') ,'/AzureCLI/', parameters('GitHubBranch'), '/2-MultiVM/Templates'), '') ]",
             "defaultUsername":           "[    parameters('username') ]",
             "defaultPassword":           "[    parameters('password') ]",
-            "domain":                    "[    parameters('domain')   ]"
+            "domain":                    "NotUsedInThisProject"
         },
 
         "diskStorageAccountName": "[concat(parameters('appName'), uniqueString(resourceGroup().id,'disk'))]",
