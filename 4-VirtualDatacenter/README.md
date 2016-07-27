@@ -72,7 +72,7 @@ New-AzureRmResourceGroupDeployment -ResourceGroupName YOURRESOURCEGROUPVDC –Te
 ### CLI
 ```
 1. azure group create            -n "YourResourceGroupHN" -l "Central US"
-2. azure group deployment create -g "YourResourceGroupHN" -f https://raw.githubusercontent.com/ValoremConsulting/AzureCLI/master/5-HybirdNetwork/Templates/azuredeployGitHub.json”
+2. azure group deployment create -g "YourResourceGroupHN" -f https://raw.githubusercontent.com/ValoremConsulting/AzureCLI/master/5-HybirdNetwork/Templates/azuredeployGitHub.json” -p "{\"deploySwitch\":{\"value\":1}}"
 
 ```
 [Install and Configure the Azure Cross-Platform Command-Line Interface](https://azure.microsoft.com/en-us/documentation/articles/xplat-cli-install/)
