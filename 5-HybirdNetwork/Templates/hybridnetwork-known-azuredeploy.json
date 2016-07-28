@@ -24,6 +24,7 @@
                     "commonSettings":     { "value": "[parameters('commonSettings')]"                              },
                       "loadBalancerName": { "value": "[parameters(  'loadBalancerParameters').loadBalancerName]"   },
                       "privateIPAddress": { "value": "[parameters(  'loadBalancerParameters').loadBalancerIP]"     },
+                            "portNumber": { "value": "8000"                                                           },
                     "virtualNetworkName": { "value": "[parameters('virtualNetworkParameters').virtualNetworkName]" },
                             "subnetName": { "value": "[parameters('virtualNetworkParameters').subnet1Name]"        }
                 }

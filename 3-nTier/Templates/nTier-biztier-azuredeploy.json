@@ -28,6 +28,7 @@
                     "commonSettings":     { "value": "[parameters('commonSettings')]"                                 },
                       "loadBalancerName": { "value": "[parameters(  'loadBalancerName')]"                             },
                       "privateIPAddress": { "value": "[parameters('virtualNetworkParameters').bizPrivateIPAddress]"   },
+                            "portNumber": { "value": "3000"                                                           },
                     "virtualNetworkName": { "value": "[parameters('virtualNetworkParameters').virtualNetworkName]"    },
                             "subnetName": { "value": "[parameters('virtualNetworkParameters').bizSubnetName]"         }
                 }

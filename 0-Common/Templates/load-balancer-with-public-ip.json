@@ -69,7 +69,7 @@
                         "properties": {
                             "protocol": "tcp",
                             "port": 80,
-//                          "requestPath": "myprobeapp1/myprobe1.svc",  // the requestPath value is required when protocl=http
+//                          "requestPath": "myprobeapp1/myprobe1.svc",  // the requestPath value is required when protocol=http
                             "intervalInSeconds": 5,
                             "numberOfProbes": 2
                         }

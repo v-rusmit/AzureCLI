@@ -6,6 +6,7 @@
         "commonSettings":     { "type": "object", "metadata": { "description": "Common API values"                     } },
           "loadBalancerName": { "type": "string", "metadata": { "description": "This is the name of the load balancer" } },
           "privateIPAddress": { "type": "string", "metadata": { "description": "This is the actual private IP Address" } },
+                "portNumber": { "type": "string", "metadata": { "description": "Port number to balance"                } },
         "virtualNetworkName": { "type": "string", "metadata": { "description": "Name of the Virtual Network."          } },
                 "subnetName": { "type": "string", "metadata": { "description": "Name of the subnet."                   } }
   },
@@ -19,7 +20,8 @@
         "lbID": "[resourceId('Microsoft.Network/loadBalancers',          parameters(       'loadBalancerName'))]",
         "feID": "[concat(variables('lbID'),'/frontendIPConfigurations/', variables('loadBalancerFrontEndName'))]",
         "beID": "[concat(variables('lbID'),'/backendAddressPools/',      variables( 'loadBalancerBackEndName'))]",
-        "prID": "[concat(variables('lbID'),'/probes/',                   variables(   'loadBalancerProbeName'))]"
+        "prID1":"[concat(variables('lbID'),'/probes/',            concat(variables(   'loadBalancerProbeName'),80                      ))]",
+        "prID2":"[concat(variables('lbID'),'/probes/',            concat(variables(   'loadBalancerProbeName'),parameters('portNumber')))]"
     },
    
     "resources": [
@@ -45,11 +47,21 @@
 
                 "probes": [
                     {
-                        "name": "[variables('loadBalancerProbeName')]",
+                        "name": "[concat(variables('loadBalancerProbeName'),80)]",
                         "properties": {
-                            "protocol": "Http",
+                            "protocol": "tcp",
                             "port": 80,
-                            "requestPath": "myprobeapp1/myprobe1.svc",
+//                          "requestPath": "myprobeapp1/myprobe1.svc",// the requestPath value is required when protocol=http
+                            "intervalInSeconds": 5,
+                            "numberOfProbes": 2
+                        }
+                    },
+                    {
+                        "name": "[concat(variables('loadBalancerProbeName'),parameters('portNumber'))]",
+                        "properties": {
+                            "protocol": "tcp",
+                            "port": parameters('portNumber'),
+//                          "requestPath": "myprobeapp1/myprobe1.svc",// the requestPath value is required when protocol=http
                             "intervalInSeconds": 5,
                             "numberOfProbes": 2
                         }
@@ -60,12 +72,23 @@
                     {
                         "name": "[concat(parameters('loadBalancerName'), '-rule-http')]",
                         "properties": {
-                            "frontendIPConfiguration": { "id": "[variables('feID')]" },
-                            "backendAddressPool": { "id": "[variables('beID')]" },
-                            "probe": { "id": "[variables('prID')]" },
-                            "protocol": "Tcp",
-                            "frontendPort": 80,
-                            "backendPort": 80
+                            "frontendIPConfiguration": { "id": "[variables('feID')]"  },
+                            "backendAddressPool":      { "id": "[variables('beID')]"  },
+                            "probe":                   { "id": "[variables('prID1')]" },
+                            "protocol":                "Tcp",
+                            "frontendPort":            80,
+                            "backendPort":             80
+                        }
+                    },
+                    {
+                        "name": "[concat(parameters('loadBalancerName'),'-rule-',parameters('portNumber'))]",
+                        "properties": {
+                            "frontendIPConfiguration": { "id": "[variables('feID')]"  },
+                            "backendAddressPool":      { "id": "[variables('beID')]"  },
+                            "probe":                   { "id": "[variables('prID2')]" },
+                            "protocol":                "Tcp",
+                            "frontendPort":            "[parameters('portNumber')]",
+                            "backendPort":             "[parameters('portNumber')]"
                         }
                     }
                 ]

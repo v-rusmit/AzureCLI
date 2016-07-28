@@ -46,6 +46,7 @@
                     "commonSettings":     { "value": "[parameters('commonSettings')]"                                },
                       "loadBalancerName": { "value": "[parameters('loadBalancerName')]"                              },
                       "privateIPAddress": { "value": "[parameters('virtualNetworkParameters').sqlprivateIPAddress]"  },
+                            "portNumber": { "value": "1433"                                                          },
                     "virtualNetworkName": { "value": "[parameters('virtualNetworkParameters').virtualNetworkName]"   },
                             "subnetName": { "value": "[parameters('virtualNetworkParameters').sqlSubnetName]"        }
                 }
@@ -97,9 +98,9 @@
 
 				"parameters": {
 					"commonSettings": { "value": "[       parameters('commonSettings') ]" },
-					"vmName": { "value": "[concat(parameters('vmName'),0)      ]" },
-					"scriptName": { "value": "SQL1.ps1" },
-					"configName": { "value": "DemoSQL" }
+					"vmName":         { "value": "[concat(parameters('vmName'),0)      ]" },
+					"scriptName":     { "value": "SQL1.ps1" },
+					"configName":     { "value": "DemoSQL" }
 				}
 			}
 		}
