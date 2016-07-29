@@ -74,8 +74,6 @@ Configuration DemoIIS
 			Ensure     = "Present"
 			Name       = "iisnode for iis 7.x (x64) full"
 			ProductId  = "18A31917-64A9-4998-AD54-56CCAEDC0DAB"
-	#			Name       = "iisnode for iis 7.x (x64) full"
-	#			ProductId  = "6C6CF372-FF11-4E05-B343-6586B3BC41E2"
 			Path       = $stagingFolder + '\' + $iisnode
 			Arguments  = "/passive"
 			ReturnCode = 0

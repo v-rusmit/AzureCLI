@@ -229,6 +229,33 @@
                                     "vmName":   { "value": "[parameters(            'mgmtVmName')]"    }
                 }
             }
-        }
-    ]
+        },
+    
+
+    
+		{
+			"name": "[concat(copyIndex(),'provision-ServiceTierA')]",  //fyi service tier B is not provisioned
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "[parameters('commonSettings').resourceApiVersion]",
+
+			"copy": { "name": "provisionAcopy", "count": "[parameters('staInstanceCount')]" },
+
+			"dependsOn": [ "Microsoft.Resources/deployments/serviceTier-A" ],
+
+			"properties": {
+				"mode": "incremental",
+				"templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/applyDSC',parameters('commonSettings').deploySwitch,'.json')]" },
+
+				"parameters": {
+					"commonSettings": { "value": "[       parameters('commonSettings')         ]" },
+					"vmName":         { "value": "[concat(parameters('staVmName'),copyIndex()) ]" },
+					"scriptName":     { "value": "IIS-WEB-BIZ.ps1"                                },
+					"configName":     { "value": "DemoIIS"                                        }
+				}
+			}
+		}
+    
+    
+    
+	]
 }

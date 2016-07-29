@@ -41,7 +41,7 @@
     <None Include="Templates\vdc-sqltier-azuredeploy.json" />
     <None Include="Templates\vdc-dmztier-azuredeploy.json" />
     <None Include="Templates\vdc-known-vmloop-linux-lb-azuredeploy.json" />
-    <None Include="Templates\vdc-known-vmloop-nolb-azuredeploy.json" />
+    <None Include="Templates\vdc-known-vmloop-lb-sql-azuredeploy.json" />
     <None Include="Templates\vdc-known-vmloop-lb-azuredeploy.json" />
     <None Include="Templates\vdc-known-azuredeploy.json" />
     <None Include="Templates\vdc-biztier-azuredeploy.json" />

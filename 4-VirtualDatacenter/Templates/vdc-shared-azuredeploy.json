@@ -64,32 +64,21 @@
             "properties": {
                 "securityRules": [
                     {
-                        "name": "RDP",
+                        "name": "RDP-Outside",
                         "properties": {
                             "description": "Allow RDP for admins only",
                             "priority": 100, "access": "Allow", "direction": "Inbound", "protocol": "Tcp",
                             "sourceAddressPrefix": "[parameters('virtualNetworkParameters').adminAccessRange]",
                             "sourcePortRange":  "*",
-                            "destinationAddressPrefix": "*",
+                            "destinationAddressPrefix": "[parameters('virtualNetworkParameters').mgmtSubnetRange]",
                             "destinationPortRange": "3389"
                         }
                     },
                     {
-                        "name": "insideDMZ",
-                        "properties": {
-                            "description": "Allow full access from private side of DMZ",
-                            "priority": 110, "access": "Allow","direction": "Inbound", "protocol": "Tcp",
-                            "sourceAddressPrefix": "[parameters('virtualNetworkParameters').dmzPrivateSubnetRange]",
-                            "sourcePortRange": "*",
-                            "destinationAddressPrefix": "*",
-                            "destinationPortRange": "*"
-                        }
-                    },
-                    {
-                        "name": "Mgmt",
+                        "name": "RDP-Inside",
                         "properties": {
                             "description": "Allow full access from mgmt tier",
-                            "priority": 120, "access": "Allow", "direction": "Inbound", "protocol": "Tcp",
+                            "priority": 101, "access": "Allow", "direction": "Inbound", "protocol": "Tcp",
                             "sourceAddressPrefix": "[parameters('virtualNetworkParameters').mgmtSubnetRange]",
                             "sourcePortRange": "*",
                             "destinationAddressPrefix": "*",
@@ -97,25 +86,58 @@
                         }
                     },
                     {
-                        "name": "DMZ-A",
+                        "name": "insideDMZ-A",
                         "properties": {
-                            "description": "Allow full access from service tiers",
-                            "priority": 130, "access": "Allow", "direction": "Inbound", "protocol": "Tcp",
-                            "sourceAddressPrefix": "[parameters('virtualNetworkParameters').staSubnetRange]",
+                            "description": "Allow full access from private side of DMZ",
+                            "priority": 110, "access": "Allow","direction": "Inbound", "protocol": "Tcp",
+                            "sourceAddressPrefix": "[parameters('virtualNetworkParameters').dmzPrivateSubnetRange]",
                             "sourcePortRange": "*",
-                            "destinationAddressPrefix": "*",
+                            "destinationAddressPrefix": "[parameters('virtualNetworkParameters').staSubnetRange]",
                             "destinationPortRange": "*"
                         }
                     },
                     {
-                        "name": "DMZ-B",
+                        "name": "insideDMZ-B",
+                        "properties": {
+                            "description": "Allow full access from private side of DMZ",
+                            "priority": 111, "access": "Allow","direction": "Inbound", "protocol": "Tcp",
+                            "sourceAddressPrefix": "[parameters('virtualNetworkParameters').dmzPrivateSubnetRange]",
+                            "sourcePortRange": "*",
+                            "destinationAddressPrefix": "[parameters('virtualNetworkParameters').stbSubnetRange]",
+                            "destinationPortRange": "*"
+                        }
+                    },
+                    {
+                        "name": "ST-A",
                         "properties": {
                             "description": "Allow full access from service tiers",
-                            "priority": 140, "access": "Allow", "direction": "Inbound", "protocol": "Tcp",
+                            "priority": 120, "access": "Allow", "direction": "Inbound", "protocol": "Tcp",
+                            "sourceAddressPrefix": "[parameters('virtualNetworkParameters').staSubnetRange]",
+                            "sourcePortRange": "*",
+                            "destinationAddressPrefix": "[parameters('virtualNetworkParameters').sqlSubnetRange]",
+                            "destinationPortRange": "*"
+                        }
+                    },
+                    {
+                        "name": "ST-B",
+                        "properties": {
+                            "description": "Allow full access from service tiers",
+                            "priority": 121, "access": "Allow", "direction": "Inbound", "protocol": "Tcp",
                             "sourceAddressPrefix": "[parameters('virtualNetworkParameters').stbSubnetRange]",
                             "sourcePortRange": "*",
-                            "destinationPortRange": "*",
-                            "destinationAddressPrefix": "*"
+                            "destinationAddressPrefix": "[parameters('virtualNetworkParameters').sqlSubnetRange]",
+                            "destinationPortRange": "*"
+                        }
+                    },
+                    {
+                        "name": "AD",
+                        "properties": {
+                            "description": "Allow full access from service tiers",
+                            "priority": 130, "access": "Allow", "direction": "Inbound", "protocol": "Tcp",
+                            "sourceAddressPrefix": "*",
+                            "sourcePortRange": "*",
+                            "destinationAddressPrefix": "[parameters('virtualNetworkParameters').adSubnetRange]",
+                            "destinationPortRange": "*"
                         }
                     }
                 ]

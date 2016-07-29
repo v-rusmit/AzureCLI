@@ -32,15 +32,41 @@ Configuration DemoIIS
 			RebootNodeIfNeeded = $true
 		}
 		
-
-
-		xRemoteFile NodeEngineInstaller                    # Install the core Node engine
+		xRemoteFile NodeEngineInstaller                    # Download the core Node engine
 		{
 			URI 		    = $SampleAppLocation + '\' + $node
 			DestinationPath	=     $stagingFolder + '\' + $node
 		}
 
-		Package NodeEngineInstaller
+		xRemoteFile IISNodeInstaller                       # Download IISNode component
+		{
+			URI 		    = $SampleAppLocation + '\' + $iisnode
+			DestinationPath	=     $stagingFolder + '\' + $iisnode
+		}
+
+		xRemoteFile URLReWriteInstaller                   # Download rewerite
+		{
+			URI 		    = $SampleAppLocation + '\' + $urlrewrite
+			DestinationPath	=     $stagingFolder + '\' + $urlrewrite
+			}
+
+		xRemoteFile WebContent1                            # Download presentation layer of Sample App
+		{  
+			URI             = $SampleAppLocation + '\' + $webzip1
+			DestinationPath =     $stagingFolder + '\' + $webzip1
+		}         
+
+		xRemoteFile WebContent2                            # Download middle tier of Sample App
+		{  
+			URI             = $SampleAppLocation + '\' + $webzip2
+			DestinationPath =     $stagingFolder + '\' + $webzip2
+		}         
+
+
+
+
+
+		Package NodeEngineInstaller                        # Install the core Node engine
 		{
 			Ensure     = "Present"
 			Name       = "Node.js"
@@ -49,110 +75,60 @@ Configuration DemoIIS
 			Arguments  = "/passive"
 			ReturnCode = 0
 			DependsOn  = "[xRemoteFile]NodeEngineInstaller"
-			LogPath = $stagingFolder + "\install.log"
+			LogPath    = $stagingFolder + "\install-1.log"
 		}
-		
 
-
-		xRemoteFile IISNodeInstaller                       # Install some other Node component
-		{
-			URI 		    = $SampleAppLocation + '\' + $iisnode
-			DestinationPath	=     $stagingFolder + '\' + $iisnode
-		}
-		Package IISNodeInstaller
+		Package IISNodeInstaller                           # Install IISNode component
 		{
 			Ensure     = "Present"
 			Name       = "iisnode for iis 7.x (x64) full"
 			ProductId  = "18A31917-64A9-4998-AD54-56CCAEDC0DAB"
-#			Name       = "iisnode for iis 7.x (x64) full"
-#			ProductId  = "6C6CF372-FF11-4E05-B343-6586B3BC41E2"
 			Path       = $stagingFolder + '\' + $iisnode
 			Arguments  = "/passive"
 			ReturnCode = 0
-			DependsOn  = "[xRemoteFile]IISNodeInstaller"
-			LogPath = $stagingFolder + "\install.log"
-		}
-		
-
-
-		xRemoteFile URLReWriteInstaller                   # Install rewerite
-		{
-			URI 		    = $SampleAppLocation + '\' + $urlrewrite
-			DestinationPath	=     $stagingFolder + '\' + $urlrewrite
+			DependsOn  = @("[xRemoteFile]IISNodeInstaller","[WindowsFeature]IIS")
+			LogPath    = $stagingFolder + "\install-2.log"
 		}
 
-		Package URLReWriteInstaller
+		Package URLReWriteInstaller                        # Install rewerite
 		{
-			Ensure = 'Present'
-			Name   = 'IIS URL Rewrite Module 2'
-			Path   = $stagingFolder + '\' + $urlrewrite
-			ProductId = "08F0318A-D113-4CF0-993E-50F191D397AD"
-			DependsOn = "[xRemoteFile]URLReWriteInstaller"
-	}
+			Ensure     = 'Present'
+			Name       = 'IIS URL Rewrite Module 2'
+			ProductId  = "08F0318A-D113-4CF0-993E-50F191D397AD"
+			Path       = $stagingFolder + '\' + $urlrewrite
+			Arguments  = "/passive"
+			ReturnCode = 0
+			DependsOn  = @("[xRemoteFile]URLReWriteInstaller","[WindowsFeature]IIS")
+			LogPath    = $stagingFolder + "\install-3.log"
+		}
 
 
 
 
-		xRemoteFile WebContent1
-		{  
-			URI             = $SampleAppLocation + '\' + $webzip1
-			DestinationPath =     $stagingFolder + '\' + $webzip1
-		}         
-
-		xRemoteFile WebContent2
-		{  
-			URI             = $SampleAppLocation + '\' + $webzip2
-			DestinationPath =     $stagingFolder + '\' + $webzip2
-		}         
-
-		Archive WebContent1
+		Archive WebContent1                                # Unzip presentatin layer
 		{  
 			Ensure      = "Present"
 			Path        = $stagingFolder + '\' + $webzip1
-			Destination = "$wwwrootFolder"
+			Destination = $wwwrootFolder + '\' + $webzip1.TrimEnd('.zip')
 			DependsOn   = "[xRemoteFile]WebContent1"
 		}         
 
-		Archive WebContent2
+		Archive WebContent2                                # Unzip middle tier
 		{  
 			Ensure      = "Present"
 			Path        = $stagingFolder + '\' + $webzip2
-			Destination = "$wwwrootFolder"
+			Destination = $wwwrootFolder + '\' + $webzip2.TrimEnd('.zip')
 			DependsOn   = "[xRemoteFile]WebContent2"
 		}         
+		
+		xRemoteFile WebContent2Fix                         # Special file for db IP address
 
-		xWebsite DisableDefaultSite
 		{  
-			Ensure          = "Present"
-			Name            = "Default Web Site"
-			State           = "Stopped"
-			PhysicalPath    = $wwwrootFolder
-			DependsOn       = "[WindowsFeature]IIS"
-		}  
+			URI             = $SampleAppLocation + '\'      + 'VDC-dbConfig.js'
+			DestinationPath = $wwwrootFolder2    + '\data\' +     'dbConfig.js'
+			DependsOn       = "[Archive]WebContent2"
+		}         
 
-		xWebsite Fabrikam1
-		{  
-			Ensure          = "Present"
-			Name            = "Sample Application" 
-			State           = "Started"
-			PhysicalPath    =  $wwwrootFolder + '\' + $webzip1.TrimEnd('.zip')
-			DependsOn       = "[Archive]WebContent1"
-		}  
-
-		xWebsite Fabrikam2
-		{  
-			Ensure          = "Present"
-			Name            = "Sample Application2" 
-			State           = "Started"
-			PhysicalPath    = $wwwrootFolder + '\' + $webzip2.TrimEnd('.zip')
-			BindingInfo  = MSFT_xWebBindingInformation 
-				{
-					Protocol = 'HTTP'
-					Port     = 3000
-					HostName = '*'
-				}
-			DependsOn       = "[xWebsite]Fabrikam1"
-		}  
 
 		WindowsFeature IIS
 		{
@@ -209,6 +185,44 @@ Configuration DemoIIS
 			Ensure               = "Present"
 			IncludeAllSubFeature = $true
 			DependsOn            = "[WindowsFeature]IIS"
+		}  
+
+
+
+
+
+
+		xWebsite DisableDefaultSite
+		{  
+			Ensure          = "Present"
+			Name            = "Default Web Site"
+			State           = "Stopped"
+			PhysicalPath    = $wwwrootFolder
+			DependsOn       = "[WindowsFeature]IIS"
+		}  
+
+		xWebsite Fabrikam1
+		{  
+			Ensure          = "Present"
+			Name            = "Sample Application" 
+			State           = "Started"
+			PhysicalPath    =  $wwwrootFolder + '\' + $webzip1.TrimEnd('.zip')
+			DependsOn       = "[Archive]WebContent1"
+		}  
+
+		xWebsite Fabrikam2
+		{  
+			Ensure          = "Present"
+			Name            = "Sample Application2" 
+			State           = "Started"
+			PhysicalPath    = $wwwrootFolder + '\' + $webzip2.TrimEnd('.zip')
+			BindingInfo  = MSFT_xWebBindingInformation 
+				{
+					Protocol = 'HTTP'
+					Port     = 3000
+					HostName = '*'
+				}
+			DependsOn       = "[xWebsite]Fabrikam1"
 		}  
 	}
 } 

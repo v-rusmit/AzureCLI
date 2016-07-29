@@ -3,14 +3,15 @@
     "contentVersion": "1.0.0.0",
 
     "parameters": {
-        "commonSettings":         { "type": "object",                               "metadata": { "description": "Common API values"                                    } },
-              "virtualNetworkName": { "type": "string",                                "metadata": { "description": "Name of Virtual Network"                           } },
-                      "subnetName": { "type": "string",                                "metadata": { "description": "Name of first/only subnet"                         } },
-             "availabilitySetName": { "type": "string"                                                                                                                    },
-          "diskStorageAccountName": { "type": "string",                                "metadata": { "description": "Name of storage account for VHD's"                 } },
-          "diagStorageAccountName": { "type": "string",                                "metadata": { "description": "Name of storage account for diagnostics"           } },
-                       "thisIndex": { "type": "int",                                   "metadata": { "description": "Index Number (of a loop)"                          } },
-                          "vmName": { "type": "string",                                "metadata": { "description": "Name of the virtual machine."                      } }
+        "commonSettings":         { "type": "object",    "metadata": { "description": "Common API values"                                 } },
+              "virtualNetworkName": { "type": "string",  "metadata": { "description": "Name of Virtual Network"                           } },
+                      "subnetName": { "type": "string",  "metadata": { "description": "Name of first/only subnet"                         } },
+             "availabilitySetName": { "type": "string"                                                                                      },
+                "loadBalancerName": { "type": "string",  "metadata": { "description": "This is the name of the load balancer"             } },
+          "diskStorageAccountName": { "type": "string",  "metadata": { "description": "Name of storage account for VHD's"                 } },
+          "diagStorageAccountName": { "type": "string",  "metadata": { "description": "Name of storage account for diagnostics"           } },
+                       "thisIndex": { "type": "int",     "metadata": { "description": "Index Number (of a loop)"                          } },
+                          "vmName": { "type": "string",  "metadata": { "description": "Name of the virtual machine."                      } }
     },
 
     "variables": { "nicName": "[concat(parameters('vmName'), '-nic0')]" },
@@ -41,13 +42,15 @@
    
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/nic.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').commonLocation,'/nic-inside-load-balancer.json')]" },
 
                 "parameters": {
                     "commonSettings":     { "value": "[parameters('commonSettings')]"     },
                                "nicName": { "value": "[ variables(           'nicName')]" },
+                      "loadBalancerName": { "value": "[parameters(  'loadBalancerName')]" },
                     "virtualNetworkName": { "value": "[parameters('virtualNetworkName')]" },
-                            "subnetName": { "value": "[parameters(        'subnetName')]" }
+                            "subnetName": { "value": "[parameters(        'subnetName')]" },
+                             "thisIndex": { "value": "[parameters(         'thisIndex')]" }
                 }
             }
         },
@@ -71,7 +74,7 @@
                 "parameters": {
                     "commonSettings":         { "value": "[parameters('commonSettings')]"         },
                                     "vmName": { "value": "[parameters(                'vmName')]" },
-                    "diskStorageAccountName": { "value": "[parameters('diskStorageAccountName')]" },
+					"diskStorageAccountName": { "value": "[parameters('diskStorageAccountName')]" },
                     "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]" },        
                                    "nicName": { "value": "[ variables(               'nicName')]" },
                        "availabilitySetName": { "value": "[parameters(   'availabilitySetName')]" }

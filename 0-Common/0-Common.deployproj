@@ -387,10 +387,12 @@
     <None Include="SampleApp\iisnode-full-iis7-v0.2.2-x64.msi" />
     <None Include="SampleApp\node-v4.4.7-x64.msi" />
     <None Include="SampleApp\rewrite_amd64.msi" />
+    <None Include="SampleApp\VDC-dbConfig.js" />
     <None Include="Templates\applyDSC0.json" />
     <None Include="Templates\availability-set.json" />
     <None Include="Templates\azuredeploy.json" />
     <None Include="Templates\azuredeploy.parameters.json" />
+    <None Include="Templates\barracudavm-waf.json" />
     <None Include="Templates\config.psd1" />
     <None Include="Templates\FabrikamFiber.API.Ntier.zip" />
     <None Include="Templates\FabrikamFiber.API.zip" />

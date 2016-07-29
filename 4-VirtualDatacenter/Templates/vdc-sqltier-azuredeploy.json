@@ -69,13 +69,14 @@
 
             "properties": {
                 "mode": "incremental",
-                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/vdc-known-vmloop-nolb-azuredeploy.json')]" },
+                "templateLink": { "uri": "[concat(parameters('commonSettings').artifactsLocation,'/vdc-known-vmloop-lb-sql-azuredeploy.json')]" },
 
                 "parameters": {
                     "commonSettings":         { "value": "[parameters('commonSettings')]"                              },
                         "virtualNetworkName": { "value": "[parameters('virtualNetworkParameters').virtualNetworkName]" },
                                 "subnetName": { "value": "[parameters('virtualNetworkParameters').sqlSubnetName]"      },
-                       "availabilitySetName": { "value": "[parameters(   'availabilitySetName')]"                      },
+                       "availabilitySetName": { "value": "[parameters('availabilitySetName')]"                         },
+					      "loadBalancerName": { "value": "[parameters('loadBalancerName')]"                            },
                     "diagStorageAccountName": { "value": "[parameters('diagStorageAccountName')]"                      },
                                  "thisIndex": { "value": "[                                             copyIndex() ]" },
                                     "vmName": { "value": "[concat(parameters('vmName'),                 copyIndex())]" },
@@ -99,7 +100,7 @@
 				"parameters": {
 					"commonSettings": { "value": "[       parameters('commonSettings') ]" },
 					"vmName":         { "value": "[concat(parameters('vmName'),0)      ]" },
-					"scriptName":     { "value": "SQL1.ps1" },
+					"scriptName":     { "value": "SQL.ps1" },
 					"configName":     { "value": "DemoSQL" }
 				}
 			}
