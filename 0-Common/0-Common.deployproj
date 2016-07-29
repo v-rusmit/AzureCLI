@@ -379,8 +379,10 @@
     <None Include="DSC\xWebAdministration\1.11.0.0\Tests\xWebAdministration.TestHarness.psm1" />
     <None Include="DSC\xWebAdministration\1.11.0.0\xWebAdministration.psd1" />
     <None Include="DSC\xWebAdministration\IIS.ps1" />
+    <None Include="SampleApp\FabrikamFiber.API.Ntier.zip" />
     <None Include="SampleApp\FabrikamFiber.API.zip" />
     <None Include="SampleApp\FabrikamFiber.bacpac" />
+    <None Include="SampleApp\FabrikamFiber.Web.Ntier.zip" />
     <None Include="SampleApp\FabrikamFiber.Web.zip" />
     <None Include="SampleApp\iisnode-full-iis7-v0.2.2-x64.msi" />
     <None Include="SampleApp\node-v4.4.7-x64.msi" />
@@ -390,8 +392,10 @@
     <None Include="Templates\azuredeploy.json" />
     <None Include="Templates\azuredeploy.parameters.json" />
     <None Include="Templates\config.psd1" />
+    <None Include="Templates\FabrikamFiber.API.Ntier.zip" />
     <None Include="Templates\FabrikamFiber.API.zip" />
     <None Include="Templates\FabrikamFiber.bacpac" />
+    <None Include="Templates\FabrikamFiber.Web.Ntier.zip" />
     <None Include="Templates\FabrikamFiber.Web.zip" />
     <None Include="Templates\iisnode-full-iis7-v0.2.2-x64.msi" />
     <None Include="Templates\load-balancer-with-private-ip.json" />

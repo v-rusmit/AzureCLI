@@ -10,7 +10,6 @@ Configuration DemoSQL
 		
 
         [String]$DomainNetbiosName  = (Get-NetBIOSName -DomainName $domain),
-        [UInt32]$DatabaseEnginePort = 1433,
 		   [Int]$RetryCount         = 20,
            [Int]$RetryIntervalSec   = 30
     )
@@ -97,8 +96,8 @@ Configuration DemoSQL
             State = "Enabled"
             Access = "Allow"
             Protocol = "TCP"
-            LocalPort = $DatabaseEnginePort -as [String]
-            Ensure = "Present"
+            LocalPort = "1433"
+            Ensure = "Present"`
         }
 
         xFirewall DatabaseMirroringFirewallRule

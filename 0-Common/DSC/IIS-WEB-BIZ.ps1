@@ -148,7 +148,7 @@ Configuration DemoIIS
 			BindingInfo  = MSFT_xWebBindingInformation 
 				{
 					Protocol = 'HTTP'
-					Port     = 7777
+					Port     = 3000
 					HostName = '*'
 				}
 			DependsOn       = "[xWebsite]Fabrikam1"

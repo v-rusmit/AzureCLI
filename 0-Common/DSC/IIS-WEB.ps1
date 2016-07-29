@@ -14,12 +14,11 @@ Configuration DemoIIS
 
     Node 'localhost'
     { 
-		$webzip1 = "FabrikamFiber.Web.zip"
+		$webzip1 = "FabrikamFiber.Web.Ntier.zip"
 
 		$stagingFolder  = "C:\Packages"
 		$wwwrootFolder  = "C:\inetpub\wwwroot"
 
-		$wwwrootFolder1 = $wwwrootFolder + '\' + $webzip1.TrimEnd('.zip')
 
 		LocalConfigurationManager
 		{
@@ -38,7 +37,7 @@ Configuration DemoIIS
 		{  
 			Ensure      = "Present"
 			Path        = $stagingFolder + '\' + $webzip1
-			Destination = $wwwrootFolder + '\' + $webzip1.TrimEnd('.zip')
+			Destination = $wwwrootFolder + '\' + $webzip1.TrimEnd('.Ntier.zip')
 			DependsOn   = "[xRemoteFile]WebContent1"
 		}      
 
@@ -118,7 +117,7 @@ Configuration DemoIIS
 			Ensure          = "Present"
 			Name            = "Sample Application" 
 			State           = "Started"
-			PhysicalPath    =  $wwwrootFolder + '\' + $webzip1.TrimEnd('.zip')
+			PhysicalPath    =  $wwwrootFolder + '\' + $webzip1.TrimEnd('.Ntier.zip')
 			DependsOn       = @("[Archive]WebContent1","[xWebsite]DisableDefaultSite")
 		}  
 	}

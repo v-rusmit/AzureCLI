@@ -60,7 +60,7 @@
                         "name": "[concat(variables('loadBalancerProbeName'),parameters('portNumber'))]",
                         "properties": {
                             "protocol": "tcp",
-                            "port": parameters('portNumber'),
+                            "port": "[parameters('portNumber')]",
 //                          "requestPath": "myprobeapp1/myprobe1.svc",// the requestPath value is required when protocol=http
                             "intervalInSeconds": 5,
                             "numberOfProbes": 2
