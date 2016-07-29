@@ -3,7 +3,6 @@
     "contentVersion": "1.0.0.0",
 
     "parameters": {
-        "deploySwitch":               { "type": "int",          "defaultValue": 0,       "allowedValues": [ 0,1 ],                  "metadata": { "description": "Switch driving SAMPLE APP deployment"                                                            } },
         "appName":                    { "type": "string",       "defaultValue": "myapp",                                            "metadata": { "description": "Name of Application"                                                                             } },
         "appEnvironment":             { "type": "string",       "defaultValue": "dev",   "allowedValues": [ "dev", "qa", "prod" ],  "metadata": { "description": "Environment for Application"                                                                     } },
         "_artifactsLocation":         { "type": "string",                                                                           "metadata": { "description": "Auto-generated container in staging storage account to receive post-build staging folder upload" } }
@@ -15,7 +14,6 @@
 
         "commonSettings": {
             "resourceApiVersion": "2016-02-01",       // all tempaltes in this hierarchical project use this value for  "type": "Microsoft.Resources/deployments",
-            "deploySwitch":              "[    parameters('deploySwitch')                                ]",
             "artifactsLocation":         "[    parameters('_artifactsLocation')                          ]",
 //          "artifactsLocationSasToken": "[    parameters('_artifactsLocationSasToken')                  ]",
 			      "commonLocation":            "[uri(parameters('_artifactsLocation'),'common-stageartifacts') ]"

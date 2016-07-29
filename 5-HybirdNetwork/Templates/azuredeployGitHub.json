@@ -3,7 +3,6 @@
     "contentVersion": "1.0.0.0",
 
     "parameters": {
-        "deploySwitch":               { "type": "int",          "defaultValue": 0,       "allowedValues": [ 0,1 ],                  "metadata": { "description": "Switch driving SAMPLE APP deployment"                                                            } },
         "appName":                    { "type": "string",       "defaultValue": "myapp",                                            "metadata": { "description": "Name of Application"                                                                             } },
         "appEnvironment":             { "type": "string",       "defaultValue": "dev",   "allowedValues": [ "dev", "qa", "prod" ],  "metadata": { "description": "Environment for Application"                                                                     } },
         "GitHubAccount":              { "type": "string",       "defaultValue": "ValoremConsulting",                                "metadata": { "description": "The GitHub account that is hosting the Template files"                                           } },       
@@ -14,7 +13,6 @@
 
         "commonSettings": {
             "resourceApiVersion": "2016-02-01",    
-            "deploySwitch":              "[    parameters('deploySwitch')                                ]",
             "commonLocation":            "[uri(concat('https://raw.githubusercontent.com/', parameters('GitHubAccount') ,'/AzureCLI/', parameters('GitHubBranch'), '/0-Common/Templates'), '') ]",
             "artifactsLocation":         "[uri(concat('https://raw.githubusercontent.com/', parameters('GitHubAccount') ,'/AzureCLI/', parameters('GitHubBranch'), '/5-HybirdNetwork/Templates'), '') ]"
         },
