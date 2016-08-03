@@ -9,4 +9,4 @@ Deploying Azure resources via the "Deploy to Azure" button
 3. Users will be directed to the Azure portal, and the "Custom Deployment" menu will be displayed.  
  
 4. Click "Parameters" button
- 1. To [deploy with the sample application](), set "DEPLOYSWITCH" to 1
+ 1. To _deploy with the sample application_, set "DEPLOYSWITCH" to 1
