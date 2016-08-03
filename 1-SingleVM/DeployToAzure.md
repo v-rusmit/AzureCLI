@@ -12,7 +12,7 @@ Deploying Azure resources via the "Deploy to Azure" button
  1. To __deploy with the sample application__, set "DEPLOYSWITCH" to 1
  2. To __deploy without the sample application__, set "DEPLOYSWITCH" to 0
  3. No other fields require changes  
-![](./../images/parameters.png)  
+![](./../images/parameters.PNG)  
 5. Click "OK" to exit the Parameters menu.  
 ![](./../images/ok.png)  
 6. Under the "Custom Deployment" menu, designate a Resource Group name.  
