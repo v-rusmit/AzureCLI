@@ -22,8 +22,7 @@
 				"addressSpace": { "addressPrefixes": [ "[parameters('virtualNetworkParameters').virtualNetworkRange]" ] },
 				 "dhcpOptions": {
 				    "dnsServers": [
-				      "[parameters('virtualNetworkParameters').adDC1IPAddress]",
-				      "[parameters('virtualNetworkParameters').adDC2IPAddress]"
+				      "[parameters('virtualNetworkParameters').adFirstDCIPAddress]"
 				    ]
 				},
 				"subnets": [
