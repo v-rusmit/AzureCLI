@@ -17,7 +17,7 @@
 
 			"properties": {
 				"addressSpace": { "addressPrefixes": [ "[parameters('virtualNetworkParameters').virtualNetworkRange]" ] },
-				 "dhcpOptions": {      "dnsServers": [ "[parameters('virtualNetworkParameters').adFirstDCIPAddress]", "168.63.129.16" ] },
+				 "dhcpOptions": {      "dnsServers": [ "[parameters('virtualNetworkParameters').adFirstDCIPAddress]" ] },
 				"subnets": [
 					{
 						"name": "[parameters('virtualNetworkParameters').nvaPublicSubnetName]",
